@@ -1,13 +1,13 @@
-let option1= document.getElementById('option1');
-let option2= document.getElementById('option2');
-let option3= document.getElementById('option3');
-let option4= document.getElementById('option4');
-let option5= document.getElementById('option5');
-let content1= document.getElementById('content1');
-let content2= document.getElementById('content2');
-let content3= document.getElementById('content3');
-let content4= document.getElementById('content4');
-let content5= document.getElementById('content5');
+const option1= document.getElementById('option1');
+const option2= document.getElementById('option2');
+const option3= document.getElementById('option3');
+const option4= document.getElementById('option4');
+const option5= document.getElementById('option5');
+const content1= document.getElementById('content1');
+const content2= document.getElementById('content2');
+const content3= document.getElementById('content3');
+const content4= document.getElementById('content4');
+const content5= document.getElementById('content5');
 
 
 let chose=1;
@@ -15,66 +15,64 @@ const changeOption =()=>{
     chose==1?//if
     (
         option1.classList.value='option option-active',
-        content1.classList.value='content content-active'
+        content1.classList.value='tAreaW content content-active'
     )
     ://else
     (
         option1.classList.value='option',
-        content1.classList.value='content'    
+        content1.classList.value=' tAreaW content'    
     )
     chose==2? 
     (
         option2.classList.value='option option-active',
-        content2.classList.value='content content-active'
+        content2.classList.value='tAreaW content content-active'
     )
     :
     (
         option2.classList.value="option",
-        content2.classList.value='content'    
+        content2.classList.value='tAreaW content'    
     )
     chose==3? 
     (
         option3.classList.value='option option-active',
-        content3.classList.value='content content-active'
+        content3.classList.value='tAreaW content content-active'
     )
     :
     (
         option3.classList.value="option",
-        content3.classList.value='content'    
+        content3.classList.value='tAreaW content'    
     )
     chose==4? 
     (
         option4.classList.value='option option-active',
-        content4.classList.value='content content-active'
+        content4.classList.value='tAreaW content content-active'
     )
     :
     (
         option4.classList.value="option",
-        content4.classList.value='content'    
+        content4.classList.value='tAreaW content'    
     )
     chose==5? 
     (
         option5.classList.value='option option-active',
-        content5.classList.value='content content-active'
+        content5.classList.value='tAreaW content content-active'
     )
     :
     (
         option5.classList.value="option",
-        content5.classList.value='content'    
+        content5.classList.value='tAreaW content'    
     )
 }
 option1.addEventListener('click',()=>{
-    option4= document.getElementById('option4');
     chose=1;
     changeOption();
 })
 option2.addEventListener('click',()=>{
-    option4= document.getElementById('option4');
     chose=2;
     changeOption();
 })
 option3.addEventListener('click',()=>{
-    option4= document.getElementById('option4');
+    
     chose=3;
     changeOption();
 })

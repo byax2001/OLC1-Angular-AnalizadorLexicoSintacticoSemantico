@@ -20,4 +20,16 @@ export class MJsExternosService {
     }
 
   }
+  getDocumento(documento: any): Promise<any> {
+    return new Promise<any>( (res, rej) => {
+      let fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        let contenido = fileReader.result?.toString();
+        if (contenido !== undefined){
+          res(contenido);
+        }
+      }
+      fileReader.readAsText(documento.files[0]);
+    });
+  }
 }
