@@ -1,6 +1,7 @@
 *{
   color: white;
 }
+
   
   .dropdown-content {
     display: none;
@@ -29,16 +30,21 @@
     left:40px;
   }
   /*    AREA DE VENTANAS PARA MOSTRAR INFORMACION     */
-  
+  #a{
+    align-items: left;
+    overflow: hidden;
+  }
   .options{
     display: flex;
     width: 100%;
     list-style: none;
+
   }
   .option{
     flex-grow: 1;
     text-align: center;
     border: solid 1px;
+    cursor: pointer;
   }
   .option-active{
     background:gray;
@@ -53,19 +59,26 @@
     display: none;
   }
   .content-active{
-
     display: block;
   }
 
  .tAreaW{
     position: relative;
-    width: 550px;
-    height: 420px;
+    color: black;
+    width: 100%;
+    height: 400px;
     background-color: white;
     resize: none;
  }
  #AreaMostrarI{
   position: relative;
+  margin-left: 30px;
   top:80px;
-  margin-left: 30px; 
+ }
+ #AOpenFiles{
+   width: 45%;
+ }
+ #consoleLfs{
+    height: 420px;
+
  }
