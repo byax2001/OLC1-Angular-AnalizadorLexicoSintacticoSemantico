@@ -1,13 +1,13 @@
-const option1= document.getElementById('option1');
-const option2= document.getElementById('option2');
-const option3= document.getElementById('option3');
-const option4= document.getElementById('option4');
-const option5= document.getElementById('option5');
-const content1= document.getElementById('content1');
-const content2= document.getElementById('content2');
-const content3= document.getElementById('content3');
-const content4= document.getElementById('content4');
-const content5= document.getElementById('content5');
+let option1= document.getElementById('option1');
+let option2= document.getElementById('option2');
+let option3= document.getElementById('option3');
+let option4= document.getElementById('option4');
+let option5= document.getElementById('option5');
+let content1= document.getElementById('content1');
+let content2= document.getElementById('content2');
+let content3= document.getElementById('content3');
+let content4= document.getElementById('content4');
+let content5= document.getElementById('content5');
 
 
 let chose=1;
@@ -64,14 +64,17 @@ const changeOption =()=>{
     )
 }
 option1.addEventListener('click',()=>{
+    option4= document.getElementById('option4');
     chose=1;
     changeOption();
 })
 option2.addEventListener('click',()=>{
+    option4= document.getElementById('option4');
     chose=2;
     changeOption();
 })
 option3.addEventListener('click',()=>{
+    option4= document.getElementById('option4');
     chose=3;
     changeOption();
 })

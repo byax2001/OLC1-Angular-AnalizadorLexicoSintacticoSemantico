@@ -3,10 +3,10 @@
     <div class="dropdown btn btn-secondary">
         Archivo
         <div class="dropdown-content">
-          <a (click)="addTab()">Abrir</a>
+          <a >Abrir</a>
           <a href="#">Guardar</a>
           <a href="#">Guardar Como</a>
-          <a href="#">Crear</a>
+          <a (click)="addTab()">Crear</a>
         </div>
     </div>
     <div class="dropdown btn btn-secondary">
@@ -24,13 +24,13 @@
 <div class="container-fluid" id="AreaMostrarI">
   <div class="row">
     <div class="col-6" id="AOpenFiles">
-        <ul class="options" id="NamePest">
+        <ul class="options" id="NamePest" #AreaPest>
           <li id="option1" class="option option-active">Seccion1</li>
           <li id="option2" class="option">Seccion2</li>
           <li id="option3" class="option">Seccion2</li>
         </ul>
       
-        <div class="contents" id="ContPest">
+        <div class="contents" id="ContPest" #contPest>
           <div id="content1" class="content content-active">
             <textarea class="tAreaW"></textarea>
           </div>
