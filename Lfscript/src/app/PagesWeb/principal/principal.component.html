@@ -1,5 +1,5 @@
-<h1 class="text-center text-light">Lfscript </h1>
-<div class="btn-group">
+<!--AREA DE BOTONES-->
+<div class="btn-group" id="OpcionesLfs">
     <div class="dropdown btn btn-secondary">
         Archivo
         <div class="dropdown-content">
@@ -17,8 +17,29 @@
         <a href="#">Reporte Ts</a>
       </div>
     </div>
-    <button class="btn btn-secondary">Ejecutar</button>
-   
+    <button type="button" class="btn btn-secondary">Ejecutar</button>
   </div>
-
+  
+<!--AREA DE VENTANAS PARA MOSTRAR INFORMACION-->
+<div class="container-fluid" id="AreaMostrarI">
+  <div class="row">
+    <div class="col-6">
+      <div role="tab-container">
+        <ul class="options">
+            <li id="option1" class="option option-active">Seccion1</li>
+            <li id="option2" class="option">Seccion2</li>
+        </ul>
+      
+        <div class="contents">
+          <div id="seccion1" class="content content-active">
+            <h1 class="text-light">Hola 1</h1>
+          </div>
+          <div id="seccion2" id="seccion1" class="content">
+            <h1>Hola 2</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 

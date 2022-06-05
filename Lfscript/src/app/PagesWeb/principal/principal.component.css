@@ -1,4 +1,7 @@
-
+*{
+  color: white;
+}
+  
   .dropdown-content {
     display: none;
     position: absolute;
@@ -19,5 +22,50 @@
   .dropdown:hover .dropdown-content {
     display: block;
   }
+  /*    AREA DE VENTANAS PARA LOS BOTONES     */
+  #OpcionesLfs{
+    position: relative;
+    top:50px;
+    left:40px;
+  }
+  /*    AREA DE VENTANAS PARA MOSTRAR INFORMACION     */
   
- 
+  .options{
+    display: flex;
+    width: 100%;
+    list-style: none;
+  }
+  .option{
+    flex-grow: 1;
+    text-align: center;
+    border: solid 1px;
+  }
+  .option-active{
+    background:gray;
+  }
+
+  .contents{
+    width: 100%;
+  }
+  .content{
+    width: 100%;
+    height: 100%;
+    display: none;
+  }
+  .content-active{
+
+    display: block;
+  }
+
+ .tAreaW{
+    position: relative;
+    width: 550px;
+    height: 420px;
+    background-color: white;
+    resize: none;
+ }
+ #AreaMostrarI{
+  position: relative;
+  top:80px;
+  margin-left: 30px; 
+ }
