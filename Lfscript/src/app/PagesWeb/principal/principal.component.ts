@@ -1,5 +1,6 @@
 import { Component, OnInit,ElementRef,ViewChild,Renderer2} from '@angular/core';
 import {MJsExternosService} from './../../m-js-externos.service'
+import {ClientService} from '../../services/client.service'
 import { saveAs } from 'file-saver';
 
 @Component({
@@ -26,16 +27,18 @@ export class PrincipalComponent implements OnInit {
     indexPActual:number;
   constructor(
     private MjsExt:MJsExternosService,
+    private clientS:ClientService,
     private Renderer2: Renderer2
   ) { 
     this.MjsExt.CargarJs(['metodos.js']);
   }
-
+  //INICIO
   ngOnInit(): void {
     this.Npestañas=1;
     this.indexPActual=0;
   }
-
+  //===========================================ARCHIVO=====================================
+  //AÑADIR PESTAÑAS AL PANEL
   addTab(){
     if(this.Npestañas!=5){
       let pest1=this.p1.nativeElement;
@@ -58,20 +61,19 @@ export class PrincipalComponent implements OnInit {
       alert('No se puede crear mas de 5 pestañas');
     }
   }
+  //ACTUALIZAR LA POSICION ACTUAL DEL CLIENTE EN LAS PESTAÑAS
   updateIndex(iActual:number){
     this.indexPActual=iActual;
   }
-
+  //CARGAR UN DOCUMENTO
   cargarDocument(documento:any):void{
-    
-    
     this.MjsExt.getDocumento(documento).then( contenido=>{
-      console.log(contenido)
-      this.setTextArea(contenido);
+    this.setTextArea(contenido);
     })
     this.nameSaveF=this.file;
     this.file="";
   }
+  //ENVIAR EL STRING CARGADO A ALGUNO DE LOS 5 TEXTAREA
   setTextArea(Text:string){
     let element;
     if(this.indexPActual==0){
@@ -87,6 +89,7 @@ export class PrincipalComponent implements OnInit {
     }
 
   }
+  //OPCION PARA GUARDAR 
   save(){
     let lindex=this.nameSaveF.indexOf("path")+5; 
     let blob = new Blob([this.tTextArea1], {type: 'text/plain'});;
@@ -105,6 +108,7 @@ export class PrincipalComponent implements OnInit {
 
     saveAs(blob,this.nameSaveF);
   }
+  //OPCION PARA GUARDAR COMO
   saveAs(){
     let nameSave = prompt("Nombre del nuevo Archivo");
     if(nameSave!="" && nameSave!=null){
@@ -122,5 +126,57 @@ export class PrincipalComponent implements OnInit {
       }
       saveAs(blob,nameSave);
     }
+  }
+    //==========================================EJECUTAR=====================================
+  analizarEntrada(){
+    let textAst=this.TextAnalizar();
+    this.clientS.setDataTAst({textoAst:textAst}).subscribe(
+      (res)=>{
+        console.log("Fue realizado con exito")
+      },
+      (err)=>{
+        console.log(err)
+      }
+    )
+  }
+  TextAnalizar(){
+    let textAst="";
+    if(this.indexPActual==0){
+      textAst=this.tTextArea1;
+    }else if(this.indexPActual==1){
+      textAst=this.tTextArea2;
+    } else if(this.indexPActual==2){
+      textAst=this.tTextArea3;
+    }else if(this.indexPActual==3){
+      textAst=this.tTextArea4;
+    }else if(this.indexPActual==4){
+      textAst=this.tTextArea5;
+    }
+    return textAst;
+  }
+
+  
+  getData(){
+    this.clientS.getData().subscribe(
+      (res)=>{
+        console.log(res)
+      },
+      (err)=>{
+        console.log(err)
+      }
+    )
+
+  }
+  setData(){
+    var json={dato:30}
+    this.clientS.setData(json).subscribe(
+      (res)=>{
+        console.log("Fue realizado con exito")
+        
+      },
+      (err)=>{
+        console.log(err)
+      }
+    )
   }
 }

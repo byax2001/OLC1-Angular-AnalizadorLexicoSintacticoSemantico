@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http'
 import { FormsModule } from '@angular/forms';
 //SERVICIOS
 import{MJsExternosService} from './m-js-externos.service'
@@ -16,7 +17,8 @@ import { PrincipalComponent } from './PagesWeb/principal/principal.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [
     MJsExternosService
