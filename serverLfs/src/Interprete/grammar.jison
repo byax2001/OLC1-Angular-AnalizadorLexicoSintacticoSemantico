@@ -151,6 +151,7 @@ INSTRUCCION: ASIGNACION
             | FUNCIONES 
             | METODOS 
             | LLAMADA puntoycoma
+            | BLOQUE_INST
             | error {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
@@ -274,6 +275,9 @@ N_PRINT: print parentesisa EXPRESION parentesisc puntoycoma
     | print parentesisa parentesisc  puntoycoma
     ;
 N_TYPEOF: typeof parentesisa TIPODATO parentesisc;
+
+//Bloque de Instrucciones
+BLOQUE_INST: llavea INSTRUCCIONES llavec;
 
 EXPRESION: EXPRESION mas EXPRESION 
         | EXPRESION menos EXPRESION 
