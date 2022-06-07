@@ -1,6 +1,10 @@
 const express =require('express');
 const morgan= require('morgan');
 const cors=require('cors')
+const baseDatos = require('./main');
+
+let l=new  baseDatos.manza("");
+l.manzana() 
 
 var app=express();
 var corsOption={origin:true,optionsSuccessStatus:200};

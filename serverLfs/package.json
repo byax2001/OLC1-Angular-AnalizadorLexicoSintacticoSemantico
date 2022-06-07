@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "cjison": "jison ./src/Interprete/grammar.jison",
     "dev": "node server.js"
   },
   "keywords": [],
