@@ -157,10 +157,14 @@ INSTRUCCION: ASIGNACION
                            +" columna: "+ this._$.first_column);
                            }
             ;
-DECLARACION: TIPOVAR id igual EXPRESION puntoycoma
-    | const TIPOVAR id igual EXPRESION puntoycoma;
+DECLARACION: TIPOVAR CONJID igual EXPRESION puntoycoma
+    | const TIPOVAR CONJID igual EXPRESION puntoycoma;
 
-ASIGNACION: id igual EXPRESION puntoycoma;
+ASIGNACION: CONJID igual EXPRESION puntoycoma;
+
+CONJID: CONJID coma id  { $1.push($3); $$=$1; }
+    | id  {  $$=[$1];   }
+    ;
 
 TIPOVAR: int   {$$=$1;}
     | double  {$$=$1;}

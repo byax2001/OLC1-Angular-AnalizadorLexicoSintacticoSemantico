@@ -1,10 +1,10 @@
 const express =require('express');
 const morgan= require('morgan');
 const cors=require('cors')
-const main = require('./main');
+const main= require('main');
 
-let l=new  main.main();
-l.AnalizarAst2();
+let analizador=new  main.main();
+
 
 var app=express();
 var corsOption={origin:true,optionsSuccessStatus:200};
@@ -30,5 +30,6 @@ app.get('/retornoTexto', function (req,res){
 //TEXTO A ANALIZAR PARA EL AST 
 app.post('/setTextoAst', function(req,res){
     this.textoAst=req.body.textoAst;
+    analizador.AnalizarAst(this.textoAst);
     res.json({msg:this.textoAst})
 })

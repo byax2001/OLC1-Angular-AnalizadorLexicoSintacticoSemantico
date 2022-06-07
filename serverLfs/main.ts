@@ -1,14 +1,18 @@
+import { Environment } from "./src/Symbols/Environment";
+
 declare var require: any;
 const fs = require('fs');
+const parser = require('./src/Interprete/grammar.js');
 export class main{
     constructor(){}
+    
     AnalizarAst(TextAnalizar:string){
-        const parser = require('./src/Interprete/grammar.js');
+        const env = new Environment(null);
         try{
             const ast =parser.parse(TextAnalizar);
             for(const instruction of ast){
                 try{
-                  
+                  //  instruction.execute(env);
                 }catch (error){
                     console.log(error);
                 }
@@ -17,9 +21,8 @@ export class main{
             console.log(error);
         }
     }
+    /*
     AnalizarAst2(){
-        
-        const parser = require('./src/Interprete/grammar.js');
         try{
             const entrada = fs.readFileSync('./src/prueba.txt');
             const ast =parser.parse(entrada.toString());
@@ -34,7 +37,7 @@ export class main{
             console.log(error);
         }
     }
-    
+    */
 
     
 }

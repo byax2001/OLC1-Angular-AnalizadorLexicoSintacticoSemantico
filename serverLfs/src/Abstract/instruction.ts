@@ -1,8 +1,12 @@
-export class instruction{
+import { Environment } from "../Symbols/Environment";
+
+export abstract class instruction{
     public constructor(
         public line:number,
-        public colum:""
+        public column:number
     ){
-    public static execute(Enviroment):any;
+        this.line=line;
+        this.column=column;
     }
+    public abstract execute(env:Environment):any;
 }
