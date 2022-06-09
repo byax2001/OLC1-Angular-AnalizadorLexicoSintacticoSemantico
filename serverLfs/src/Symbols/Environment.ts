@@ -23,10 +23,23 @@ export class Environment{
                 existe=true;
             }
         })
-        
-
         return existe;
-        
+    }
+    public getSimbolo(id:string):Symbol{
+        let simbolo= new Symbol(false,Type.error,"","",0,0);
+        this.variables.forEach((value,key)=>{
+            if(key[0]==id){
+                simbolo=value;
+            }
+        })
+        return simbolo;
+    }   
+    public ChangeSimbolo(id:string,newValue:any){
+        this.variables.forEach((value,key)=>{
+            if(key[0]==id){
+                value=newValue
+            }
+        })
     }
 
 }

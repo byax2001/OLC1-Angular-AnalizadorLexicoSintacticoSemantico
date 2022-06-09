@@ -1,5 +1,6 @@
 import { expresion } from "../Abstract/expresion";
 import { Retorno } from "../Abstract/Retorno";
+import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 import { TypeAritmeticas } from "./TypeAritmeticas";
@@ -19,7 +20,6 @@ export class OAritmeticas extends expresion{
         let result:Retorno={value:null,type:Type.error}
         const nodoIzq=this.left.execute(env);
         const nodoDer=this.right.execute(env);
-        
         if(this.typeArit==TypeAritmeticas.SUMA){
             if(nodoIzq.type==Type.INT && nodoDer.type==Type.INT){
                 result={value:(nodoIzq.value+nodoDer.value), type:Type.INT}
@@ -69,7 +69,8 @@ export class OAritmeticas extends expresion{
             else if(nodoIzq.type==Type.STRING && nodoDer.type==Type.STRING){
                 result={value:(nodoIzq.value+""+nodoDer.value), type:Type.STRING}
             }else{
-                //REPORTAR ERROR   
+                //REPORTAR ERROR 
+                B_datos.getInstance().addError("Semantico","Variable no declarada",this.line,this.column);    
             }
         }else if (this.typeArit==TypeAritmeticas.RESTA){
             if(nodoIzq.type==Type.INT && nodoDer.type==Type.INT){

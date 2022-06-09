@@ -5,7 +5,6 @@ import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 
 export class Declaracion extends instruction{
-    bDatos:any;
     constructor(
         public constante:boolean,
         public tipo:Type,
@@ -14,18 +13,17 @@ export class Declaracion extends instruction{
         line:number,
         column:number 
     ) {
-        super(line,column)
-        this.bDatos=B_datos.getInstance();
+        super(line,column)   
     }
     public execute(env:Environment){
         let exp=this.expresion.execute(env);
         let existe=env.existeSimbolo(this.id);
         if(existe==true){
-            //ERROR 
-            this.bDatos.addError("Semantico","Intento de declarar 2 veces una variable",this.line,this.column);
+            //ERROR YA FUE DECLARADA ESTA VARIABLE CON ANTERIORIDAD
+            B_datos.getInstance().addError("Semantico","Intento de declarar 2 veces una variable",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
             //ERROR  2
             if(this.tipo!=exp.type){
-                this.bDatos.addError("Semantico","Tipo de declaracion y dato no coinciden",this.line,this.column);
+                B_datos.getInstance().addError("Semantico","Tipo de declaracion y dato no coinciden",this.line,this.column);
                 console.log("error semantico distintos tipos");
             }
             console.log(B_datos.getInstance().getListError());
@@ -35,10 +33,9 @@ export class Declaracion extends instruction{
             if(this.tipo==exp.type){
                 env.guardarSimbolo(this.constante,this.tipo,this.id,exp.value,this.line,this.column);
                 console.log('--------------------acabo de guardar una variable------------------')
-                console.log(env)
             }else{
-                //ERROR 
-                this.bDatos.addError("Semantico","Tipo de declaracion y dato no coinciden",this.line,this.column);
+                //ERROR  NO COINCIDEN LOS TIPOD DE DATOS DE LA VARIABLE Y SU EXPRESION
+                B_datos.getInstance().addError("Semantico","Tipo de declaracion y dato no coinciden",this.line,this.column);
                 console.log("error semantico distintos tipos");
             }
         }
