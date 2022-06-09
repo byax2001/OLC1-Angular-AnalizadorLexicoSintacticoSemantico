@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "cjison": "jison ./src/Interprete/grammar.jison && move grammar.js ./src/Interprete",
+    "devt":"ts-node ./src/main.ts",
     "dev": "node server.js"
   },
   "keywords": [],

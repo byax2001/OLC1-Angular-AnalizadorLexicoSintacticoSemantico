@@ -10,8 +10,8 @@ export class Environment{
         this.variables=new Map();
     }
 
-    public guardarSimbolo(type:Type,id:string,value:string,linea:number,column:number){
-        this.variables.set(id,new Symbol(type,id,value,linea,column));
+    public guardarSimbolo(constante:boolean,type:Type,id:string,value:string,linea:number,column:number){
+        this.variables.set(id,new Symbol(constante,type,id,value,linea,column));
         return true 
     }
 

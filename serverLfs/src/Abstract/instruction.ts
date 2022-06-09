@@ -9,4 +9,5 @@ export abstract class instruction{
         this.column=column;
     }
     public abstract execute(env:Environment):any;
+    
 }

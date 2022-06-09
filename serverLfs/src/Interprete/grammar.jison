@@ -1,5 +1,16 @@
 %{
-	
+	const {Type} =require('../Symbols/Type');
+    const {TypeAritmeticas}= require('../Expresion/TypeAritmeticas.ts');
+    const {TypeRelacionales}= require('../Expresion/TypeRelacionales.ts');
+    const {TypeLogic}= require('../Expresion/TypeLogic.ts');
+    const {Literal}= require('../Expresion/Literal.ts');
+    const {Declaracion}= require('../Instruccion/Declaracion.ts');
+    const {OAritmeticas}= require('../Expresion/OAritmeticas.ts');
+    const {ORelacionales}= require('../Expresion/ORelacionales.ts');
+    const {OLogicas}= require('../Expresion/OLogicas.ts');
+
+    const {Print}= require('../Instruccion/Print.ts');
+    
 %}
 %lex
 %options case-insensitive          
@@ -19,7 +30,7 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 
 [ \r\t\n\s]+  {}
 "//".*      {}
-"/*"([\n]|[^"*/"])*"*/" {}
+"/*"([\n]|[^"*/"]|\*)*"*/" {}
 
 //se deben de reconocer primero los == != antes de = y ! por que los reconocera antes, si no a la hora de usar un == lo reconocio primero como = =
 "++"                 { console.log("Reconocio : " + yytext);  return 'inc' } 
@@ -139,8 +150,8 @@ INICIO:INSTRUCCIONES  EOF { console.log("termine de analizar" ); return $$; }
 INSTRUCCIONES : INSTRUCCIONES INSTRUCCION { $1.push($2); $$=$1;   }
             | INSTRUCCION {$$= [$1];}
             ;
-INSTRUCCION: ASIGNACION
-            | DECLARACION
+INSTRUCCION: ASIGNACION {$$= $1;}
+            | DECLARACION {$$= $1;}
             | IF
             | SWITCH
             | FOR  
@@ -157,8 +168,9 @@ INSTRUCCION: ASIGNACION
                            +" columna: "+ this._$.first_column);
                            }
             ;
-DECLARACION: TIPOVAR CONJID igual EXPRESION puntoycoma
-    | const TIPOVAR CONJID igual EXPRESION puntoycoma;
+DECLARACION: TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(false,$1,$2,$4,@1.first_line,@1.last_column);}
+    | const TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(true,$2,$3,$5,@1.first_line,@1.last_column);}
+    ;
 
 ASIGNACION: CONJID igual EXPRESION puntoycoma;
 
@@ -166,19 +178,19 @@ CONJID: CONJID coma id  { $1.push($3); $$=$1; }
     | id  {  $$=[$1];   }
     ;
 
-TIPOVAR: int   {$$=$1;}
-    | double  {$$=$1;}
-    | boolean {$$=$1;}
-    | char {$$=$1;}
-    | string {$$=$1;}
+TIPOVAR: int   {$$=Type.INT;}
+    | double  {$$=Type.DOUBLE;}
+    | boolean {$$=Type.BOOLEAN;}
+    | char {$$=Type.CHAR;}
+    | string {$$=Type.STRING;}
     ; 
-TIPODATO: cadena 
-    | caracter 
-    | decimal 
-    | id 
-    | entero 
-    | true 
-    | false
+TIPODATO: cadena  {$$= new Literal($1,Type.STRING,@1.first_line,@1.last_column);}
+    | caracter {$$= new Literal($1,Type.CHAR,@1.first_line,@1.last_column);}
+    | decimal {$$= new Literal($1,Type.DOUBLE,@1.first_line,@1.last_column);}
+    | id {$$=$1}
+    | entero {$$= new Literal($1,Type.INT,@1.first_line,@1.last_column);}
+    | true {$$= new Literal($1,Type.BOOLEAN,@1.first_line,@1.last_column);}
+    | false {$$= new Literal($1,Type.BOOLEAN,@1.first_line,@1.last_column);}
     ;
 
 
@@ -276,35 +288,35 @@ N_PRINTLN: println parentesisa EXPRESION parentesisc puntoycoma
     ;
 N_PRINT: print parentesisa EXPRESION parentesisc puntoycoma
     | print parentesisa LLAMADA arentesisc puntoycoma
-    | print parentesisa parentesisc  puntoycoma
+    | print parentesisa parentesisc  puntoycoma 
     ;
 N_TYPEOF: typeof parentesisa TIPODATO parentesisc;
 
 //Bloque de Instrucciones
 BLOQUE_INST: llavea INSTRUCCIONES llavec;
 
-EXPRESION: EXPRESION mas EXPRESION 
-        | EXPRESION menos EXPRESION 
-        | EXPRESION div EXPRESION
-        | EXPRESION multi EXPRESION 
-        | EXPRESION mod EXPRESION 
-        | EXPRESION pow EXPRESION 
-        | menos EXPRESION %prec UMINUS
-        | EXPRESION igualigual EXPRESION
-        | EXPRESION diferente EXPRESION
-        | EXPRESION menorque EXPRESION
-        | EXPRESION menorigual EXPRESION
-        | EXPRESION mayorque EXPRESION  
-        | EXPRESION mayorigual EXPRESION 
-        | EXPRESION or EXPRESION
-        | EXPRESION and EXPRESION
-        | EXPRESION xor EXPRESION
-        | not EXPRESION
+EXPRESION: EXPRESION mas EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.SUMA,@1.first_line,@1.last_column);}
+        | EXPRESION menos EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.RESTA,@1.first_line,@1.last_column);}
+        | EXPRESION div EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.MULTIPLICACION,@1.first_line,@1.last_column);}
+        | EXPRESION multi EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.DIVISION,@1.first_line,@1.last_column);}
+        | EXPRESION mod EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.MOD,@1.first_line,@1.last_column);}
+        | EXPRESION pow EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.POW,@1.first_line,@1.last_column);}
+        | menos EXPRESION %prec UMINUS {$$=new OAritmeticas($2,null,TypeAritmeticas.NEGACION,@1.first_line,@1.last_column);}
+        | EXPRESION igualigual EXPRESION {$$=new ORelacionales($1,$3,TypeRelacionales.IGUALQUE,@1.first_line,@1.last_column);}
+        | EXPRESION diferente EXPRESION{$$=new ORelacionales($1,$3,TypeRelacionales.DIFERENTEQUE,@1.first_line,@1.last_column);}
+        | EXPRESION menorque EXPRESION{$$=new ORelacionales($1,$3,TypeRelacionales.MENORQUE,@1.first_line,@1.last_column);}
+        | EXPRESION menorigual EXPRESION{$$=new ORelacionales($1,$3,TypeRelacionales.MENORIGUALQUE,@1.first_line,@1.last_column);}
+        | EXPRESION mayorque EXPRESION  {$$=new ORelacionales($1,$3,TypeRelacionales.MAYORQUE,@1.first_line,@1.last_column);}
+        | EXPRESION mayorigual EXPRESION {$$=new ORelacionales($1,$3,TypeRelacionales.MAYORIGUALQUE,@1.first_line,@1.last_column);}
+        | EXPRESION or EXPRESION {$$=new OLogicas($1,$3,TypeLogic.OR,@1.first_line,@1.last_column);}
+        | EXPRESION and EXPRESION {$$=new OLogicas($1,$3,TypeLogic.AND,@1.first_line,@1.last_column);}
+        | EXPRESION xor EXPRESION {$$=new OLogicas($1,$3,TypeLogic.XOR,@1.first_line,@1.last_column);}
+        | not EXPRESION {$$=new OLogicas($2,null,TypeLogic.NOT,@1.first_line,@1.last_column);}
         | id inc
         | id dec 
         | inc id
         | dec id 
-        | parentesisa EXPRESION parentesisc 
-        | TIPODATO
-        | N_TYPEOF
+        | parentesisa EXPRESION parentesisc {$$=$2;}
+        | TIPODATO {$$=$1;}
+        | N_TYPEOF {$$=$1;}
         ;

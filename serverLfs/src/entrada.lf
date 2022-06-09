@@ -1,0 +1,67 @@
+{
+    int a_numero2, variable2, variable3 = 3000;
+    const double avion = 12.25;
+    boolean flag = true;
+    //UN COMENTARIO POR ACA 
+    x = 99.99 + 1 - 9 ; 
+
+    if (a==10 && true) {
+        int contador = 30;
+    } else if (a == 11 && true) {
+        a = 55;
+    } else {
+        a = 32;
+    }
+    
+     /*****************************************
+     *********COMENTARIO MULTILINEA************
+     ******************************************/
+
+
+    switch (num) {
+        case 1 : 
+            int a = a++;
+        case 2:
+            valor = 12.25;
+        default:
+            a = 14;
+    }
+
+    for(int i = 0; i < 5; i++) {
+        if (a==10 && true) {
+            int contador = 30;
+        } else if (a == 11 && true) {
+            a = 55;
+        } else {
+            a = 32;
+        }
+        a = i + 2;
+    }
+
+    while(true){
+        for(int i = 0; i < 5; i++) {
+        if (a==10 && true) {
+            int contador = 30;
+        } else if (a == 11 && true) {
+            a = 55;
+        } else {
+            a = 32;
+        }
+        a = i + 2;
+        }
+    }
+
+    do{
+        for(int i = 0; i < 5; i++) {
+        if (a==10 && true) {
+            int contador = 30;
+        } else if (a == 11 && true) {
+            a = 55;
+        } else {
+            a = 32;
+        }
+        a = i + 2;
+        }
+    }while(a!= 56 || b <15);
+    
+}

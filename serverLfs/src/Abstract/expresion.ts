@@ -8,6 +8,6 @@ export abstract class  expresion {
     }
 
     public abstract execute(enviroment:Environment):Retorno
-   
+    
 
 }
