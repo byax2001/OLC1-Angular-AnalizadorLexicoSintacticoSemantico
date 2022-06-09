@@ -12,7 +12,21 @@ export class Environment{
 
     public guardarSimbolo(constante:boolean,type:Type,id:string,value:string,linea:number,column:number){
         this.variables.set(id,new Symbol(constante,type,id,value,linea,column));
+        
         return true 
+        
+    }
+    public existeSimbolo(id:string):boolean{
+        let existe=false;
+        this.variables.forEach((value,key)=>{
+            if(key[0]==id){
+                existe=true;
+            }
+        })
+        
+
+        return existe;
+        
     }
 
 }

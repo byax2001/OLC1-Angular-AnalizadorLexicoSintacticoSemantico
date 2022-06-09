@@ -1,4 +1,6 @@
 %{
+    const {B_datos}=require('../BaseDatos/B_datos.ts');
+    let bDatos=B_datos.getInstance(); 
 	const {Type} =require('../Symbols/Type');
     const {TypeAritmeticas}= require('../Expresion/TypeAritmeticas.ts');
     const {TypeRelacionales}= require('../Expresion/TypeRelacionales.ts');
@@ -8,16 +10,15 @@
     const {OAritmeticas}= require('../Expresion/OAritmeticas.ts');
     const {ORelacionales}= require('../Expresion/ORelacionales.ts');
     const {OLogicas}= require('../Expresion/OLogicas.ts');
-
     const {Print}= require('../Instruccion/Print.ts');
     
 %}
 %lex
 %options case-insensitive          
 LETRAS [a-zA-ZñÑ]+ 
-NUMEROS [0-9]+
-DECIMAL {NUMEROS}("."{NUMEROS})?
-ID {LETRAS}({LETRAS}|{NUMEROS}|"_")*
+ENTERO [0-9]+
+DECIMAL {ENTERO}("."{ENTERO})
+ID {LETRAS}({LETRAS}|{ENTERO}|"_")*
 
 CESPECIALES \\[\'\"\\nrt]
 ACEPTACION [^\"\n]    
@@ -108,13 +109,14 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 {ID}        {console.log("Reconocio: "+yytext); return 'id'}
 {CADENA}    {console.log("Reconocio: "+yytext); return 'cadena'}
 {DECIMAL}   {console.log("Reconocio: "+yytext); return 'decimal'}
-{ENTERO}    {console.log("Reconocio: "+yytext); return 'entero'}
+{ENTERO}    {console.log("Reconocio ENTERO: "+yytext); return 'entero'}
 {CARACTER}  {console.log("Reconocio: "+yytext); return 'caracter'}
 
 
 //EOF INDICA EL FIN DEL DOCUMENTO LEIDO 
 <<EOF>> return 'EOF';
 .       {
+            bDatos.addError("Lexico","Caracter no reconocido",yylloc.first_line,yylloc.first_column);
             console.log('Este error es un error lexico: '+yytext+' en al linea '+yylloc.first_line+' en la columna '+yylloc.first_column);
         }
 
@@ -162,11 +164,12 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | FUNCIONES 
             | METODOS 
             | LLAMADA puntoycoma
-            | BLOQUE_INST
+            | BLOQUE_INST {$$= $1;}
             | error {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
-                           }
+                    bDatos.addError("Sintactico","No se esperaba este caracter",@1.first_line,yylloc.@1.last_column);       
+                    }
             ;
 DECLARACION: TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(false,$1,$2,$4,@1.first_line,@1.last_column);}
     | const TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(true,$2,$3,$5,@1.first_line,@1.last_column);}
