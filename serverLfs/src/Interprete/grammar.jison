@@ -181,11 +181,11 @@ CONJID: CONJID coma id  { $1.push($3); $$=$1; }
     | id  {  $$=[$1];   }
     ;
 
-TIPOVAR: int   {$$=Type.INT;}
-    | double  {$$=Type.DOUBLE;}
-    | boolean {$$=Type.BOOLEAN;}
-    | char {$$=Type.CHAR;}
-    | string {$$=Type.STRING;}
+TIPOVAR: int    {$$=Type.INT;}
+    | double    {$$=Type.DOUBLE;}
+    | boolean   {$$=Type.BOOLEAN;}
+    | char      {$$=Type.CHAR;}
+    | string    {$$=Type.STRING;}
     ; 
 TIPODATO: cadena  {$$= new Literal($1,Type.STRING,@1.first_line,@1.last_column);}
     | caracter {$$= new Literal($1,Type.CHAR,@1.first_line,@1.last_column);}

@@ -17,7 +17,8 @@ export class Environment{
         
     }
     public existeSimbolo(id:string):boolean{
-        let existe=false;
+        let existe;
+        existe=this.variables.has(id)
         this.variables.forEach((value,key)=>{
             if(key[0]==id){
                 existe=true;

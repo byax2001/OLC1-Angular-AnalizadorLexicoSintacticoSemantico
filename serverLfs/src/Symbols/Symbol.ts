@@ -7,7 +7,9 @@ export class Symbol{
         public id:string,
         public value:any,
         public line:number,
-        public column:number
+        public column:number,
+        public nParametros?:number
     ){}
+    
 
 }

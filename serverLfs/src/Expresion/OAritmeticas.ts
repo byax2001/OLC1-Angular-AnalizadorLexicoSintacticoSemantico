@@ -70,7 +70,7 @@ export class OAritmeticas extends expresion{
                 result={value:(nodoIzq.value+""+nodoDer.value), type:Type.STRING}
             }else{
                 //REPORTAR ERROR 
-                B_datos.getInstance().addError("Semantico","Variable no declarada",this.line,this.column);    
+                B_datos.getInstance().addError("Semantico","Operacion no posible de realizar",this.line,this.column);    
             }
         }else if (this.typeArit==TypeAritmeticas.RESTA){
             if(nodoIzq.type==Type.INT && nodoDer.type==Type.INT){
@@ -101,6 +101,7 @@ export class OAritmeticas extends expresion{
                 result={value:(nodoIzq.value-nodoDer.value), type:Type.INT}
             }else{
                 //REPORTAR ERROR   
+                B_datos.getInstance().addError("Semantico","Operacion no posible de realizar",this.line,this.column);    
             }
         } else if (this.typeArit==TypeAritmeticas.MULTIPLICACION){
             if(nodoIzq.type==Type.INT && nodoDer.type==Type.INT){
@@ -131,6 +132,7 @@ export class OAritmeticas extends expresion{
                 result={value:(nodoIzq.value*nodoDer.value), type:Type.INT}
             }else{
                 //REPORTAR ERROR   
+                B_datos.getInstance().addError("Semantico","Operacion no posible de realizar",this.line,this.column);    
             }
         } else if (this.typeArit==TypeAritmeticas.DIVISION){
             if(nodoIzq.type==Type.INT && nodoDer.type==Type.INT){
@@ -160,7 +162,8 @@ export class OAritmeticas extends expresion{
             else if(nodoIzq.type==Type.CHAR && nodoDer.type==Type.CHAR){
                 result={value:(nodoIzq.value/nodoDer.value), type:Type.INT}
             }else{
-                //REPORTAR ERROR   
+                //REPORTAR ERROR  
+                B_datos.getInstance().addError("Semantico","Operacion no posible de realizar",this.line,this.column);     
             }
         }else if (this.typeArit==TypeAritmeticas.POW){
             if(nodoIzq.type==Type.INT && nodoDer.type==Type.DOUBLE){
@@ -190,8 +193,8 @@ export class OAritmeticas extends expresion{
             else if(nodoIzq.type==Type.CHAR && nodoDer.type==Type.CHAR){
                 result={value:Math.pow(nodoIzq.value,nodoDer.value), type:Type.DOUBLE}
             }else{
-                
-                //REPORTAR ERROR   
+                //REPORTAR ERROR  
+                B_datos.getInstance().addError("Semantico","Operacion no posible de realizar",this.line,this.column);     
             }
         }else if(this.typeArit=TypeAritmeticas.MOD){
             if(nodoIzq.type==Type.INT && nodoDer.type==Type.INT){
@@ -221,7 +224,8 @@ export class OAritmeticas extends expresion{
             else if(nodoIzq.type==Type.CHAR && nodoDer.type==Type.CHAR){
                 result={value:(nodoIzq.value%nodoDer.value), type:Type.DOUBLE}
             }else{
-                //REPORTAR ERROR   
+                //REPORTAR ERROR  
+                B_datos.getInstance().addError("Semantico","Operacion no posible de realizar",this.line,this.column);     
             }
         }else if(this.typeArit=TypeAritmeticas.NEGACION){
             if(nodoIzq.type==Type.INT){
@@ -230,6 +234,7 @@ export class OAritmeticas extends expresion{
                 result={value:-nodoIzq.value, type:Type.DOUBLE}
             }else{
                 //REPORTAR ERROR   
+                B_datos.getInstance().addError("Semantico","Operacion no posible de realizar",this.line,this.column);    
             }
         }
         return result
