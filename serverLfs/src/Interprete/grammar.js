@@ -108,6 +108,9 @@ break;
 case 19:
 this.$= new Declaracion(true,$$[$0-4],$$[$0-3],$$[$0-1],_$[$0-5].first_line,_$[$0-5].last_column);
 break;
+case 20:
+this.$=new Asignacion($$[$0-3],$$[$0-1],_$[$0-3].first_line,_$[$0-3].last_column)
+break;
 case 21:
  $$[$0-2].push($$[$0]); this.$=$$[$0-2]; 
 break;
@@ -464,6 +467,7 @@ _handle_error:
     const {TypeLogic}= require('../Expresion/TypeLogic.ts');
     const {Literal}= require('../Expresion/Literal.ts');
     const {Declaracion}= require('../Instruccion/Declaracion.ts');
+    const {Asignacion} = require('../Instruccion/Asignacion.ts')
     const {OAritmeticas}= require('../Expresion/OAritmeticas.ts');
     const {ORelacionales}= require('../Expresion/ORelacionales.ts');
     const {OLogicas}= require('../Expresion/OLogicas.ts');

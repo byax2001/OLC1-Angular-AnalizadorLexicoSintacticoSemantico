@@ -1,11 +1,10 @@
 
     int a_numero2, variable2, variable3 = 3000;
-    const double avion = 12.25;
+    const double avion = 12.25+1;
     boolean flag = true;
-    boolean flag = 10;
     //UN COMENTARIO POR ACA 
 
-    
+    avion=550;
     
     
      /*****************************************

@@ -19,17 +19,12 @@ export class Environment{
     public existeSimbolo(id:string):boolean{
         let existe;
         existe=this.variables.has(id)
-        this.variables.forEach((value,key)=>{
-            if(key[0]==id){
-                existe=true;
-            }
-        })
         return existe;
     }
     public getSimbolo(id:string):Symbol{
         let simbolo= new Symbol(false,Type.error,"","",0,0);
         this.variables.forEach((value,key)=>{
-            if(key[0]==id){
+            if(key==id){
                 simbolo=value;
             }
         })
@@ -37,8 +32,8 @@ export class Environment{
     }   
     public ChangeSimbolo(id:string,newValue:any){
         this.variables.forEach((value,key)=>{
-            if(key[0]==id){
-                value=newValue
+            if(key==id){
+                value.value=newValue
             }
         })
     }

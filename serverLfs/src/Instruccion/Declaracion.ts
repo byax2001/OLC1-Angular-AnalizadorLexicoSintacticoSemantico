@@ -29,10 +29,9 @@ export class Declaracion extends instruction{
                 }
                 console.log(B_datos.getInstance().getListError());
                 console.log("error semantico ya existia la variable")   
-            }else{
-                //GUARDAR DATO 
+            }else{    
                 if(this.tipo==exp.type){
-                 
+                    //GUARDAR DATO
                     env.guardarSimbolo(this.constante,this.tipo,id,exp.value,this.line,this.column);
                     console.log('--------------------acabo de guardar una variable------------------')
                     console.log(env)

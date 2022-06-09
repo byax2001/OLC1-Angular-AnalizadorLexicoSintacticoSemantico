@@ -7,6 +7,7 @@
     const {TypeLogic}= require('../Expresion/TypeLogic.ts');
     const {Literal}= require('../Expresion/Literal.ts');
     const {Declaracion}= require('../Instruccion/Declaracion.ts');
+    const {Asignacion} = require('../Instruccion/Asignacion.ts')
     const {OAritmeticas}= require('../Expresion/OAritmeticas.ts');
     const {ORelacionales}= require('../Expresion/ORelacionales.ts');
     const {OLogicas}= require('../Expresion/OLogicas.ts');
@@ -175,7 +176,7 @@ DECLARACION: TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(fals
     | const TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(true,$2,$3,$5,@1.first_line,@1.last_column);}
     ;
 
-ASIGNACION: CONJID igual EXPRESION puntoycoma;
+ASIGNACION: CONJID igual EXPRESION puntoycoma {$$=new Asignacion($1,$3,@1.first_line,@1.last_column)};
 
 CONJID: CONJID coma id  { $1.push($3); $$=$1; }
     | id  {  $$=[$1];   }
