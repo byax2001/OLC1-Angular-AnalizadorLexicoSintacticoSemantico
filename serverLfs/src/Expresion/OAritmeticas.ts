@@ -229,7 +229,7 @@ export class OAritmeticas extends expresion{
             }
         }else if(this.typeArit=TypeAritmeticas.NEGACION){
             if(nodoIzq.type==Type.INT){
-                result={value:-nodoIzq.value, type:Type.DOUBLE}
+                result={value:-nodoIzq.value, type:Type.INT}
             }else if(nodoIzq.type==Type.DOUBLE){
                 result={value:-nodoIzq.value, type:Type.DOUBLE}
             }else{

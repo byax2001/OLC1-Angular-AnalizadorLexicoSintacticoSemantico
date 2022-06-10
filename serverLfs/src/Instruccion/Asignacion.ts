@@ -13,8 +13,7 @@ export class Asignacion extends instruction{
     ) {
         super(line,column)
     }
-    public execute(env:Environment){
-        
+    public execute(env:Environment){  
         let exp=this.expresion.execute(env);
         this.id.forEach((id)=>{
             let existe=env.existeSimbolo(id);

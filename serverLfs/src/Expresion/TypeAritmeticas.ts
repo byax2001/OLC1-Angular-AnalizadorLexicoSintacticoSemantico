@@ -5,5 +5,9 @@ export enum TypeAritmeticas {
     DIVISION,
     POW,
     MOD,
-    NEGACION
+    NEGACION,
+    INCDER,
+    INCIZQ,
+    DECDER,
+    DECIZQ
 }

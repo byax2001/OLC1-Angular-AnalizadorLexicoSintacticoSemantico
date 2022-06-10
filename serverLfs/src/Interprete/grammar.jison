@@ -9,9 +9,15 @@
     const {Declaracion}= require('../Instruccion/Declaracion.ts');
     const {Asignacion} = require('../Instruccion/Asignacion.ts')
     const {OAritmeticas}= require('../Expresion/OAritmeticas.ts');
+    const {IncDecremento}=require('../Expresion/IncDecremento.ts');
     const {ORelacionales}= require('../Expresion/ORelacionales.ts');
     const {OLogicas}= require('../Expresion/OLogicas.ts');
-    const {Print}= require('../Instruccion/Print.ts');
+    
+    //NATIVAS
+    const {Print}= require('../Instruccion/FuncionesNativas/Print.ts');
+    const {Println}= require('../Instruccion/FuncionesNativas/Println.ts');
+    const {Typeof}=require('../Instruccion/FuncionesNativas/Typeof.ts')
+
     
 %}
 %lex
@@ -99,9 +105,9 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 //palabras para funciones 
 "break"                    {console.log("Reconocio: "+yytext); return 'break'}
 "continue"                {console.log("Reconocio: "+yytext); return 'continue'} 
-"return"                {console.log("Reconocio: "+yytext); return 'return'} 
+"return"                {console.log("Reconocio: "+yytext); return 'return'}
+"println"             {console.log("Reconocio: "+yytext); return 'println'} 
 "print"             {console.log("Reconocio: "+yytext); return 'print'}
-"println"             {console.log("Reconocio: "+yytext); return 'println'}
 "typeof"             {console.log("Reconocio: "+yytext); return 'typeof'}
 "void"             {console.log("Reconocio: "+yytext); return 'void'}
 "length"             {console.log("Reconocio: "+yytext); return 'length'}
@@ -160,8 +166,8 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | FOR  
             | WHILE
             | DO_WHILE       
-            | PRINT {$$= $1;}     
-            | PRINTLN {$$= $1;}
+            | N_PRINT {$$= $1;}     
+            | N_PRINTLN {$$= $1;}
             | FUNCIONES 
             | METODOS 
             | LLAMADA puntoycoma
@@ -286,15 +292,15 @@ PARAMETROSLLAMADA: PARAMETROSLLAMADA coma EXPRESION
     | EXPRESION
     ;
 
-N_PRINTLN: println parentesisa EXPRESION parentesisc puntoycoma
+N_PRINTLN: println parentesisa EXPRESION parentesisc puntoycoma {$$=new Println($3,@1.first_line,@1.last_column);}
     | println parentesisa LLAMADA parentesisc puntoycoma
-    | println parentesisa parentesisc  puntoycoma
+    | println parentesisa parentesisc  puntoycoma  {$$=new Println(null,@1.first_line,@1.last_column);}
     ;
-N_PRINT: print parentesisa EXPRESION parentesisc puntoycoma
+N_PRINT: print parentesisa EXPRESION parentesisc puntoycoma  {$$=new Print($3,@1.first_line,@1.last_column);}
     | print parentesisa LLAMADA arentesisc puntoycoma
-    | print parentesisa parentesisc  puntoycoma 
+    | print parentesisa parentesisc  puntoycoma  {$$=new Print(null,@1.first_line,@1.last_column);}
     ;
-N_TYPEOF: typeof parentesisa TIPODATO parentesisc;
+N_TYPEOF: typeof parentesisa EXPRESION parentesisc {$$=new Typeof($3,@1.first_line,@1.last_column);} ;
 
 //Bloque de Instrucciones
 BLOQUE_INST: llavea INSTRUCCIONES llavec;
@@ -315,11 +321,11 @@ EXPRESION: EXPRESION mas EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.SU
         | EXPRESION or EXPRESION {$$=new OLogicas($1,$3,TypeLogic.OR,@1.first_line,@1.last_column);}
         | EXPRESION and EXPRESION {$$=new OLogicas($1,$3,TypeLogic.AND,@1.first_line,@1.last_column);}
         | EXPRESION xor EXPRESION {$$=new OLogicas($1,$3,TypeLogic.XOR,@1.first_line,@1.last_column);}
-        | not EXPRESION {$$=new OLogicas($2,null,TypeLogic.NOT,@1.first_line,@1.last_column);}
-        | id inc
-        | id dec 
-        | inc id
-        | dec id 
+        | not EXPRESION {$$=new  OLogicas($2,null,TypeLogic.NOT,@1.first_line,@1.last_column);}
+        | id inc {$$=new IncDecremento ($1,TypeAritmeticas.INCDER,@1.first_line,@1.last_column);}
+        | inc id {$$=new IncDecremento ($2,TypeAritmeticas.INCIZQ,@1.first_line,@1.last_column);}
+        | id dec {$$=new IncDecremento ($1,TypeAritmeticas.DECDER,@1.first_line,@1.last_column);}
+        | dec id {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
         | parentesisa EXPRESION parentesisc {$$=$2;}
         | TIPODATO {$$=$1;}
         | N_TYPEOF {$$=$1;}

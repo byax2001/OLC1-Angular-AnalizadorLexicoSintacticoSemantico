@@ -4,8 +4,10 @@
     boolean flag = true;
     //UN COMENTARIO POR ACA 
     int b=50;
-    a_numero2=b;
+    a_numero2=b++;
     
+    string ballena=typeof(avion);
+    println("hola");
     
      /*****************************************
      *********COMENTARIO MULTILINEA************
