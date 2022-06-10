@@ -7,7 +7,7 @@
     a_numero2=b++;
     
     string ballena=typeof(avion);
-    println("hola");
+    println(typeof("hola"));
     
      /*****************************************
      *********COMENTARIO MULTILINEA************

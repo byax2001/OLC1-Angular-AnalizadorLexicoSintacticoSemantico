@@ -13,6 +13,7 @@ export class Typeof extends instruction{
         super(line,column);
     }
     public execute(env:Environment){
+        
         let exp=this.expresion.execute(env);
         let tipoDato:Retorno={value:null,type:Type.error}
         if(exp.type==Type.INT){

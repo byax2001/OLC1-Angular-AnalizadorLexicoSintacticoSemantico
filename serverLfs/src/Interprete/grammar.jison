@@ -165,7 +165,11 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | SWITCH
             | FOR  
             | WHILE
-            | DO_WHILE       
+            | DO_WHILE   
+            | break;
+            | continue;
+            | return;
+            | return EXPRESION; 
             | N_PRINT {$$= $1;}     
             | N_PRINTLN {$$= $1;}
             | FUNCIONES 
@@ -204,14 +208,14 @@ TIPODATO: cadena  {$$= new Literal($1,Type.STRING,@1.first_line,@1.last_column);
     ;
 
 
-IF: if parentesisa EXPRESION parentesisc llavea INSTRUCCIONES llavec
-    | if parentesisa EXPRESION parentesisc llavea INSTRUCCIONES llavec CELSEIF
-    | if parentesisa EXPRESION parentesisc llavea INSTRUCCIONES llavec CELSEIF else llavea INSTRUCCIONES llavec 
+IF: if parentesisa EXPRESION parentesisc BLOQUE_INST
+    | if parentesisa EXPRESION parentesisc BLOQUE_INST CELSEIF
+    | if parentesisa EXPRESION parentesisc BLOQUE_INST CELSEIF else BLOQUE_INST 
     ;
 CELSEIF: CELSEIF ELSEIF
     |ELSEIF
     ;
-ELSEIF: else if parentesisa EXPRESION parentesisc llavea INSTRUCCIONES llavec;
+ELSEIF: else if parentesisa EXPRESION parentesisc BLOQUE_INST;
 
 //SWITCH
 SWITCH: switch parentesisa EXPRESION parentesisc llavea INST_SWITCH llavec
@@ -229,15 +233,13 @@ CASES_LIST: CASES_LIST CASE
     | CASE
     ;
 CASE: case EXPRESION dospuntos INSTRUCCIONES
-    | case EXPRESION dospuntos INSTRUCCIONES break puntoycoma
     ;
 DEFAULT: default dospuntos INSTRUCCIONES
-    | default dospuntos INSTRUCCIONES break puntoycoma
     ;
 
 //FOR (DECASIG de por si ya tiene puntoycoma)
-FOR: for parentesisa DECLARACION EXPRESION puntoycoma EXPRESION parentesisc llavea INST_FOR llavec
-    | for parentesisa ASIGNACION EXPRESION puntoycoma EXPRESION parentesisc llavea INST_FOR llavec;
+FOR: for parentesisa DECLARACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST
+    | for parentesisa ASIGNACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST;
 
 //Instrucciones para un ciclo for 
 INST_FOR:INSTRUCCIONES
@@ -247,11 +249,11 @@ INST_FOR:INSTRUCCIONES
     ; 
 
 //WHILE
-WHILE: while parentesisa EXPRESION parentesisc llavea INST_WHILE llavec 
+WHILE: while parentesisa EXPRESION parentesisc BLOQUE_INST
     ;
 
 //DO WHILE
-DO_WHILE: do llavea INST_WHILE llavec while parentesisa EXPRESION parentesisc puntoycoma;
+DO_WHILE: do BLOQUE_INST while parentesisa EXPRESION parentesisc puntoycoma;
 
 //Instrucciones para while y do while
 INST_WHILE: INSTRUCCIONES
@@ -303,7 +305,7 @@ N_PRINT: print parentesisa EXPRESION parentesisc puntoycoma  {$$=new Print($3,@1
 N_TYPEOF: typeof parentesisa EXPRESION parentesisc {$$=new Typeof($3,@1.first_line,@1.last_column);} ;
 
 //Bloque de Instrucciones
-BLOQUE_INST: llavea INSTRUCCIONES llavec;
+BLOQUE_INST: llavea INSTRUCCIONES llavec {$$=$2};
 
 EXPRESION: EXPRESION mas EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.SUMA,@1.first_line,@1.last_column);}
         | EXPRESION menos EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.RESTA,@1.first_line,@1.last_column);}
