@@ -15,6 +15,7 @@ try{
     for(const instruction of ast){
         try{
             instruction.execute(env);
+
         }catch (error){
             console.log(error);
         }

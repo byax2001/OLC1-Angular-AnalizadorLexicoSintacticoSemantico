@@ -3,8 +3,8 @@
     const double avion = 12.25+1;
     boolean flag = true;
     //UN COMENTARIO POR ACA 
-
-    avion=550;
+    int b=50;
+    a_numero2=b;
     
     
      /*****************************************

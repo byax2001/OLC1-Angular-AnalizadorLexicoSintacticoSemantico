@@ -92,7 +92,7 @@ break;
 case 3:
 this.$= [$$[$0]];
 break;
-case 4: case 5: case 16:
+case 4: case 5: case 11: case 12: case 16:
 this.$= $$[$0];
 break;
 case 17:
@@ -142,7 +142,7 @@ case 30:
 this.$= new Literal($$[$0],Type.DOUBLE,_$[$0].first_line,_$[$0].last_column);
 break;
 case 31:
-this.$=$$[$0]
+this.$= new Literal($$[$0],Type.ID,_$[$0].first_line,_$[$0].last_column);
 break;
 case 32:
 this.$= new Literal($$[$0],Type.INT,_$[$0].first_line,_$[$0].last_column);

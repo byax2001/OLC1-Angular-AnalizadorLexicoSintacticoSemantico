@@ -160,8 +160,8 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | FOR  
             | WHILE
             | DO_WHILE       
-            | PRINT       
-            | PRINTLN 
+            | PRINT {$$= $1;}     
+            | PRINTLN {$$= $1;}
             | FUNCIONES 
             | METODOS 
             | LLAMADA puntoycoma
@@ -191,7 +191,7 @@ TIPOVAR: int    {$$=Type.INT;}
 TIPODATO: cadena  {$$= new Literal($1,Type.STRING,@1.first_line,@1.last_column);}
     | caracter {$$= new Literal($1,Type.CHAR,@1.first_line,@1.last_column);}
     | decimal {$$= new Literal($1,Type.DOUBLE,@1.first_line,@1.last_column);}
-    | id {$$=$1}
+    | id {$$= new Literal($1,Type.ID,@1.first_line,@1.last_column);}
     | entero {$$= new Literal($1,Type.INT,@1.first_line,@1.last_column);}
     | true {$$= new Literal($1,Type.BOOLEAN,@1.first_line,@1.last_column);}
     | false {$$= new Literal($1,Type.BOOLEAN,@1.first_line,@1.last_column);}

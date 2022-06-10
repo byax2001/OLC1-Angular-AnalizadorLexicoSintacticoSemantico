@@ -1,5 +1,7 @@
 import { expresion } from "../Abstract/expresion";
 import { Retorno } from "../Abstract/Retorno";
+import { B_datos } from "../BaseDatos/B_datos";
+import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 
 export class Literal extends expresion {
@@ -12,7 +14,7 @@ export class Literal extends expresion {
         super(line,column)
     }
 
-    public execute():Retorno{
+    public execute(env:Environment):Retorno{
         let result:Retorno={value:null,type:Type.error};
         if(this.type==Type.INT){
             result=  {value:Number(this.value),type:Type.INT}
@@ -28,6 +30,15 @@ export class Literal extends expresion {
             result=  {value:this.value,type:Type.STRING}
         }else if(this.type==Type.CHAR){
             result=  {value:this.value,type:Type.CHAR}
+        }else if(this.type==Type.ID){
+            let existe=env.existeSimbolo(this.value)
+            if(existe==true){
+                let simbolo=env.getSimbolo(this.value);
+                result={value:simbolo.value,type:simbolo.type}
+            }else{
+                result={value:null,type:Type.error};
+                B_datos.getInstance().addError("Semantico","No existe variable",this.line,this.column);
+            }
         }else{
             result={value: this.value, type: Type.error}
         }
