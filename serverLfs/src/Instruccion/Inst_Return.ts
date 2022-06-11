@@ -25,7 +25,4 @@ export class Inst_return extends instruction{
             return this;
         }        
     }
-
-
-
 }

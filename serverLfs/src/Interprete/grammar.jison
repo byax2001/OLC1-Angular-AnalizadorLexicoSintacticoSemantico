@@ -12,7 +12,8 @@
     const {IncDecremento}=require('../Expresion/IncDecremento.ts');
     const {ORelacionales}= require('../Expresion/ORelacionales.ts');
     const {OLogicas}= require('../Expresion/OLogicas.ts');
-    
+    const {I_if} = require('../Instruccion/I_if.ts');
+
     //NATIVAS
     const {Print}= require('../Instruccion/FuncionesNativas/Print.ts');
     const {Println}= require('../Instruccion/FuncionesNativas/Println.ts');
@@ -161,15 +162,15 @@ INSTRUCCIONES : INSTRUCCIONES INSTRUCCION { $1.push($2); $$=$1;   }
             ;
 INSTRUCCION: ASIGNACION {$$= $1;}
             | DECLARACION {$$= $1;}
-            | IF
+            | IF {$$= $1;}
             | SWITCH
             | FOR  
             | WHILE
             | DO_WHILE   
-            | break;
-            | continue;
-            | return;
-            | return EXPRESION; 
+            | break puntoycoma
+            | continue puntoycoma
+            | return puntoycoma
+            | return EXPRESION puntoycoma 
             | N_PRINT {$$= $1;}     
             | N_PRINTLN {$$= $1;}
             | FUNCIONES 
@@ -208,12 +209,13 @@ TIPODATO: cadena  {$$= new Literal($1,Type.STRING,@1.first_line,@1.last_column);
     ;
 
 
-IF: if parentesisa EXPRESION parentesisc BLOQUE_INST
-    | if parentesisa EXPRESION parentesisc BLOQUE_INST CELSEIF
-    | if parentesisa EXPRESION parentesisc BLOQUE_INST CELSEIF else BLOQUE_INST 
+IF: if parentesisa EXPRESION parentesisc BLOQUE_INST {$$=new I_if($3,$5,[],@1.first_line,@1.last_column);}
+    | if parentesisa EXPRESION parentesisc BLOQUE_INST else BLOQUE_INST {$$= new I_if($3,$5,$7,@1.first_line,@1.last_column);}
+    | if parentesisa EXPRESION parentesisc BLOQUE_INST else IF {$$= new I_if($3,$5,[$7],@1.first_line,@1.last_column);}
     ;
-CELSEIF: CELSEIF ELSEIF
-    |ELSEIF
+
+CELSEIF: CELSEIF ELSEIF{$1.push($2); $$=$1;}
+    |ELSEIF {$$=[$1];}
     ;
 ELSEIF: else if parentesisa EXPRESION parentesisc BLOQUE_INST;
 
@@ -241,12 +243,6 @@ DEFAULT: default dospuntos INSTRUCCIONES
 FOR: for parentesisa DECLARACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST
     | for parentesisa ASIGNACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST;
 
-//Instrucciones para un ciclo for 
-INST_FOR:INSTRUCCIONES
-    | INSTRUCCIONES continue puntoycoma
-    | INSTRUCCIONES continue puntoycoma INSTRUCCIONES
-    | continue puntoycoma INSTRUCCIONES
-    ; 
 
 //WHILE
 WHILE: while parentesisa EXPRESION parentesisc BLOQUE_INST
@@ -255,27 +251,15 @@ WHILE: while parentesisa EXPRESION parentesisc BLOQUE_INST
 //DO WHILE
 DO_WHILE: do BLOQUE_INST while parentesisa EXPRESION parentesisc puntoycoma;
 
-//Instrucciones para while y do while
-INST_WHILE: INSTRUCCIONES
-    | INSTRUCCIONES break puntoycoma
-    | INSTRUCCIONES break puntoycoma INSTRUCCIONES
-    | break puntoycoma INSTRUCCIONES
-    ;
 
 //METODOS 
-METODOS: void id parentesisa PARAMETROS parentesisc llavea INST_METODOS llavec 
-    | void id parentesisa parentesisc  llavea INST_METODOS llavec
-    ;
-INST_METODOS: INSTRUCCIONES
-    | INSTRUCCIONES return
+METODOS: void id parentesisa PARAMETROS parentesisc  BLOQUE_INST 
+    | void id parentesisa parentesisc  BLOQUE_INST
     ;
 
 //FUNCIONES
-FUNCIONES: TIPOVAR id parentesisa PARAMETROS parentesisc llavea INST_FUNCIONES llavec
-    | TIPOVAR id parentesisa parentesisc llavea INST_FUNCIONES llavec
-    ;
-INST_FUNCIONES: INSTRUCCIONES
-    | INSTRUCCIONES return EXPRESION
+FUNCIONES: TIPOVAR id parentesisa PARAMETROS parentesisc BLOQUE_INST
+    | TIPOVAR id parentesisa parentesisc BLOQUE_INST
     ;
 
 //Parametros  
@@ -305,7 +289,9 @@ N_PRINT: print parentesisa EXPRESION parentesisc puntoycoma  {$$=new Print($3,@1
 N_TYPEOF: typeof parentesisa EXPRESION parentesisc {$$=new Typeof($3,@1.first_line,@1.last_column);} ;
 
 //Bloque de Instrucciones
-BLOQUE_INST: llavea INSTRUCCIONES llavec {$$=$2};
+BLOQUE_INST: llavea INSTRUCCIONES llavec {$$=$2}
+    | llavea llavec {$$=[]}
+    ;
 
 EXPRESION: EXPRESION mas EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.SUMA,@1.first_line,@1.last_column);}
         | EXPRESION menos EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.RESTA,@1.first_line,@1.last_column);}

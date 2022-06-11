@@ -13,3 +13,10 @@
      *********COMENTARIO MULTILINEA************
      ******************************************/
 
+    if(false){
+        print("Guatemala");
+    }else if(true){
+        print("Honduras");
+    }else{
+        print("El salvador");
+    }
