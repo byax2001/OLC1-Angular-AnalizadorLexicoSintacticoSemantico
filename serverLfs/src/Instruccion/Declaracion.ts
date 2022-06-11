@@ -28,14 +28,14 @@ export class Declaracion extends instruction{
                     B_datos.getInstance().addError("Semantico","Tipo de declaracion y dato no coinciden",this.line,this.column);
                     console.log("error semantico distintos tipos");
                 }
-                console.log(B_datos.getInstance().getListError());
+            
                 console.log("error semantico ya existia la variable")   
             }else{    
                 if(this.tipo==exp.type){
                     //GUARDAR DATO
                     env.guardarSimbolo(this.constante,this.tipo,id,exp.value,this.line,this.column);
                     console.log('--------------------acabo de guardar una variable------------------')
-                    console.log(env)
+                
                 }else{
                     //ERROR  NO COINCIDEN LOS TIPOD DE DATOS DE LA VARIABLE Y SU EXPRESION
                     B_datos.getInstance().addError("Semantico","Tipo de declaracion y dato no coinciden",this.line,this.column);

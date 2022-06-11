@@ -1,0 +1,31 @@
+import { expresion } from "../Abstract/expresion";
+import { instruction } from "../Abstract/instruction";
+import { Environment } from "../Symbols/Environment";
+
+export class I_doWhile extends instruction{
+    constructor(
+        public expresion: expresion,
+        public bloqueInst:instruction[],
+        line:number,
+        column:number
+    ){
+        super(line,column)
+    }
+
+    public execute(env:Environment){
+        for(let Instruccion of this.bloqueInst){
+            Instruccion.execute(env);
+        }
+        let exp;
+        do{
+            exp=this.expresion.execute(env);
+            if(exp.value==true){
+                for(let i=0; i<this.bloqueInst.length;i++){
+                    this.bloqueInst[i].execute(env);
+                }
+            }
+        }while (exp.value) 
+        return null;
+    }
+
+}

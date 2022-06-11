@@ -15,8 +15,23 @@
 
     if(false){
         print("Guatemala");
-    }else if(true){
+        print("Enfermera");
+    }else if(false){
         print("Honduras");
+    }else if(true){
+        print("EEUU");
+     
     }else{
         print("El salvador");
     }
+
+    int x=0;
+    while(x<4){
+        print("manzana");
+        x=x+1;
+    }
+    x=0;
+    do{
+        print("uva");
+        x=x+1;
+    }  while(x<0);

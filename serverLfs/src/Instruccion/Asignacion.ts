@@ -42,8 +42,7 @@ export class Asignacion extends instruction{
             }
 
         })
-        console.log("ASIGNACION=================================")
-        console.log(env)
+ 
         
     }
 }

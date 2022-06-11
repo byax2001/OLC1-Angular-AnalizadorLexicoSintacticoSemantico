@@ -13,6 +13,8 @@
     const {ORelacionales}= require('../Expresion/ORelacionales.ts');
     const {OLogicas}= require('../Expresion/OLogicas.ts');
     const {I_if} = require('../Instruccion/I_if.ts');
+    const {I_while} = require('../Instruccion/I_while.ts');
+    const {I_doWhile} = require('../Instruccion/I_doWhile.ts');
 
     //NATIVAS
     const {Print}= require('../Instruccion/FuncionesNativas/Print.ts');
@@ -165,8 +167,8 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | IF {$$= $1;}
             | SWITCH
             | FOR  
-            | WHILE
-            | DO_WHILE   
+            | WHILE {$$=$1;}
+            | DO_WHILE {$$=$1;}  
             | break puntoycoma
             | continue puntoycoma
             | return puntoycoma
@@ -214,10 +216,6 @@ IF: if parentesisa EXPRESION parentesisc BLOQUE_INST {$$=new I_if($3,$5,[],@1.fi
     | if parentesisa EXPRESION parentesisc BLOQUE_INST else IF {$$= new I_if($3,$5,[$7],@1.first_line,@1.last_column);}
     ;
 
-CELSEIF: CELSEIF ELSEIF{$1.push($2); $$=$1;}
-    |ELSEIF {$$=[$1];}
-    ;
-ELSEIF: else if parentesisa EXPRESION parentesisc BLOQUE_INST;
 
 //SWITCH
 SWITCH: switch parentesisa EXPRESION parentesisc llavea INST_SWITCH llavec
@@ -245,11 +243,12 @@ FOR: for parentesisa DECLARACION EXPRESION puntoycoma EXPRESION parentesisc BLOQ
 
 
 //WHILE
-WHILE: while parentesisa EXPRESION parentesisc BLOQUE_INST
+WHILE: while parentesisa EXPRESION parentesisc BLOQUE_INST {$$=new I_while($3,$5,@1.first_line,@1.last_column);}
     ;
 
 //DO WHILE
-DO_WHILE: do BLOQUE_INST while parentesisa EXPRESION parentesisc puntoycoma;
+DO_WHILE: do BLOQUE_INST while parentesisa EXPRESION parentesisc puntoycoma{$$=new I_doWhile($5,$2,@1.first_line,@1.last_column);}
+    ;
 
 
 //METODOS 

@@ -16,13 +16,14 @@ export class I_if extends instruction{
 
 
     public execute(env:Environment){
-        let cumplio=true;
         let result=this.expresion.execute(env);
-        console.log("------------------------------------------------")
+      /*  console.log("------------------------------------------------")
+        console.log("==========================0")
+        console.log(this.expresion);
         console.log("==========================0")
         console.log(this.instruction);
         console.log("==========================0")
-        console.log(this.instruction2);
+        console.log(this.instruction2);*/
         if (result.value==true) {
             
             for (let i = 0; i < this.instruction.length; i++) {
@@ -35,7 +36,6 @@ export class I_if extends instruction{
                 const res = this.instruction2[i].execute(env);
             }
         }
-        
         return null;
 
     }
