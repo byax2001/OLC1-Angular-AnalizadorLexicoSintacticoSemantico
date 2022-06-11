@@ -95,7 +95,7 @@ break;
 case 4: case 5: case 6: case 15: case 16: case 20:
 this.$= $$[$0];
 break;
-case 9: case 10: case 99: case 100:
+case 8: case 9: case 10: case 99: case 100:
 this.$=$$[$0];
 break;
 case 21:
@@ -161,6 +161,9 @@ this.$= new I_if($$[$0-4],$$[$0-2],$$[$0],_$[$0-6].first_line,_$[$0-6].last_colu
 break;
 case 41:
 this.$= new I_if($$[$0-4],$$[$0-2],[$$[$0]],_$[$0-6].first_line,_$[$0-6].last_column);
+break;
+case 52: case 53:
+this.$=new For($$[$0-5],$$[$0-4],$$[$0-2],_$[$0-7].first_line,_$[$0-7].last_column);
 break;
 case 54:
 this.$=new I_while($$[$0-2],$$[$0],_$[$0-4].first_line,_$[$0-4].last_column);
@@ -523,6 +526,7 @@ _handle_error:
     const {I_if} = require('../Instruccion/I_if.ts');
     const {I_while} = require('../Instruccion/I_while.ts');
     const {I_doWhile} = require('../Instruccion/I_doWhile.ts');
+    const {For}= require('../Instruccion/For.ts');
 
     //NATIVAS
     const {Print}= require('../Instruccion/FuncionesNativas/Print.ts');

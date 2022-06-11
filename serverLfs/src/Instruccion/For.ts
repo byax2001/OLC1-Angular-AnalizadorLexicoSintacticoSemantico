@@ -2,12 +2,12 @@ import { expresion } from "../Abstract/expresion";
 import { instruction } from "../Abstract/instruction";
 import { Environment } from "../Symbols/Environment";
 
-export class I_for extends instruction{
+export class For extends instruction{
     constructor(
         public AsigDec: instruction,//asignacion o declaracion
         public expresion: expresion, //expresion
         public incDec: instruction, //incremento o decremento,
-        public bloqueInst: instruction,
+        public bloqueInst: instruction[],
         line:number,
         column:number
     ){
@@ -15,9 +15,16 @@ export class I_for extends instruction{
     }
     public execute(env: Environment){
         let asigDec=this.AsigDec.execute(env);
-        let exp= this.expresion.execute(env);
-        let inc_dec= this.incDec.execute(env);
-        
-        
+        let inc_dec;
+        let exp;
+        do{
+            exp= this.expresion.execute(env);
+            if(exp.value){
+                for(let Instruction of this.bloqueInst){
+                    Instruction.execute(env);
+                }
+            }
+            inc_dec= this.incDec.execute(env);
+        }while(exp.value); 
     }
 }

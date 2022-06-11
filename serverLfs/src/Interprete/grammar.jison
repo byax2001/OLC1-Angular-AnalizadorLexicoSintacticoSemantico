@@ -15,6 +15,7 @@
     const {I_if} = require('../Instruccion/I_if.ts');
     const {I_while} = require('../Instruccion/I_while.ts');
     const {I_doWhile} = require('../Instruccion/I_doWhile.ts');
+    const {For}= require('../Instruccion/For.ts');
 
     //NATIVAS
     const {Print}= require('../Instruccion/FuncionesNativas/Print.ts');
@@ -166,7 +167,7 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | DECLARACION {$$= $1;}
             | IF {$$= $1;}
             | SWITCH
-            | FOR  
+            | FOR {$$=$1;}
             | WHILE {$$=$1;}
             | DO_WHILE {$$=$1;}  
             | break puntoycoma
@@ -238,8 +239,9 @@ DEFAULT: default dospuntos INSTRUCCIONES
     ;
 
 //FOR (DECASIG de por si ya tiene puntoycoma)
-FOR: for parentesisa DECLARACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST
-    | for parentesisa ASIGNACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST;
+FOR: for parentesisa DECLARACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$4,$6,@1.first_line,@1.last_column);}
+    | for parentesisa ASIGNACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$4,$6,@1.first_line,@1.last_column);}
+    ;
 
 
 //WHILE
