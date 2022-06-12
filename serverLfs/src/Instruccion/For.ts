@@ -6,7 +6,7 @@ export class For extends instruction{
     constructor(
         public AsigDec: instruction,//asignacion o declaracion
         public expresion: expresion, //expresion
-        public incDec: instruction, //incremento o decremento,
+        public incDec: expresion, //incremento o decremento,
         public bloqueInst: instruction[],
         line:number,
         column:number

@@ -16,6 +16,8 @@
     const {I_while} = require('../Instruccion/I_while.ts');
     const {I_doWhile} = require('../Instruccion/I_doWhile.ts');
     const {For}= require('../Instruccion/For.ts');
+    const {Switch}= require('../Instruccion/Switch.ts');
+    const {Case} = require('../Instruccion/Case.ts');
 
     //NATIVAS
     const {Print}= require('../Instruccion/FuncionesNativas/Print.ts');
@@ -219,7 +221,19 @@ IF: if parentesisa EXPRESION parentesisc BLOQUE_INST {$$=new I_if($3,$5,[],@1.fi
 
 
 //SWITCH
-SWITCH: switch parentesisa EXPRESION parentesisc llavea INST_SWITCH llavec
+SWITCH: switch parentesisa EXPRESION parentesisc llavea CASES_LIST llavec {$$= new Switch($3,$6,null,@1.first_line,@1.last_column);}
+    | switch parentesisa EXPRESION parentesisc llavea CASES_LIST DEFAULT llavec {$$= new Switch($3,$6,$7,@1.first_line,@1.last_column);}
+    | switch parentesisa EXPRESION parentesisc llavea DEFAULT llavec {$$= new Switch($3,[],$6,@1.first_line,@1.last_column);}
+    | switch parentesisa EXPRESION parentesisc llavea DEFAULT CASES_LIST  llavec {$$= new Switch($3,$7,$6,@1.first_line,@1.last_column);}
+    | switch parentesisa EXPRESION parentesisc llavea CASES_LIST DEFAULT CASES_LIST  llavec  {$6.concat($8);   $$= new Switch($3,$6,$7,@1.first_line,@1.last_column);}
+    ;
+
+CASES_LIST: CASES_LIST CASE {$1.push($2); $$=$1;}
+    | CASE {$$=[$1];}
+    ;
+CASE: case EXPRESION dospuntos INSTRUCCIONES {$$= new Case($2,$4,@1.first_line,@1.last_column);}
+    ;
+DEFAULT: default dospuntos INSTRUCCIONES {$$=$3;}
     ;
 
 //Instrucciones adentro de un switch
@@ -230,17 +244,11 @@ INST_SWITCH: CASES_LIST
     | DEFAULT
     ;
 
-CASES_LIST: CASES_LIST CASE
-    | CASE
-    ;
-CASE: case EXPRESION dospuntos INSTRUCCIONES
-    ;
-DEFAULT: default dospuntos INSTRUCCIONES
-    ;
+
 
 //FOR (DECASIG de por si ya tiene puntoycoma)
-FOR: for parentesisa DECLARACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$4,$6,@1.first_line,@1.last_column);}
-    | for parentesisa ASIGNACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$4,$6,@1.first_line,@1.last_column);}
+FOR: for parentesisa DECLARACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$4,$6,$8,@1.first_line,@1.last_column);}
+    | for parentesisa ASIGNACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$4,$6,$8,@1.first_line,@1.last_column);}
     ;
 
 

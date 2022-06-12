@@ -20,7 +20,6 @@
         print("Honduras");
     }else if(true){
         print("EEUU");
-     
     }else{
         print("El salvador");
     }
@@ -36,6 +35,17 @@
         x=x+1;
     }  while(x<0);
 
-    for(int y=0; y<3 ;i++){
+    for(int y=0; y<3 ;y++){
         print(y);
+    }
+
+    switch(2){
+        case 1:
+            print("Maria");
+        case 2:
+            print("Jorge");
+        case 3:
+            print("pedro);
+        default:
+            print("Martin");
     }

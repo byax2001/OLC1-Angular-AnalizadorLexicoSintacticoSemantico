@@ -1,7 +1,7 @@
 import { instruction } from "../Abstract/instruction"
 import { Environment } from "../Symbols/Environment"
 
-export class Inst_break extends instruction{
+export class Break extends instruction{
     constructor(
         line:number,
         column:number

@@ -5,7 +5,7 @@ import { Retorno } from "../Abstract/Retorno";
 import { Environment } from "../Symbols/Environment"
 import { Type } from "../Symbols/Type";
 
-export class Inst_return extends instruction{
+export class Return extends instruction{
     constructor(
         public expresion:expresion,
         line:number,
