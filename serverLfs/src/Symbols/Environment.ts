@@ -41,4 +41,16 @@ export class Environment{
         })
     }
 
+    public getFunMetodo(id:string,nparametros:number):Symbol{
+        let simbolo= new Symbol(false,Type.error,"","",0,0);
+        this.variables.forEach((value,key)=>{
+            if(key==id){
+                if(value.id==id && value.nParametros==nparametros){
+                    simbolo=value;
+                }
+            }
+        })
+        return simbolo;
+    }
+
 }

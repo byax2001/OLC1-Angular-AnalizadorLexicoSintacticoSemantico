@@ -32,8 +32,11 @@
     //METODOS Y FUNCIONES
     const {Metodo}= require('../Instruccion/Metodo.ts');
     const {Funcion}= require('../Instruccion/Funcion.ts');
+    const {Call}= require('../Instruccion/Call.ts');
 
-    
+    //EXTRAS
+    const {Nothing}= require('../Instruccion/Nothing.ts');
+    const {BloqueInstSup}= require('../Instruccion/BloqueInstSup.ts');
 %}
 %lex
 %options case-insensitive          
@@ -170,7 +173,6 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 
 INICIO:INSTRUCCIONES  EOF { console.log("termine de analizar" ); return $$; }
             ;
-
 INSTRUCCIONES : INSTRUCCIONES INSTRUCCION { $1.push($2); $$=$1;   }
             | INSTRUCCION {$$= [$1];}
             ;
@@ -189,7 +191,7 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | N_PRINTLN {$$= $1;}
             | FUNCIONES {$$= $1;}
             | METODOS {$$= $1;}
-            | LLAMADA puntoycoma
+            | LLAMADA puntoycoma {$$= $1;}
             | BLOQUE_INST {$$= $1;}
             | error {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
@@ -287,10 +289,10 @@ PARAMETROS:PARAMETROS coma TIPOVAR id {$1.push(new Declaracion(false,$3,$4,null,
     ;
 
 //LLAMADA
-LLAMADA: call  id parentesisa PARAMETROSLLAMADA parentesisc
-    | call  id parentesisa parentesisc
-    | id parentesisa PARAMETROSLLAMADA parentesisc
-    | id parentesisa parentesisc
+LLAMADA: call  id parentesisa PARAMETROSLLAMADA parentesisc {$$=new Call($2,$4,@1.first_line,@1.last_column)}
+    | call  id parentesisa parentesisc {$$=new Call($2,[],@1.first_line,@1.last_column)}
+    | id parentesisa PARAMETROSLLAMADA parentesisc {$$=new Call($1,$3,@1.first_line,@1.last_column)}
+    | id parentesisa parentesisc {$$=new Call($1,[],@1.first_line,@1.last_column)}
     ;
 
 PARAMETROSLLAMADA: PARAMETROSLLAMADA coma EXPRESION {$1.push($3); $$=$1;}
@@ -309,7 +311,10 @@ N_TYPEOF: typeof parentesisa EXPRESION parentesisc {$$=new Typeof($3,@1.first_li
 
 //Bloque de Instrucciones
 BLOQUE_INST: llavea INSTRUCCIONES llavec {$$=$2}
-    | llavea llavec {$$=[]}
+    | llavea llavec {$$=[new Nothing(@1.first_line,@1.last_column)];}
+    ;
+BLOQUESUP: BLOQUE_INST {$$=new BloqueInstSup($1,@1.first_line,@1.last_column)}
+    | INSTRUCCIONES {$$=new BloqueInstSup($1,@1.first_line,@1.last_column)}
     ;
 
 EXPRESION: EXPRESION mas EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.SUMA,@1.first_line,@1.last_column);}
