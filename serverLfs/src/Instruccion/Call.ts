@@ -9,7 +9,7 @@ import { Return } from "./Return";
 export class Call extends instruction{
     constructor(
         public idMF: string,
-        public parametros:string[],
+        public paramsCall:any[],
         line:number,
         column:number
     ){
@@ -17,37 +17,47 @@ export class Call extends instruction{
     }
 
     public execute(env:Environment){
+        //for declaracion-ids elemenentos
+
         //MeFun: Metodos y funcion
         let resultR:Retorno={value:null,type:Type.error}
-        let MeFun=env.getFunMetodo(this.idMF,this.parametros.length);
+        let MeFun=env.getFunMetodo(this.idMF,this.paramsCall.length);
         if(MeFun.type!=Type.error){//SI SE ENCONTRO LA FUNCION O METODO SE PROCEDE A REALIZAR
-            if(MeFun.type==Type.VOID){
+            if(MeFun.type===Type.VOID){
+               
                 //METODOS
-                let parametros=MeFun.value[0];
+                let parametrosMf=MeFun.value[0];
                 let instrucciones= MeFun.value[1];
-                for(let parametro of parametros){
-                    parametro.execute(env); //VERIFICAR DE NO INSTANCIAR UNA VARIABLE YA REPETIDA 
+                for(let i=0;i<this.paramsCall.length;i++){
+                    parametrosMf[i].changeExpresion(this.paramsCall[i]); //ENVIROMENT ANTERIOR
+                    parametrosMf[i].execute(env); //NUEVO ENVIROMENT
                 }
                 for(let Instruccion of instrucciones){
                     if(Instruccion instanceof Return){
+                 
                         let result= Instruccion.execute(env);
-                        if(result.expR.value!=null){
+                        if(result.expR.value!==undefined){
                             //ERROR ESTA INTENTANDO RETORNAR UN VALOR 
                             B_datos.getInstance().addError("Semantico","Intento de retornar un valor en un metodo",this.line,this.column); 
-                            return null 
+                            return resultR 
                         }
-                        break;
+                        return resultR ;
                     }
                     Instruccion.execute(env);
                 }
             }else{
                 //FUNCIONES
-                let parametros=MeFun.value[0];
+                let parametrosMf=MeFun.value[0];
                 let instrucciones= MeFun.value[1];
-                //PARAMETROS
-                for(let parametro of parametros){
-                    parametro.execute(env); //VERIFICAR DE NO INSTANCIAR UNA VARIABLE YA REPETIDA 
+                //PARAMETROS DE LLAMADA
+                for(let i=0;i<this.paramsCall.length;i++){
+                    console.log(this.paramsCall);
+                    console.log(parametrosMf);
+                    parametrosMf[i].changeExpresion(this.paramsCall[i]); //ENVIROMENT ANTERIOR
+                    console.log(parametrosMf);
+                    parametrosMf[i].execute(env); //NUEVO ENVIROMENT
                 }
+               
                 //INSTRUCCIONES 
                 let existeR=false;
                 for(let Instruccion of instrucciones){
@@ -59,17 +69,18 @@ export class Call extends instruction{
                     for(let Instruccion of instrucciones){
                         if(Instruccion instanceof Return){
                             let result= Instruccion.execute(env);
-                            if(result.expR.value==null){
-                                //ERROR ESTA INTENTANDO RETORNAR UN VALOR 
+                            if(result.expR.value===undefined){
+                                //ERROR NO ESTA RETORNANDO UN VALOR 
                                 B_datos.getInstance().addError("Semantico","No se esta retornando nada en la funcion",this.line,this.column); 
                                 return null 
                             }else{
-                                if(result.expR.type==MeFun.type){
+                                if(result.expR.type===MeFun.type){
                                     resultR={value:result.expR.value,type:result.expR.type}
                                     return resultR
                                 }else{
                                     //VALOR DE RETORNO NO IGUAL AL DECLARADO EN LA FUNCION
                                     B_datos.getInstance().addError("Semantico","Valor de retorno no igual al declarado en la funcion",this.line,this.column); 
+                                    return resultR
                                 }
                             }
                             break;

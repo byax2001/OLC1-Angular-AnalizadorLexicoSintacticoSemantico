@@ -13,7 +13,7 @@ export class Return extends instruction{
         column:number
     ){
         super(line,column)
-        this.expR={value:null,type:Type.error};
+        this.expR={value:undefined,type:Type.error};
     }
 
     public execute(env:Environment){

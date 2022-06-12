@@ -278,8 +278,8 @@ FUNCIONES: TIPOVAR id parentesisa PARAMETROS parentesisc BLOQUE_INST {$$= new Fu
     ;
 
 //Parametros  
-PARAMETROS:PARAMETROS coma TIPOVAR id {$1.push(new Declaracion(false,$3,$4,null,@1.first_line,@1.last_column)); $$=$1;}
-    | TIPOVAR id {$$=[new Declaracion(false,$1,$2,null,@1.first_line,@1.last_column)]}
+PARAMETROS:PARAMETROS coma TIPOVAR id {$1.push(new Declaracion(false,$3,[$4],null,@1.first_line,@1.last_column)); $$=$1;}
+    | TIPOVAR id {$$=[new Declaracion(false,$1,[$2],null,@1.first_line,@1.last_column)]}
     ;
 
 //LLAMADA
@@ -294,11 +294,11 @@ PARAMETROSLLAMADA: PARAMETROSLLAMADA coma EXPRESION {$1.push($3); $$=$1;}
     ;
 
 N_PRINTLN: println parentesisa EXPRESION parentesisc puntoycoma {$$=new Println($3,@1.first_line,@1.last_column);}
-    | println parentesisa LLAMADA parentesisc puntoycoma
+    | println parentesisa LLAMADA parentesisc puntoycoma {$$=new Println($3,@1.first_line,@1.last_column);}
     | println parentesisa parentesisc  puntoycoma  {$$=new Println(null,@1.first_line,@1.last_column);}
     ;
 N_PRINT: print parentesisa EXPRESION parentesisc puntoycoma  {$$=new Print($3,@1.first_line,@1.last_column);}
-    | print parentesisa LLAMADA arentesisc puntoycoma
+    | print parentesisa LLAMADA parentesisc puntoycoma {$$=new Print($3,@1.first_line,@1.last_column);}
     | print parentesisa parentesisc  puntoycoma  {$$=new Print(null,@1.first_line,@1.last_column);}
     ;
 N_TYPEOF: typeof parentesisa EXPRESION parentesisc {$$=new Typeof($3,@1.first_line,@1.last_column);} ;

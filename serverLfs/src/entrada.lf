@@ -53,7 +53,19 @@
 
     {
         print(-2+5);
+        print('\"'+1.2);
     }
     {
 
     }
+
+    void metodo1(){
+        print("Imprimio las instrucciones de un metodo 1");
+        return;
+    }
+    string Funcion2(string aF, int bF){
+        print(aF);
+        return aF;
+    }
+
+    print(metodo1());

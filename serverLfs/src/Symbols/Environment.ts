@@ -63,7 +63,7 @@ export class Environment{
         let change=false;
         let envActual:Environment=this;
         envActual.variables.forEach((value,key)=>{
-            if(key==id){
+            if(key===id && value.constante!=true){
                 value.value=newValue
                 change=true;
             }

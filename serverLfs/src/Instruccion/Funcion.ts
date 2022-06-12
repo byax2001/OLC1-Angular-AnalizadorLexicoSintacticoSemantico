@@ -19,10 +19,12 @@ export class Funcion extends instruction{
         let existeM=env.existeSimbolo(this.id);
         if(existeM==false){
             //INGRESAR NUEVO METODO
-            env.guardarSimbolo(true,this.tipo,this.id,[this.parametros,this.instrucciones],this.line,this.column);
+            env.guardarSimboloMF(true,this.tipo,this.id,[this.parametros,this.instrucciones],this.line,this.column,this.parametros.length);
         }else{
             B_datos.getInstance().addError("Semantico","Intento de guardar una funcion ya existente",this.line,this.column); 
         }
+
+        console.log(env);
     }
         
 }

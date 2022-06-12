@@ -27,9 +27,11 @@ export class Literal extends expresion {
                 result=  {value:Boolean(false),type:Type.BOOLEAN}
             }      
         }else if(this.type==Type.STRING){
-            result=  {value:this.value,type:Type.STRING}
+            let rstring= String(this.value).slice(1,this.value.length-1);
+            result=  {value:rstring,type:Type.STRING}
         }else if(this.type==Type.CHAR){
-            result=  {value:this.value,type:Type.CHAR}
+            let rstring= String(this.value).slice(1,this.value.length-1);
+            result=  {value:rstring.charCodeAt(0),type:Type.CHAR}
         }else if(this.type==Type.ID){
             let existe=env.existeSimbolo(this.value)
             if(existe==true){

@@ -68,4 +68,7 @@ export class Declaracion extends instruction{
             })   
         }
     }
+    public changeExpresion(expresion:expresion){
+        this.expresion=expresion
+    }
 }
