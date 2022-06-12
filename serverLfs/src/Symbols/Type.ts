@@ -5,5 +5,6 @@ export enum Type{
     BOOLEAN,
     STRING,
     ID,
+    VOID,
     error
 }

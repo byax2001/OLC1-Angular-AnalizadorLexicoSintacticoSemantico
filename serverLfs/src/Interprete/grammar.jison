@@ -24,11 +24,14 @@
     const {Continue}= require('../Instruccion/Continue.ts');
     const {Return}= require('../Instruccion/Return.ts');
 
-
     //NATIVAS
     const {Print}= require('../Instruccion/FuncionesNativas/Print.ts');
     const {Println}= require('../Instruccion/FuncionesNativas/Println.ts');
     const {Typeof}=require('../Instruccion/FuncionesNativas/Typeof.ts')
+
+    //METODOS Y FUNCIONES
+    const {Metodo}= require('../Instruccion/Metodo.ts');
+    const {Funcion}= require('../Instruccion/Funcion.ts');
 
     
 %}
@@ -174,7 +177,7 @@ INSTRUCCIONES : INSTRUCCIONES INSTRUCCION { $1.push($2); $$=$1;   }
 INSTRUCCION: ASIGNACION {$$= $1;}
             | DECLARACION {$$= $1;}
             | IF {$$= $1;}
-            | SWITCH
+            | SWITCH {$$= $1;}
             | FOR {$$=$1;}
             | WHILE {$$=$1;}
             | DO_WHILE {$$=$1;}  
@@ -184,8 +187,8 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | return EXPRESION puntoycoma {$$= new Return($2,@1.first_line,@1.last_column);}
             | N_PRINT {$$= $1;}     
             | N_PRINTLN {$$= $1;}
-            | FUNCIONES 
-            | METODOS 
+            | FUNCIONES {$$= $1;}
+            | METODOS {$$= $1;}
             | LLAMADA puntoycoma
             | BLOQUE_INST {$$= $1;}
             | error {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
@@ -196,6 +199,7 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             ;
 DECLARACION: TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(false,$1,$2,$4,@1.first_line,@1.last_column);}
     | const TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(true,$2,$3,$5,@1.first_line,@1.last_column);}
+    | TIPOVAR CONJID puntoycoma {new Declaracion(false,$1,$2,null,@1.first_line,@1.last_column);}
     ;
 
 ASIGNACION: CONJID igual EXPRESION puntoycoma {$$=new Asignacion($1,$3,@1.first_line,@1.last_column)};
@@ -268,18 +272,18 @@ DO_WHILE: do BLOQUE_INST while parentesisa EXPRESION parentesisc puntoycoma{$$=n
 
 
 //METODOS 
-METODOS: void id parentesisa PARAMETROS parentesisc  BLOQUE_INST 
-    | void id parentesisa parentesisc  BLOQUE_INST
+METODOS: void id parentesisa PARAMETROS parentesisc  BLOQUE_INST {$$= new Metodo($2,$4,$6,@1.first_line,@1.last_column);}
+    | void id parentesisa parentesisc  BLOQUE_INST {$$= new Metodo($2,[],$5,@1.first_line,@1.last_column);}
     ;
 
 //FUNCIONES
-FUNCIONES: TIPOVAR id parentesisa PARAMETROS parentesisc BLOQUE_INST
-    | TIPOVAR id parentesisa parentesisc BLOQUE_INST
+FUNCIONES: TIPOVAR id parentesisa PARAMETROS parentesisc BLOQUE_INST {$$= new Funcion($1,$2,$4,$6,@1.first_line,@1.last_column);}
+    | TIPOVAR id parentesisa parentesisc BLOQUE_INST {$$= new Funcion($1,$2,[],$5,@1.first_line,@1.last_column);}
     ;
 
 //Parametros  
-PARAMETROS:PARAMETROS coma TIPOVAR id
-    | TIPOVAR id
+PARAMETROS:PARAMETROS coma TIPOVAR id {$1.push(new Declaracion(false,$3,$4,null,@1.first_line,@1.last_column)); $$=$1;}
+    | TIPOVAR id {$$=[new Declaracion(false,$1,$2,null,@1.first_line,@1.last_column)]}
     ;
 
 //LLAMADA
@@ -289,8 +293,8 @@ LLAMADA: call  id parentesisa PARAMETROSLLAMADA parentesisc
     | id parentesisa parentesisc
     ;
 
-PARAMETROSLLAMADA: PARAMETROSLLAMADA coma EXPRESION 
-    | EXPRESION
+PARAMETROSLLAMADA: PARAMETROSLLAMADA coma EXPRESION {$1.push($3); $$=$1;}
+    | EXPRESION {$$=[$1];}
     ;
 
 N_PRINTLN: println parentesisa EXPRESION parentesisc puntoycoma {$$=new Println($3,@1.first_line,@1.last_column);}

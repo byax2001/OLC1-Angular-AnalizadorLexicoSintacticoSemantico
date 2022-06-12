@@ -34,7 +34,12 @@ export class Literal extends expresion {
             let existe=env.existeSimbolo(this.value)
             if(existe==true){
                 let simbolo=env.getSimbolo(this.value);
-                result={value:simbolo.value,type:simbolo.type}
+                //SI EL VALOR DE SIMBOLO ES NULO SIGNIFICA QUE NO HA SIDO INICIALIZADA CON ANTERIORIDAD, POR LO TANTO NO POSEE NINGUN VALOR
+                if(simbolo.value!=null){
+                    result={value:simbolo.value,type:simbolo.type}
+                }else{
+                    result={value:null,type:Type.error};
+                }
             }else{
                 result={value:null,type:Type.error};
                 B_datos.getInstance().addError("Semantico","No existe variable",this.line,this.column);

@@ -9,16 +9,19 @@ export class Environment{
     ){
         this.variables=new Map();
     }
+    
 
-    public guardarSimbolo(constante:boolean,type:Type,id:string,value:string,linea:number,column:number){
+    public guardarSimbolo(constante:boolean,type:Type,id:string,value:any,linea:number,column:number){
         this.variables.set(id,new Symbol(constante,type,id,value,linea,column));
-        
         return true 
         
     }
+    public guardarSimboloMF(constante:boolean,type:Type,id:string,value:any,linea:number,column:number,nParametros?:number){
+        this.variables.set(id,new Symbol(constante,type,id,value,linea,column,nParametros));
+        return true 
+    }
     public existeSimbolo(id:string):boolean{
-        let existe;
-        existe=this.variables.has(id)
+        let existe=this.variables.has(id)
         return existe;
     }
     public getSimbolo(id:string):Symbol{

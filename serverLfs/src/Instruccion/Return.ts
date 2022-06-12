@@ -6,23 +6,21 @@ import { Environment } from "../Symbols/Environment"
 import { Type } from "../Symbols/Type";
 
 export class Return extends instruction{
+    expR:Retorno;
     constructor(
         public expresion:expresion,
         line:number,
         column:number
     ){
         super(line,column)
+        this.expR={value:null,type:Type.error};
     }
 
     public execute(env:Environment){
         //this.bloque instanceof instruction;
-        let _return:Retorno={value:null,type:Type.error}
         if(this.expresion!=null){
-           let exp=this.expresion.execute(env);
-           _return={value:exp.value,type:exp.type}
+           this.expR=this.expresion.execute(env);
         }
-        else{
-            return this;
-        }        
+        return this;     
     }
 }
