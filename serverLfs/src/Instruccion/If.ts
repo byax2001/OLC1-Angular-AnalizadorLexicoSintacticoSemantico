@@ -1,6 +1,8 @@
 import { expresion } from "../Abstract/expresion";
 import { instruction } from "../Abstract/instruction";
+import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
+import { Type } from "../Symbols/Type";
 
 export class If extends instruction{
 
@@ -15,29 +17,26 @@ export class If extends instruction{
     }
 
 
-    public execute(env:Environment){
-        let result=this.expresion.execute(env);
-      /*  console.log("------------------------------------------------")
-        console.log("==========================0")
-        console.log(this.expresion);
-        console.log("==========================0")
-        console.log(this.instruction);
-        console.log("==========================0")
-        console.log(this.instruction2);*/
-        if (result.value==true) {
-            
-            for (let i = 0; i < this.instruction.length; i++) {
-                const res = this.instruction[i].execute(env);
-               
+    public execute(env: Environment) {
+        let result = this.expresion.execute(env);
+        if (result.type !== Type.error) {
+            if (result.value === true) {
+                for (let i = 0; i < this.instruction.length; i++) {
+                    const res = this.instruction[i].execute(env);
+
+                }
+            } else {
+
+                for (let i = 0; i < this.instruction2.length; i++) {
+                    const res = this.instruction2[i].execute(env);
+                }
             }
         } else {
-            
-            for (let i = 0; i < this.instruction2.length; i++) {
-                const res = this.instruction2[i].execute(env);
-            }
+            //EXPRESION GENERA ERROR EN EL IF 
+            B_datos.getInstance().addError("Semantico","Expresion genera un error en el if",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+            return null
         }
         return null;
-
     }
 
 

@@ -30,7 +30,7 @@ export class Dowhile extends instruction{
                 }
             }else{
                 //SI SI GENERA UN ERROR SALIRSE DE LA EJECUCION Y NO HACER NADA 
-                B_datos.getInstance().addError("Semantico","Error en la expresion para el Do While",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                B_datos.getInstance().addError("Semantico","Expresion genera error en el Do While",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
                 return null; 
             }
         } while (exp.value)

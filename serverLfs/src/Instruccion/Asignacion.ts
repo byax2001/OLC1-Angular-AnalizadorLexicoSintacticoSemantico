@@ -18,13 +18,13 @@ export class Asignacion extends instruction{
         if(exp.type!==Type.error){
             this.id.forEach((id)=>{
                 let existe=env.existeSimbolo(id);
-                if(existe==false){
+                if(existe===false){
                     //ERROR VARIABLE NO EXISTE
                     B_datos.getInstance().addError("Semantico","Variable no declarada",this.line,this.column); 
                     console.log("variable no declarada") 
                 }else{
                     let simbolo=env.getSimbolo(id);
-                    if(simbolo.constante==true){
+                    if(simbolo.constante===true){
                         //ERROR LA VARIABLE ES CONSTANTE
                         B_datos.getInstance().addError("Semantico","No se puede cambiar el valor, var Constante",this.line,this.column);  
                         if(simbolo.type!=exp.type){
@@ -32,7 +32,7 @@ export class Asignacion extends instruction{
                             B_datos.getInstance().addError("Semantico","No coinciden los tipos de de datos",this.line,this.column)
                         }
                     }else{
-                        if(simbolo.type==exp.type){
+                        if(simbolo.type===exp.type){
                             //COINCIDIERON LOS TIPOS DE DATOS, SE ACTUALIZA LA VARIABLE 
                             env.ChangeSimbolo(id,exp.value)
                         }else{
