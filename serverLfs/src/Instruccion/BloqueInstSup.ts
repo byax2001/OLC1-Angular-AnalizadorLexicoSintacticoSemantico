@@ -1,4 +1,5 @@
 import { instruction } from "../Abstract/instruction";
+import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
 
 export class BloqueInstSup extends instruction{
@@ -12,7 +13,14 @@ export class BloqueInstSup extends instruction{
 
     public execute(env:Environment){
         for(let Instruccion of this.instrucciones){
-            Instruccion.execute(env);
+            try{
+                Instruccion.execute(env);
+            }
+            catch(e){
+                console.log(e)
+                B_datos.getInstance().addError("Semantico","Instruccion fallida en bloque de instrucciones",this.line,this.column)
+            }
+            
         }
     }
 }

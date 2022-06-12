@@ -309,27 +309,32 @@ BLOQUE_INST: llavea INSTRUCCIONES llavec {$$=$2;}
     ;
 
 
-EXPRESION: EXPRESION mas EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.SUMA,@1.first_line,@1.last_column);}
+EXPRESION: 
+         menos EXPRESION %prec UMINUS {$$=new OAritmeticas($2,null,TypeAritmeticas.NEGACION,@1.first_line,@1.last_column);}
+        | EXPRESION mas EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.SUMA,@1.first_line,@1.last_column);}
         | EXPRESION menos EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.RESTA,@1.first_line,@1.last_column);}
         | EXPRESION div EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.DIVISION,@1.first_line,@1.last_column);}
         | EXPRESION multi EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.MULTIPLICACION,@1.first_line,@1.last_column);}
         | EXPRESION mod EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.MOD,@1.first_line,@1.last_column);}
         | EXPRESION pow EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.POW,@1.first_line,@1.last_column);}
-        | menos EXPRESION %prec UMINUS {$$=new OAritmeticas($2,null,TypeAritmeticas.NEGACION,@1.first_line,@1.last_column);}
+
         | EXPRESION igualigual EXPRESION {$$=new ORelacionales($1,$3,TypeRelacionales.IGUALQUE,@1.first_line,@1.last_column);}
         | EXPRESION diferente EXPRESION{$$=new ORelacionales($1,$3,TypeRelacionales.DIFERENTEQUE,@1.first_line,@1.last_column);}
         | EXPRESION menorque EXPRESION{$$=new ORelacionales($1,$3,TypeRelacionales.MENORQUE,@1.first_line,@1.last_column);}
         | EXPRESION menorigual EXPRESION{$$=new ORelacionales($1,$3,TypeRelacionales.MENORIGUALQUE,@1.first_line,@1.last_column);}
         | EXPRESION mayorque EXPRESION  {$$=new ORelacionales($1,$3,TypeRelacionales.MAYORQUE,@1.first_line,@1.last_column);}
         | EXPRESION mayorigual EXPRESION {$$=new ORelacionales($1,$3,TypeRelacionales.MAYORIGUALQUE,@1.first_line,@1.last_column);}
+
         | EXPRESION or EXPRESION {$$=new OLogicas($1,$3,TypeLogic.OR,@1.first_line,@1.last_column);}
         | EXPRESION and EXPRESION {$$=new OLogicas($1,$3,TypeLogic.AND,@1.first_line,@1.last_column);}
         | EXPRESION xor EXPRESION {$$=new OLogicas($1,$3,TypeLogic.XOR,@1.first_line,@1.last_column);}
         | not EXPRESION {$$=new  OLogicas($2,null,TypeLogic.NOT,@1.first_line,@1.last_column);}
+        
         | id inc {$$=new IncDecremento ($1,TypeAritmeticas.INCDER,@1.first_line,@1.last_column);}
         | inc id {$$=new IncDecremento ($2,TypeAritmeticas.INCIZQ,@1.first_line,@1.last_column);}
         | id dec {$$=new IncDecremento ($1,TypeAritmeticas.DECDER,@1.first_line,@1.last_column);}
         | dec id {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
+        
         | parentesisa EXPRESION parentesisc {$$=$2;}
         | TIPODATO {$$=$1;}
         | N_TYPEOF {$$=$1;}

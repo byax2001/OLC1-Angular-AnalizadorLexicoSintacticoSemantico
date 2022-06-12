@@ -17,34 +17,41 @@ export class Declaracion extends instruction{
         super(line,column)   
     }
     public execute(env:Environment){
+        //SI SE DECLARA CON UN VALOR  Y NO SOLO EL ID Y EL TIPO
         if(this.expresion!=null){
             let exp=this.expresion.execute(env);
-            this.id.forEach((id)=>{
-                let existe=env.existeSimbolo(id);
-                if(existe==true){
-                    //ERROR YA FUE DECLARADA ESTA VARIABLE CON ANTERIORIDAD
-                    B_datos.getInstance().addError("Semantico","Intento de declarar 2 veces una variable",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
-                    //ERROR  2
-                    if(this.tipo!=exp.type){
-                        B_datos.getInstance().addError("Semantico","Tipo de declaracion y dato no coinciden",this.line,this.column);
-                        console.log("error semantico distintos tipos");
-                    }
-            
-                    console.log("error semantico ya existia la variable")   
-                }else{    
-                    if(this.tipo==exp.type){
-                        //GUARDAR DATO
-                        env.guardarSimbolo(this.constante,this.tipo,id,exp.value,this.line,this.column);
-                        console.log('--------------------acabo de guardar una variable------------------')
+            //SI SUCEDE UN ERROR CON LA EXPRESION O SI ESTA ES ERRONEA
+            if(exp.type!==Type.error){ 
+                this.id.forEach((id)=>{
+                    let existe=env.existeSimbolo(id);
+                    if(existe==true){
+                        //ERROR YA FUE DECLARADA ESTA VARIABLE CON ANTERIORIDAD
+                        B_datos.getInstance().addError("Semantico","Intento de declarar 2 veces una variable",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                        //ERROR  2
+                        if(this.tipo!=exp.type){
+                            B_datos.getInstance().addError("Semantico","Tipo de declaracion y dato no coinciden",this.line,this.column);
+                            console.log("error semantico distintos tipos");
+                        }
                 
-                    }else{
-                        //ERROR  NO COINCIDEN LOS TIPOD DE DATOS DE LA VARIABLE Y SU EXPRESION
-                        B_datos.getInstance().addError("Semantico","Tipo de declaracion y dato no coinciden",this.line,this.column);
-                        console.log("error semantico distintos tipos");
+                        console.log("error semantico ya existia la variable")   
+                    }else{    
+                        if(this.tipo==exp.type){
+                            //GUARDAR DATO
+                            env.guardarSimbolo(this.constante,this.tipo,id,exp.value,this.line,this.column);
+                            console.log('--------------------acabo de guardar una variable------------------')
+                    
+                        }else{
+                            //ERROR  NO COINCIDEN LOS TIPOD DE DATOS DE LA VARIABLE Y SU EXPRESION
+                            B_datos.getInstance().addError("Semantico","Tipo de declaracion y dato no coinciden",this.line,this.column);
+                            console.log("error semantico distintos tipos");
+                        }
                     }
-                }
-
-            })   
+    
+                })  
+            }else{
+                B_datos.getInstance().addError("Semantico","Declaracion no posible de realizar",this.line,this.column)
+            } 
+        //SE DECLARA SOLO UN TIPO E ID 
         }else{
             this.id.forEach((id)=>{
                 let existe=env.existeSimbolo(id);

@@ -39,12 +39,11 @@
         print(y);
     }
 
-    switch(7){
+    switch(3){
         case 1:
             print("Maria");
         case 2:
             print("Jorge");
-            
         case 3:
             print("pedro");
             break;
@@ -53,6 +52,8 @@
     }
 
     {
-        print((10+3)*5);
+        print(-2+5);
     }
+    {
 
+    }
