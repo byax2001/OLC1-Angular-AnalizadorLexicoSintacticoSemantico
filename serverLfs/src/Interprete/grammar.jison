@@ -13,8 +13,8 @@
     const {ORelacionales}= require('../Expresion/ORelacionales.ts');
     const {OLogicas}= require('../Expresion/OLogicas.ts');
     const {If} = require('../Instruccion/If.ts');
-    const {I_while} = require('../Instruccion/I_while.ts');
-    const {I_doWhile} = require('../Instruccion/I_doWhile.ts');
+    const {While} = require('../Instruccion/While.ts');
+    const {Dowhile} = require('../Instruccion/Dowhile.ts');
     const {For}= require('../Instruccion/For.ts');
     const {Switch}= require('../Instruccion/Switch.ts');
     const {Case} = require('../Instruccion/Case.ts');
@@ -192,7 +192,7 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | FUNCIONES {$$= $1;}
             | METODOS {$$= $1;}
             | LLAMADA puntoycoma {$$= $1;}
-            | BLOQUE_INST $$=new BloqueInstSup($1,@1.first_line,@1.last_column)
+            | BLOQUE_INST {$$=new BloqueInstSup($1,@1.first_line,@1.last_column);}
             | error {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
@@ -259,11 +259,11 @@ FOR: for parentesisa DECLARACION EXPRESION puntoycoma EXPRESION parentesisc BLOQ
 
 
 //WHILE
-WHILE: while parentesisa EXPRESION parentesisc BLOQUE_INST {$$=new I_while($3,$5,@1.first_line,@1.last_column);}
+WHILE: while parentesisa EXPRESION parentesisc BLOQUE_INST {$$=new While($3,$5,@1.first_line,@1.last_column);}
     ;
 
 //DO WHILE
-DO_WHILE: do BLOQUE_INST while parentesisa EXPRESION parentesisc puntoycoma{$$=new I_doWhile($5,$2,@1.first_line,@1.last_column);}
+DO_WHILE: do BLOQUE_INST while parentesisa EXPRESION parentesisc puntoycoma{$$=new Dowhile($5,$2,@1.first_line,@1.last_column);}
     ;
 
 
@@ -304,17 +304,15 @@ N_PRINT: print parentesisa EXPRESION parentesisc puntoycoma  {$$=new Print($3,@1
 N_TYPEOF: typeof parentesisa EXPRESION parentesisc {$$=new Typeof($3,@1.first_line,@1.last_column);} ;
 
 //Bloque de Instrucciones
-BLOQUE_INST: llavea INSTRUCCIONES llavec {$$=$2}
+BLOQUE_INST: llavea INSTRUCCIONES llavec {$$=$2;}
     | llavea llavec {$$=[new Nothing(@1.first_line,@1.last_column)];}
     ;
-BLOQUESUP: BLOQUE_INST {$$=new BloqueInstSup($1,@1.first_line,@1.last_column)}
-    | INSTRUCCIONES {$$=new BloqueInstSup($1,@1.first_line,@1.last_column)}
-    ;
+
 
 EXPRESION: EXPRESION mas EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.SUMA,@1.first_line,@1.last_column);}
         | EXPRESION menos EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.RESTA,@1.first_line,@1.last_column);}
-        | EXPRESION div EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.MULTIPLICACION,@1.first_line,@1.last_column);}
-        | EXPRESION multi EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.DIVISION,@1.first_line,@1.last_column);}
+        | EXPRESION div EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.DIVISION,@1.first_line,@1.last_column);}
+        | EXPRESION multi EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.MULTIPLICACION,@1.first_line,@1.last_column);}
         | EXPRESION mod EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.MOD,@1.first_line,@1.last_column);}
         | EXPRESION pow EXPRESION {$$=new OAritmeticas($1,$3,TypeAritmeticas.POW,@1.first_line,@1.last_column);}
         | menos EXPRESION %prec UMINUS {$$=new OAritmeticas($2,null,TypeAritmeticas.NEGACION,@1.first_line,@1.last_column);}

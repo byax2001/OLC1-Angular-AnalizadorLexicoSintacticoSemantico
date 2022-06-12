@@ -215,6 +215,8 @@ export class ORelacionales extends expresion{
                 //REPORTAR ERROR  
                 B_datos.getInstance().addError("Semantico","Relacional no posible de realizar",this.line,this.column);      
             }
+        }else{
+            B_datos.getInstance().addError("Semantico","Operacion Relacional desconocida",this.line,this.column);  
         }
         return result
     }

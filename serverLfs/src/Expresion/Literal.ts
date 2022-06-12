@@ -45,6 +45,7 @@ export class Literal extends expresion {
                 B_datos.getInstance().addError("Semantico","No existe variable",this.line,this.column);
             }
         }else{
+            B_datos.getInstance().addError("Semantico","Literal con tipo desconocido",this.line,this.column);
             result={value: this.value, type: Type.error}
         }
         

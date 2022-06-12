@@ -236,6 +236,8 @@ export class OAritmeticas extends expresion{
                 //REPORTAR ERROR   
                 B_datos.getInstance().addError("Semantico","Operacion no posible de realizar",this.line,this.column);    
             }
+        }else{
+            B_datos.getInstance().addError("Semantico","Operacion desconocida",this.line,this.column);  
         }
         return result
     }

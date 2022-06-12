@@ -2,7 +2,7 @@ import { expresion } from "../Abstract/expresion";
 import { instruction } from "../Abstract/instruction";
 import { Environment } from "../Symbols/Environment";
 
-export class I_doWhile extends instruction{
+export class Dowhile extends instruction{
     constructor(
         public expresion: expresion,
         public bloqueInst:instruction[],
