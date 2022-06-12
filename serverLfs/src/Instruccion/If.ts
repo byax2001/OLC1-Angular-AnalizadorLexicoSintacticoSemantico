@@ -2,7 +2,7 @@ import { expresion } from "../Abstract/expresion";
 import { instruction } from "../Abstract/instruction";
 import { Environment } from "../Symbols/Environment";
 
-export class I_if extends instruction{
+export class If extends instruction{
 
     constructor(
         public expresion:expresion,

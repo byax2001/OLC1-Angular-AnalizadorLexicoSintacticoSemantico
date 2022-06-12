@@ -12,7 +12,7 @@
     const {IncDecremento}=require('../Expresion/IncDecremento.ts');
     const {ORelacionales}= require('../Expresion/ORelacionales.ts');
     const {OLogicas}= require('../Expresion/OLogicas.ts');
-    const {I_if} = require('../Instruccion/I_if.ts');
+    const {If} = require('../Instruccion/If.ts');
     const {I_while} = require('../Instruccion/I_while.ts');
     const {I_doWhile} = require('../Instruccion/I_doWhile.ts');
     const {For}= require('../Instruccion/For.ts');
@@ -192,7 +192,7 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | FUNCIONES {$$= $1;}
             | METODOS {$$= $1;}
             | LLAMADA puntoycoma {$$= $1;}
-            | BLOQUE_INST {$$= $1;}
+            | BLOQUE_INST $$=new BloqueInstSup($1,@1.first_line,@1.last_column)
             | error {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
@@ -226,9 +226,9 @@ TIPODATO: cadena  {$$= new Literal($1,Type.STRING,@1.first_line,@1.last_column);
     ;
 
 
-IF: if parentesisa EXPRESION parentesisc BLOQUE_INST {$$=new I_if($3,$5,[],@1.first_line,@1.last_column);}
-    | if parentesisa EXPRESION parentesisc BLOQUE_INST else BLOQUE_INST {$$= new I_if($3,$5,$7,@1.first_line,@1.last_column);}
-    | if parentesisa EXPRESION parentesisc BLOQUE_INST else IF {$$= new I_if($3,$5,[$7],@1.first_line,@1.last_column);}
+IF: if parentesisa EXPRESION parentesisc BLOQUE_INST {$$=new If($3,$5,[],@1.first_line,@1.last_column);}
+    | if parentesisa EXPRESION parentesisc BLOQUE_INST else BLOQUE_INST {$$= new If($3,$5,$7,@1.first_line,@1.last_column);}
+    | if parentesisa EXPRESION parentesisc BLOQUE_INST else IF {$$= new If($3,$5,[$7],@1.first_line,@1.last_column);}
     ;
 
 
@@ -244,16 +244,10 @@ CASES_LIST: CASES_LIST CASE {$1.push($2); $$=$1;}
     | CASE {$$=[$1];}
     ;
 CASE: case EXPRESION dospuntos INSTRUCCIONES {$$= new Case($2,$4,@1.first_line,@1.last_column);}
+    | case EXPRESION dospuntos {$$= new Case($2,[],@1.first_line,@1.last_column);}
     ;
 DEFAULT: default dospuntos INSTRUCCIONES {$$=$3;}
-    ;
-
-//Instrucciones adentro de un switch
-INST_SWITCH: CASES_LIST
-    | CASES_LIST DEFAULT 
-    | CASES_LIST DEFAULT CASES_LIST
-    | DEFAULT CASES_LIST
-    | DEFAULT
+    | default dospuntos {$$=[new Nothing(@1.first_line,@1.last_column)];} 
     ;
 
 
