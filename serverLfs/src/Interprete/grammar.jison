@@ -19,6 +19,12 @@
     const {Switch}= require('../Instruccion/Switch.ts');
     const {Case} = require('../Instruccion/Case.ts');
 
+    //SALTOS DE SENTENCIAS
+    const {Break}= require('../Instruccion/Break.ts');
+    const {Continue}= require('../Instruccion/Continue.ts');
+    const {Return}= require('../Instruccion/Return.ts');
+
+
     //NATIVAS
     const {Print}= require('../Instruccion/FuncionesNativas/Print.ts');
     const {Println}= require('../Instruccion/FuncionesNativas/Println.ts');
@@ -172,10 +178,10 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | FOR {$$=$1;}
             | WHILE {$$=$1;}
             | DO_WHILE {$$=$1;}  
-            | break puntoycoma
-            | continue puntoycoma
-            | return puntoycoma
-            | return EXPRESION puntoycoma 
+            | break puntoycoma {$$= new Break(@1.first_line,@1.last_column);}
+            | continue puntoycoma  {$$= new Continue(@1.first_line,@1.last_column);}
+            | return puntoycoma  {$$= new Return(null,@1.first_line,@1.last_column);}
+            | return EXPRESION puntoycoma {$$= new Return($2,@1.first_line,@1.last_column);}
             | N_PRINT {$$= $1;}     
             | N_PRINTLN {$$= $1;}
             | FUNCIONES 
@@ -221,11 +227,11 @@ IF: if parentesisa EXPRESION parentesisc BLOQUE_INST {$$=new I_if($3,$5,[],@1.fi
 
 
 //SWITCH
-SWITCH: switch parentesisa EXPRESION parentesisc llavea CASES_LIST llavec {$$= new Switch($3,$6,null,@1.first_line,@1.last_column);}
-    | switch parentesisa EXPRESION parentesisc llavea CASES_LIST DEFAULT llavec {$$= new Switch($3,$6,$7,@1.first_line,@1.last_column);}
-    | switch parentesisa EXPRESION parentesisc llavea DEFAULT llavec {$$= new Switch($3,[],$6,@1.first_line,@1.last_column);}
-    | switch parentesisa EXPRESION parentesisc llavea DEFAULT CASES_LIST  llavec {$$= new Switch($3,$7,$6,@1.first_line,@1.last_column);}
-    | switch parentesisa EXPRESION parentesisc llavea CASES_LIST DEFAULT CASES_LIST  llavec  {$6.concat($8);   $$= new Switch($3,$6,$7,@1.first_line,@1.last_column);}
+SWITCH: switch parentesisa EXPRESION parentesisc llavea CASES_LIST llavec {$$=new Switch($3,$6,@1.first_line,@1.last_column);}
+    | switch parentesisa EXPRESION parentesisc llavea CASES_LIST DEFAULT llavec {$6.push($7);   $$=new Switch($3,$6,@1.first_line,@1.last_column);}
+    | switch parentesisa EXPRESION parentesisc llavea DEFAULT llavec {$$= new Switch($3,[$6],@1.first_line,@1.last_column);}
+    | switch parentesisa EXPRESION parentesisc llavea DEFAULT CASES_LIST  llavec {$7.push($6);     $$= new Switch($3,$7,@1.first_line,@1.last_column);}
+    | switch parentesisa EXPRESION parentesisc llavea CASES_LIST DEFAULT CASES_LIST  llavec  {$6.push($7);  $6.concat($8);   $$= new Switch($3,$6,@1.first_line,@1.last_column);}
     ;
 
 CASES_LIST: CASES_LIST CASE {$1.push($2); $$=$1;}

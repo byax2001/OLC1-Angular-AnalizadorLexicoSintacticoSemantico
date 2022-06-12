@@ -95,8 +95,20 @@ break;
 case 4: case 5: case 6: case 15: case 16: case 20:
 this.$= $$[$0];
 break;
-case 8: case 9: case 10: case 103: case 104:
+case 8: case 9: case 10: case 50: case 103: case 104:
 this.$=$$[$0];
+break;
+case 11:
+this.$= new Break(_$[$0-1].first_line,_$[$0-1].last_column);
+break;
+case 12:
+this.$= new Continue(_$[$0-1].first_line,_$[$0-1].last_column);
+break;
+case 13:
+this.$= new Return(null,_$[$0-1].first_line,_$[$0-1].last_column);
+break;
+case 14:
+this.$= new Return($$[$0-1],_$[$0-2].first_line,_$[$0-2].last_column);
 break;
 case 21:
 console.log("Error Sintactico, simbolo no esperado:"  + yytext 
@@ -163,19 +175,19 @@ case 41:
 this.$= new I_if($$[$0-4],$$[$0-2],[$$[$0]],_$[$0-6].first_line,_$[$0-6].last_column);
 break;
 case 42:
-this.$= new Switch($$[$0-4],$$[$0-1],null,_$[$0-6].first_line,_$[$0-6].last_column);
+this.$=new Switch($$[$0-4],$$[$0-1],_$[$0-6].first_line,_$[$0-6].last_column);
 break;
 case 43:
-this.$= new Switch($$[$0-5],$$[$0-2],$$[$0-1],_$[$0-7].first_line,_$[$0-7].last_column);
+$$[$0-2].push($$[$0-1]);   this.$=new Switch($$[$0-5],$$[$0-2],_$[$0-7].first_line,_$[$0-7].last_column);
 break;
 case 44:
-this.$= new Switch($$[$0-4],[],$$[$0-1],_$[$0-6].first_line,_$[$0-6].last_column);
+this.$= new Switch($$[$0-4],[$$[$0-1]],_$[$0-6].first_line,_$[$0-6].last_column);
 break;
 case 45:
-this.$= new Switch($$[$0-5],$$[$0-1],$$[$0-2],_$[$0-7].first_line,_$[$0-7].last_column);
+$$[$0-1].push($$[$0-2]);     this.$= new Switch($$[$0-5],$$[$0-1],_$[$0-7].first_line,_$[$0-7].last_column);
 break;
 case 46:
-$$[$0-3].concat($$[$0-1]);   this.$= new Switch($$[$0-6],$$[$0-3],$$[$0-2],_$[$0-8].first_line,_$[$0-8].last_column);
+$$[$0-3].push($$[$0-2]);  $$[$0-3].concat($$[$0-1]);   this.$= new Switch($$[$0-6],$$[$0-3],_$[$0-8].first_line,_$[$0-8].last_column);
 break;
 case 47:
 $$[$0-1].push($$[$0]); this.$=$$[$0-1];
@@ -185,9 +197,6 @@ this.$=[$$[$0]];
 break;
 case 49:
 this.$= new Case($$[$0-2],$$[$0],_$[$0-3].first_line,_$[$0-3].last_column);
-break;
-case 50:
-this.$=$$[$0]
 break;
 case 56: case 57:
 this.$=new For($$[$0-5],$$[$0-4],$$[$0-2],$$[$0],_$[$0-7].first_line,_$[$0-7].last_column);
@@ -556,6 +565,12 @@ _handle_error:
     const {For}= require('../Instruccion/For.ts');
     const {Switch}= require('../Instruccion/Switch.ts');
     const {Case} = require('../Instruccion/Case.ts');
+
+    //SALTOS DE SENTENCIAS
+    const {Break}= require('../Instruccion/Break.ts');
+    const {Continue}= require('../Instruccion/Continue.ts');
+    const {Return}= require('../Instruccion/Return.ts');
+
 
     //NATIVAS
     const {Print}= require('../Instruccion/FuncionesNativas/Print.ts');

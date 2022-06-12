@@ -39,13 +39,15 @@
         print(y);
     }
 
-    switch(2){
+    switch(7){
         case 1:
             print("Maria");
         case 2:
             print("Jorge");
+            
         case 3:
-            print("pedro);
+            print("pedro");
+            break;
         default:
             print("Martin");
     }
