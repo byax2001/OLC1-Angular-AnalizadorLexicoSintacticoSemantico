@@ -27,10 +27,10 @@ export class Literal extends expresion {
                 result=  {value:Boolean(false),type:Type.BOOLEAN}
             }      
         }else if(this.type==Type.STRING){
-            let rstring= String(this.value).slice(1,this.value.length-1);
+            let rstring= this.LimpiarString(this.value);
             result=  {value:rstring,type:Type.STRING}
         }else if(this.type==Type.CHAR){
-            let rstring= String(this.value).slice(1,this.value.length-1);
+            let rstring= this.LimpiarString(this.value);
             result=  {value:rstring.charCodeAt(0),type:Type.CHAR}
         }else if(this.type==Type.ID){
             let existe=env.existeSimbolo(this.value)
@@ -52,5 +52,16 @@ export class Literal extends expresion {
         }
         
         return result
+    }
+
+    public LimpiarString(cadenat:string):string{
+        cadenat=cadenat.slice(1,cadenat.length-1);
+        cadenat=cadenat.replace("\\\"","\"");
+        cadenat=cadenat.replace("\\\\","\\");
+        cadenat=cadenat.replace("\\n","\n");
+        cadenat=cadenat.replace("\\r","\r");
+        cadenat=cadenat.replace("\\t","\t");
+        cadenat=cadenat.replace("\\\'","\'");
+        return cadenat
     }
 }   
