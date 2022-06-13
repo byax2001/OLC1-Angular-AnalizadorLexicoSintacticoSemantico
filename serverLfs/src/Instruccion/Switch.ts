@@ -45,8 +45,9 @@ export class Switch extends instruction{
                     return null
                 }
             }
+
+            let newEnv= new Environment(env); //Nuevo Enviroment
             for (let x = indexCase; x < this.caselist.length; x++) {
-                let newEnv= new Environment(env); //Nuevo Enviroment
                 if (this.caselist[x] instanceof Case) { //SI ES UN TIPO CASE 
                     let caseJstament = this.caselist[x].execute(newEnv);//EJECUTARA TODAS LAS INSTRUCCIONES DE ESTA CASE
                     if (caseJstament != null) { //SI NO RETURNA UN NULL ES QUE HABIA UN SALTO DE SENTENCIA
@@ -55,7 +56,6 @@ export class Switch extends instruction{
                         } else {
                             //REPORTAR ERROR VINO UN CONTINUE O UN RETURN 
                             B_datos.getInstance().addError("Semantico","Salto de sentencia incorrecto para el switch",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
-                            B_datos.getInstance().addEnviroments("Switch",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                             return null;
                         }
                     }
@@ -66,15 +66,14 @@ export class Switch extends instruction{
                         } else if (instDefault instanceof Return || instDefault instanceof Continue) {
                             //REPORTAR ERROR VINO UN CONTINUE O UN RETURN 
                             B_datos.getInstance().addError("Semantico","Salto de sentencia incorrecto para el switch",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
-                            B_datos.getInstance().addEnviroments("Switch",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                             return null;
                         } else {
                             instDefault.execute(newEnv);
                         }
                     }
-                    B_datos.getInstance().addEnviroments("Switch",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 }
             }
+            B_datos.getInstance().addEnviroments("Switch",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
         }else{
             //EXPRESION GENERA ERROR EN EL SWITCH 
             B_datos.getInstance().addError("Semantico","Expresion genera un error en el switch",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS

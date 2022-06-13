@@ -24,33 +24,27 @@ export class If extends instruction{
         let result = this.expresion.execute(env);
         if (result.type !== Type.error) {
             let newEnviromet= new Environment(env);
-
             if (result.value === true) {
                 for (let i = 0; i < this.instruction.length; i++) {
-                    if(this.instruction[i] instanceof Return){
-                        B_datos.getInstance().addEnviroments("If",newEnviromet);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
-                        return null; 
-                    }else if(this.instruction[i] instanceof Break || this.instruction[i] instanceof Continue){
+                    if(this.instruction[i] instanceof Return || this.instruction[i] instanceof Break || this.instruction[i] instanceof Continue){
                         //REPORTAR ERROR 
                         B_datos.getInstance().addError("Semantico","Sentencia Break o Continue en If",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
-                        B_datos.getInstance().addEnviroments("If",newEnviromet);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                         return null; 
 
                     }
                     const res = this.instruction[i].execute(newEnviromet);
                 }
+                B_datos.getInstance().addEnviroments("If",newEnviromet);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
             } else {
-
                 for (let i = 0; i < this.instruction2.length; i++) {
                     if(this.instruction2[i] instanceof Return || this.instruction2[i] instanceof Break || this.instruction2[i] instanceof Continue){
                         //REPORTAR ERROR 
                         B_datos.getInstance().addError("Semantico","Sentencia Break, Return o Continue en If",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
-                        B_datos.getInstance().addEnviroments("If",newEnviromet);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                         return null; 
                     }
                     const res = this.instruction2[i].execute(newEnviromet);
-                    B_datos.getInstance().addEnviroments("If",newEnviromet);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 }
+                B_datos.getInstance().addEnviroments("If",newEnviromet);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
             }
         } else {
             //EXPRESION GENERA ERROR EN EL IF 

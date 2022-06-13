@@ -12,8 +12,9 @@ export class BloqueInstSup extends instruction{
     }
 
     public execute(env:Environment){
+        let newEnviromet= new Environment(env);
         for(let Instruccion of this.instrucciones){
-            let newEnviromet= new Environment(env);
+            
             try{
                 Instruccion.execute(newEnviromet);
             }
@@ -21,8 +22,7 @@ export class BloqueInstSup extends instruction{
                 console.log(e)
                 B_datos.getInstance().addError("Semantico","Instruccion fallida en bloque de instrucciones",this.line,this.column)
             }
-           
-            B_datos.getInstance().addEnviroments("Bloque Instrucciones",newEnviromet)
         }
+        B_datos.getInstance().addEnviroments("Bloque Instrucciones",newEnviromet)
     }
 }

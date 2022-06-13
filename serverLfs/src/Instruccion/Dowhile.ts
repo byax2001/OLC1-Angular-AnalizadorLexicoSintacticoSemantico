@@ -29,7 +29,6 @@ export class Dowhile extends instruction{
             }
             Instruccion.execute(newEnv);
         }
-        B_datos.getInstance().addEnviroments("doWhile",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
         let exp;
         do {
             exp = this.expresion.execute(env);
