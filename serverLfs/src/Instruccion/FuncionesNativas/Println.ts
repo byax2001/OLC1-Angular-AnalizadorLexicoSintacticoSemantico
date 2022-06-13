@@ -30,9 +30,9 @@ export class Println extends instruction{
         B_datos.getInstance().addNodosAst(nodo);
         let edge={
             from:id,
-            to:id+""+1,
+            to:id+""+0,
         }
         B_datos.getInstance().addEdgesAst(edge);
-        this.expresion.ast(id,1);//NODO HIJO: EXPRESION 
+        this.expresion.ast(id,0);//NODO HIJO: EXPRESION 
     }
 }

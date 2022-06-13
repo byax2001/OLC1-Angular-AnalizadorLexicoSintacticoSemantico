@@ -71,7 +71,63 @@ export class Declaracion extends instruction{
     public changeExpresion(expresion:expresion){
         this.expresion=expresion
     }
-    public ast(){
-        
+    public ast(idPadre:string,NoHijo:number){
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:"Instruction: Declaracion"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        //CONSTANTE
+        nodo={
+            id:id+""+0,
+            label:String(this.constante)
+        }
+        let edge={
+            from:id,
+            to:id+""+0
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        //TIPO
+        let tipo="any"
+        if(this.tipo===Type.INT){
+            tipo="int"
+        }else if(this.tipo===Type.DOUBLE){
+            tipo="double"
+        }else if(this.tipo===Type.CHAR){
+            tipo="char"
+        }else if(this.tipo===Type.BOOLEAN){
+            tipo="boolean"
+        }else if(this.tipo===Type.STRING){
+            tipo="string"
+        }
+        nodo={
+            id:id+""+1,
+            label:tipo
+        }
+        edge={
+            from:id,
+            to:id+""+1
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        //ID'S
+        nodo={
+            id:id+""+2,
+            label:this.id.toString()
+        }
+        edge={
+            from:id,
+            to:id+""+2
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        //EXPRESION
+        edge={
+            from:id,
+            to:id+""+3
+        }
+        this.expresion.ast(id,3);
     }
 }

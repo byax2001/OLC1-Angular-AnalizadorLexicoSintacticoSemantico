@@ -1,6 +1,7 @@
 import { expresion } from "../Abstract/expresion";
 import { instruction } from "../Abstract/instruction";
 import { Retorno } from "../Abstract/Retorno";
+import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
 import { Break } from "./Break";
 import { Continue } from "./Continue";
@@ -33,8 +34,33 @@ export class Case extends instruction{
         let expresion=this.expresion.execute(env);
         return expresion;
     }
-    public ast(){
-        
+    public ast(idPadre:string,NoHijo:number){
+        let id=idPadre+""+NoHijo;
+
+        let nodo={
+            id:id,
+            label:"Instruction: Case"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        //EXPRESION
+        this.expresion.ast(id,0);
+        let edge={
+            from:id,
+            to:id+""+0,
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+        //INSTRUCCIONES
+        for(let i=0; i<this.instruccion.length; i++){
+            let edge={
+                from:id,
+                to:id+""+(i+1),
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+        }
+        //NODOS INSTRUCCIONES
+        for(let i=0; i<this.instruccion.length; i++){
+            this.instruccion[i].ast(id,(i+1));
+        }
     }
 
 }

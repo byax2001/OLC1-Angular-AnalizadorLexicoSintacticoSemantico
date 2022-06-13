@@ -18,7 +18,6 @@ export class Call extends instruction{
 
     public execute(env:Environment){
         //for declaracion-ids elemenentos
-
         //MeFun: Metodos y funcion
         let resultR:Retorno={value:null,type:Type.error}
         let MeFun=env.getFunMetodo(this.idMF,this.paramsCall.length);
@@ -102,8 +101,34 @@ export class Call extends instruction{
         }
         
     }
-    public ast(){
-        
+    public ast(idPadre:string,NoHijo:number){
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:"Instruction: Call"
+        }
+    //NODOS y EDGYS: ID    Se puede agregar de si es metodo a funcion en el label
+        let nodoId={
+            id:id+""+0, //Padre+1
+            label:this.idMF
+        }
+        B_datos.getInstance().addNodosAst(nodoId);
+        let edge={
+            from:id,
+            to:id+""+0,
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+    //PARAMETROS 
+        nodoId={
+            id:id+""+1, //Padre+1
+            label:this.paramsCall.toString()
+        }
+        B_datos.getInstance().addNodosAst(nodoId);
+        edge={
+            from:id,
+            to:id+""+1,
+        }
+        B_datos.getInstance().addEdgesAst(edge);
     }
 
 }

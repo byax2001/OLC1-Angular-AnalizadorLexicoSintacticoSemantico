@@ -1,4 +1,5 @@
 import { instruction } from "../Abstract/instruction"
+import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment"
 
 export class Break extends instruction{
@@ -13,8 +14,13 @@ export class Break extends instruction{
         //this.bloque instanceof instruction;
         return this;
     }
-    public ast(){
-        
+    public ast(idPadre:string,NoHijo:number){
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:"Instruction: Break"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
     }
 
 

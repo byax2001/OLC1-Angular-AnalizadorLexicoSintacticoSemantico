@@ -58,18 +58,18 @@ export class Asignacion extends instruction{
         B_datos.getInstance().addNodosAst(nodo);
     //NODO DEL COJUNTO DE ID'S ASIGNADOS
         let nodoId={
-            id:id+""+0, //Padre+1
+            id:id+""+0, //Padre+0
             label:this.id.toString()
         }
-        B_datos.getInstance().addNodosAst(nodoId);
         let edge={
             from:id,
             to:id+""+0,
         }
+        B_datos.getInstance().addNodosAst(nodoId);
         B_datos.getInstance().addEdgesAst(edge);
 
     //NODO DE LA EXPRESION
-        //Padre+2    
+        //Padre+1   
         edge={
             from:id,
             to:id+""+1,

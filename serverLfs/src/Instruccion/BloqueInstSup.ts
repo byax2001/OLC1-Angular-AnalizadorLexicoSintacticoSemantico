@@ -32,13 +32,18 @@ export class BloqueInstSup extends instruction{
             label:"Instruction: Bloque Instruccion"
         }
         B_datos.getInstance().addNodosAst(nodo);
-        let edge={
-            from:id,
-            to:id+""+0,
-        }
-        B_datos.getInstance().addEdgesAst(edge);
+        //EDGES CON INSTRUCCIONES
         for(let i=0; i<this.instrucciones.length; i++){
-            
+            let edge={
+                from:id,
+                to:id+""+i,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
         }
+        //NODOS INSTRUCCIONES
+        for(let i=0; i<this.instrucciones.length; i++){
+            this.instrucciones[i].ast(id,i);
+        }
+
     }
 }
