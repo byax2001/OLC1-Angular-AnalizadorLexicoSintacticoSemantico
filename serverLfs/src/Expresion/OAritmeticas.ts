@@ -247,4 +247,7 @@ export class OAritmeticas extends expresion{
         }
         return result
     }
+    public ast(idPadre:string,NoHijo:number){
+
+    }
 }

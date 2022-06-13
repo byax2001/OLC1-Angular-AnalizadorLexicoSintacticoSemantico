@@ -102,5 +102,8 @@ export class Call extends instruction{
         }
         
     }
+    public ast(){
+        
+    }
 
 }

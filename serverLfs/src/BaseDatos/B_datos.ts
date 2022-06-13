@@ -5,10 +5,14 @@ export class B_datos{
     Errores:any[];
     Enviroments:any[];
     Consola:string[];
+    NodosAst:any[];
+    EdgesAst:any[];
     private constructor(){
         this.Errores=[]
         this.Enviroments=[]
         this.Consola=[]
+        this.NodosAst=[]
+        this.EdgesAst=[]
     }
     
     public static getInstance():B_datos{
@@ -57,5 +61,15 @@ export class B_datos{
     //GET CONSOLA
     getConsola():string[]{
         return this.Consola;
+    }
+    clearConsola(){
+        this.Consola=[];
+    }
+    //==========================AST==============================
+    addNodosAst(Nodo:any){
+        this.NodosAst.push(Nodo);
+    }
+    addEdgesAst(Edge:any){
+        this.EdgesAst.push(Edge)
     }
 }

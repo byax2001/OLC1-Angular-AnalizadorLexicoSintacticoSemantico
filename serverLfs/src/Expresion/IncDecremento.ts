@@ -92,4 +92,7 @@ export class IncDecremento extends expresion{
         }
         return result
     }
+    public ast(idPadre:string,NoHijo:number){
+
+    }
 }

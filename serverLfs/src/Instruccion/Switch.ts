@@ -80,5 +80,8 @@ export class Switch extends instruction{
         }
         return null;
     }
+    public ast(){
+        
+    }
 
 }

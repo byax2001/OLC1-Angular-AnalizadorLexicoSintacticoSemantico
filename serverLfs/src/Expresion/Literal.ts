@@ -55,7 +55,7 @@ export class Literal extends expresion {
     }
 
     public LimpiarString(cadenat:string):string{
-        cadenat=cadenat.slice(1,cadenat.length-1);
+        cadenat=cadenat.slice(1,cadenat.length-1); //QUITAR COMILLAS A LOS CHAR Y STRING 
         cadenat=cadenat.replace("\\\"","\"");
         cadenat=cadenat.replace("\\\\","\\");
         cadenat=cadenat.replace("\\n","\n");
@@ -63,5 +63,8 @@ export class Literal extends expresion {
         cadenat=cadenat.replace("\\t","\t");
         cadenat=cadenat.replace("\\\'","\'");
         return cadenat
+    }
+    public ast(idPadre:string,NoHijo:number){
+
     }
 }   

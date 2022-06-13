@@ -57,5 +57,8 @@ export class Dowhile extends instruction{
         } while (exp.value)
         return null;
     }
+    public ast(){
+        
+    }
 
 }

@@ -23,4 +23,7 @@ export class Return extends instruction{
         }
         return this;     
     }
+    public ast(){
+        
+    }
 }

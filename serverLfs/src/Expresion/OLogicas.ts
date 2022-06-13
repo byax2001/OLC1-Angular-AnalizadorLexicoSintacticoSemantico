@@ -67,4 +67,7 @@ export class OLogicas extends expresion{
         return result 
 
     }
+    public ast(idPadre:string,NoHijo:number){
+
+    }
 }

@@ -43,4 +43,7 @@ export class While extends instruction  {
         } while (exp.value)
         return null;
     }
+    public ast(){
+        
+    }
 }

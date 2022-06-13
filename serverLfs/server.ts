@@ -36,6 +36,7 @@ app.get('/retornoTexto', function (req:any,res:any){
 //TEXTO A ANALIZAR PARA EL AST 
 app.post('/setTextoAst', function(req:any,res:any){
     let textoAst=req.body.textoAst;
+    B_datos.getInstance().clearConsola();//LIMPIAR LA CONSOLA 
     try{
         const ast = parser.parse(textoAst);
         const env = new Environment(null);

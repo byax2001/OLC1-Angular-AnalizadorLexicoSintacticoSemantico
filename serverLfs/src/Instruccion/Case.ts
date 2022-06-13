@@ -33,5 +33,8 @@ export class Case extends instruction{
         let expresion=this.expresion.execute(env);
         return expresion;
     }
+    public ast(){
+        
+    }
 
 }

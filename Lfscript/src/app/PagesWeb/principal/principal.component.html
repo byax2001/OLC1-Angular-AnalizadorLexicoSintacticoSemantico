@@ -1,50 +1,53 @@
+<header><h1 class="text-center text-light">Lfscript </h1></header>
 <!--AREA DE BOTONES-->
-<div class="btn-group" id="OpcionesLfs">
-    <div class="dropdown btn btn-secondary">
-        Archivo
-        <div class="dropdown-content">
-          <!--LOS [(NGmODEL)] PERMITEN OBTENER Y ENVIAR INFORMACION A LOS ELEMENTOS DE UN FORMULARIO COMO TEXT AREA,INPUT, INPUT FILES,ETC. TAMBIEN PERMITEN OBTENER EL NOMBRE DE ARCHIVOS EN LOS INPUT FILES-->
-          <input class="form-control" type="file" id="formFile" (change)="cargarDocument($event.target)" [(ngModel)]="file" >
-          <a (click)="save()">Guardar</a>
-          <a (click)="saveAs()">Guardar Como</a>
-          <a (click)="addTab()">Crear</a>
-        </div>
-    </div>
-    <div class="dropdown btn btn-secondary">
-        Reportes
-        <div class="dropdown-content">
-          <a href="#">Reporte Ast</a>
-          <a href="#">Reporte Errores</a>
-          <a href="#">Reporte Ts</a>
-        </div>
-    </div>
-    <button type="button" class="btn btn-secondary" (click)="analizarEntrada()">Ejecutar</button>
-</div>
+<div class="container-fluid">
   
+<div class="btn-group" id="OpcionesLfs">
+  <div class="dropdown btn btn-secondary">
+    Archivo
+    <div class="dropdown-content">
+      <!--LOS [(NGmODEL)] PERMITEN OBTENER Y ENVIAR INFORMACION A LOS ELEMENTOS DE UN FORMULARIO COMO TEXT AREA,INPUT, INPUT FILES,ETC. TAMBIEN PERMITEN OBTENER EL NOMBRE DE ARCHIVOS EN LOS INPUT FILES-->
+      <input class="form-control" type="file" id="formFile" (change)="cargarDocument($event.target)" [(ngModel)]="file">
+      <a (click)="save()">Guardar</a>
+      <a (click)="saveAs()">Guardar Como</a>
+      <a (click)="addTab()">Crear</a>
+    </div>
+  </div>
+  <div class="dropdown btn btn-secondary">
+    Reportes
+    <div class="dropdown-content">
+      <a [routerLink]="['/Ast']" routerLinkActive="active">Reporte Ast</a>
+      <a [routerLink]="['/Errores']" routerLinkActive="active">Reporte Errores</a>
+      <a [routerLink]="['/Enviroments']" routerLinkActive="active">Reporte Ts</a>
+    </div>
+  </div>
+  <button type="button" class="btn btn-secondary" (click)="analizarEntrada()">Ejecutar</button>
+</div>
+
 <!--AREA DE VENTANAS PARA MOSTRAR INFORMACION-->
 <div class="container-fluid" id="AreaMostrarI">
   <div class="row">
     <div class="col-6" id="AOpenFiles">
-        <ul class="options" id="NamePest" #AreaPest>
-          <li id="option1" class="option option-active" (click)="updateIndex(0)" #p1>1</li>
-          <li id="option2" class="option" style="visibility: hidden;" (click)="updateIndex(1)" #p2>2</li>
-          <li id="option3" class="option" style="visibility: hidden;" (click)="updateIndex(2)" #p3>3</li>
-          <li id="option4" class="option" style="visibility: hidden;" (click)="updateIndex(3)" #p4>4</li>
-          <li id="option5" class="option" style="visibility: hidden;" (click)="updateIndex(4)" #p5>5</li>
-        </ul>
-      
-        <div class="contents" id="ContPest" #contPest>
-            <textarea  id="content1" class="tAreaW content content-active" [(ngModel)]="tTextArea1"></textarea>
-            <textarea  id="content2" class="tAreaW content" [(ngModel)]="tTextArea2"> </textarea>
-            <textarea  id="content3" class="tAreaW content" [(ngModel)]="tTextArea3"></textarea>
-            <textarea  id="content4" class="tAreaW content" [(ngModel)]="tTextArea4"></textarea>
-            <textarea  id="content5" class="tAreaW content" [(ngModel)]="tTextArea5"></textarea>
-        </div>
+      <ul class="options" id="NamePest" #AreaPest>
+        <li id="option1" class="option option-active" (click)="updateIndex(0)" #p1>1</li>
+        <li id="option2" class="option" style="visibility: hidden;" (click)="updateIndex(1)" #p2>2</li>
+        <li id="option3" class="option" style="visibility: hidden;" (click)="updateIndex(2)" #p3>3</li>
+        <li id="option4" class="option" style="visibility: hidden;" (click)="updateIndex(3)" #p4>4</li>
+        <li id="option5" class="option" style="visibility: hidden;" (click)="updateIndex(4)" #p5>5</li>
+      </ul>
+
+      <div class="contents" id="ContPest" #contPest>
+        <textarea id="content1" class="tAreaW content content-active" [(ngModel)]="tTextArea1"></textarea>
+        <textarea id="content2" class="tAreaW content" [(ngModel)]="tTextArea2"> </textarea>
+        <textarea id="content3" class="tAreaW content" [(ngModel)]="tTextArea3"></textarea>
+        <textarea id="content4" class="tAreaW content" [(ngModel)]="tTextArea4"></textarea>
+        <textarea id="content5" class="tAreaW content" [(ngModel)]="tTextArea5"></textarea>
+      </div>
     </div>
     <div class="col-1"></div>
-    <div class="col-5" >
-      <textarea class="tAreaW" id="consoleLfs" disabled ></textarea>
-    </div> 
+    <div class="col-5">
+      <textarea class="tAreaW" id="consoleLfs" [(ngModel)]="TextConsola" disabled></textarea>
+    </div>
+  </div>
 </div>
-
-
+</div>

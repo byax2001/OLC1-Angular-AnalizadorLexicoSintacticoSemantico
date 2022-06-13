@@ -220,4 +220,7 @@ export class ORelacionales extends expresion{
         }
         return result
     }
+    public ast(idPadre:string,NoHijo:number){
+
+    }
 }

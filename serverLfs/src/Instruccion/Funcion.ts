@@ -24,6 +24,9 @@ export class Funcion extends instruction{
             B_datos.getInstance().addError("Semantico","Intento de guardar una funcion ya existente",this.line,this.column); 
         }
     }
+    public ast(){
+        
+    }
         
 }
     

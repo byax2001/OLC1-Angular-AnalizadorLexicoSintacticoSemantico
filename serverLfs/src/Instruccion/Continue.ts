@@ -13,7 +13,7 @@ export class Continue extends instruction{
         //this.bloque instanceof instruction;
         return this;
     }
-
-
-
+    public ast(){
+        
+    }
 }

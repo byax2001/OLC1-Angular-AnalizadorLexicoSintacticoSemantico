@@ -53,6 +53,9 @@ export class If extends instruction{
         }
         return null;
     }
+    public ast(){
+        
+    }
 
 
 }

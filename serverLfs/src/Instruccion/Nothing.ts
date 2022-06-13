@@ -12,4 +12,7 @@ export class Nothing extends instruction{
     public execute(env:Environment){
         return this;
     }
+    public ast(){
+        
+    }
 }

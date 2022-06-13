@@ -25,4 +25,20 @@ export class BloqueInstSup extends instruction{
         }
         B_datos.getInstance().addEnviroments("Bloque Instrucciones",newEnviromet)
     }
+    public ast(idPadre:string,NoHijo:number){
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:"Instruction: Bloque Instruccion"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        let edge={
+            from:id,
+            to:id+""+0,
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+        for(let i=0; i<this.instrucciones.length; i++){
+            
+        }
+    }
 }

@@ -34,4 +34,7 @@ export class Metodo extends instruction{
         }
         
     }
+    public ast(){
+        
+    }
 }

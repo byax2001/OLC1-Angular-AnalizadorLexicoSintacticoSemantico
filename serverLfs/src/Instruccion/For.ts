@@ -57,4 +57,7 @@ export class For extends instruction{
             B_datos.getInstance().addEnviroments("For",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
         } while (exp.value);
     }
+    public ast(){
+        
+    }
 }
