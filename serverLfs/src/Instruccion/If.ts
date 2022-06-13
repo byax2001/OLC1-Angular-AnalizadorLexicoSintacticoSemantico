@@ -53,8 +53,61 @@ export class If extends instruction{
         }
         return null;
     }
-    public ast(){
+    public ast(idPadre:string,NoHijo:number){
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:"Instruction: If"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+    //NODO "IF"
+        nodo={
+            id:id+""+0,
+            label:"if"
+        }
+        let edge={
+            from:id,
+            to:id+""+0
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        //INSTRUCCIONES IF
         
+        for(let i=0; i<this.instruction.length; i++){
+            let edge={
+                from:id+"0",
+                to:id+"0"+i,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+        }
+        //NODOS INSTRUCCIONES
+        for(let i=0; i<this.instruction.length; i++){
+            this.instruction[i].ast(id+"0",i);
+            
+        }
+    //"ELSE" 
+        nodo={
+            id:id+""+1,
+            label:"else"
+        }
+        edge={
+            from:id,
+            to:id+""+1
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        //INSTRUCCIONES ELSE
+        for(let i=0; i<this.instruction.length; i++){
+            let edge={
+                from:id+"1",
+                to:id+"1"+i,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+        }
+        //NODOS INSTRUCCIONES
+        for(let i=0; i<this.instruction.length; i++){
+            this.instruction[i].ast(id+"1",i);
+        } 
     }
 
 

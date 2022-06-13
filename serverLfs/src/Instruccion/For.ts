@@ -57,7 +57,49 @@ export class For extends instruction{
             B_datos.getInstance().addEnviroments("For",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
         } while (exp.value);
     }
-    public ast(){
-        
+    public ast(idPadre:string,NoHijo:number){
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:"Instruction: For"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        //ASIGNACION
+        let edge={
+            from:id,
+            to:id+""+0,
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+        this.AsigDec.ast(id,0);
+        //EXPRESION
+        edge={
+            from:id,
+            to:id+""+1,
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+        this.expresion.ast(id,1);
+        //INCREMENTO/DECREMENTO
+        edge={
+            from:id,
+            to:id+""+2,
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+        this.incDec.ast(id,2);
+        //INSTRUCCIONES
+        let n=3
+        for(let i=0; i<this.bloqueInst.length; i++){
+            let edge={
+                from:id,
+                to:id+""+n,
+            }
+            n++;
+            B_datos.getInstance().addEdgesAst(edge);
+        }
+        //NODOS INSTRUCCIONES
+        n=3;
+        for(let i=0; i<this.bloqueInst.length; i++){
+            this.bloqueInst[i].ast(id,n);
+            n++;
+        }
     }
 }

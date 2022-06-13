@@ -124,10 +124,12 @@ export class Declaracion extends instruction{
         B_datos.getInstance().addNodosAst(nodo);
         B_datos.getInstance().addEdgesAst(edge);
         //EXPRESION
-        edge={
-            from:id,
-            to:id+""+3
+        if(expresion!==null){
+            edge={
+                from:id,
+                to:id+""+3
+            }
+            this.expresion.ast(id,3);
         }
-        this.expresion.ast(id,3);
     }
 }
