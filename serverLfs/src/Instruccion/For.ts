@@ -37,22 +37,27 @@ export class For extends instruction{
                         } else if (Instruction instanceof Return) {
                             //REPORTAR ERROR 
                             B_datos.getInstance().addError("Semantico", "Sentencia Return en un for", this.line, this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                            B_datos.getInstance().addEnviroments("For",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                             return null;
                         }
                         Instruction.execute(newEnv);
                     }
+                    B_datos.getInstance().addEnviroments("For",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 }
             } else {
                 //EXPRESION DA ERROR EN FOR DETENER
                 B_datos.getInstance().addError("Semantico", "Expresion genera un error en el for", this.line, this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                B_datos.getInstance().addEnviroments("For",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 return null;
             }
             inc_dec = this.incDec.execute(env);
             if (inc_dec.type === Type.error) {
                 //INCREMENTO RETORNA UN ERROR DETENER 
                 B_datos.getInstance().addError("Semantico", "Incremento genera un error en el for", this.line, this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                B_datos.getInstance().addEnviroments("For",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 return null
             }
+            B_datos.getInstance().addEnviroments("For",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
         } while (exp.value);
     }
 }

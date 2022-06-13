@@ -55,6 +55,7 @@ export class Switch extends instruction{
                         } else {
                             //REPORTAR ERROR VINO UN CONTINUE O UN RETURN 
                             B_datos.getInstance().addError("Semantico","Salto de sentencia incorrecto para el switch",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                            B_datos.getInstance().addEnviroments("Switch",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                             return null;
                         }
                     }
@@ -65,11 +66,13 @@ export class Switch extends instruction{
                         } else if (instDefault instanceof Return || instDefault instanceof Continue) {
                             //REPORTAR ERROR VINO UN CONTINUE O UN RETURN 
                             B_datos.getInstance().addError("Semantico","Salto de sentencia incorrecto para el switch",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                            B_datos.getInstance().addEnviroments("Switch",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                             return null;
                         } else {
                             instDefault.execute(newEnv);
                         }
                     }
+                    B_datos.getInstance().addEnviroments("Switch",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 }
             }
         }else{

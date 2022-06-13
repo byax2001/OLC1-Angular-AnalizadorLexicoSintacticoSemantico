@@ -1,6 +1,15 @@
+import { B_datos } from "./src/BaseDatos/B_datos";
+import { Environment } from "./src/Symbols/Environment";
 const express =require('express');
 const morgan= require('morgan');
 const cors=require('cors')
+//IMPORTACIONES PARA EL PARSER
+
+
+
+const fs = require('fs');
+const parser = require('./src/Interprete/grammar.js');
+
 
 
 var app=express();
@@ -27,6 +36,23 @@ app.get('/retornoTexto', function (req:any,res:any){
 //TEXTO A ANALIZAR PARA EL AST 
 app.post('/setTextoAst', function(req:any,res:any){
     let textoAst=req.body.textoAst;
-  
-    res.json({msg:textoAst})
+    try{
+        const ast = parser.parse(textoAst);
+        const env = new Environment(null);
+        
+        for(const instruction of ast){
+            try{
+                instruction.execute(env);
+    
+            }catch (error){
+                console.log(error);
+            }
+        }
+        B_datos.getInstance().addEnviroments("Principal",env);//SE AÑANDIO ESTA BASE DE DATOS A LA LISTA, recorrer esta lista al revez
+        
+    }catch(error){
+        console.log(error);
+    }
+    let consola= B_datos.getInstance().getConsola();
+    res.json({consola:consola});
 })

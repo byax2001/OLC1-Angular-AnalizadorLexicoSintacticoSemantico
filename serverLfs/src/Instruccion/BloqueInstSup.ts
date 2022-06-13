@@ -21,7 +21,8 @@ export class BloqueInstSup extends instruction{
                 console.log(e)
                 B_datos.getInstance().addError("Semantico","Instruccion fallida en bloque de instrucciones",this.line,this.column)
             }
-            
+           
+            B_datos.getInstance().addEnviroments("Bloque Instrucciones",newEnviromet)
         }
     }
 }

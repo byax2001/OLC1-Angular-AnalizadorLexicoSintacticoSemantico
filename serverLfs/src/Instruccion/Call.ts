@@ -34,17 +34,18 @@ export class Call extends instruction{
                 }
                 for(let Instruccion of instrucciones){
                     if(Instruccion instanceof Return){
-                 
                         let result= Instruccion.execute(newEnv);
                         if(result.expR.value!==undefined){
                             //ERROR ESTA INTENTANDO RETORNAR UN VALOR 
                             B_datos.getInstance().addError("Semantico","Intento de retornar un valor en un metodo",this.line,this.column); 
+                            B_datos.getInstance().addEnviroments("Metodo",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                             return resultR 
                         }
                         return resultR ;
                     }
                     Instruccion.execute(newEnv);
                 }
+                B_datos.getInstance().addEnviroments("Metodo",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
             }else{
                 //FUNCIONES
                 let newEnv= new Environment(env); //Nuevo Enviroment
@@ -74,19 +75,23 @@ export class Call extends instruction{
                             }else{
                                 if(result.expR.type===MeFun.type){
                                     resultR={value:result.expR.value,type:result.expR.type}
+                                    B_datos.getInstance().addEnviroments("Funcion",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                                     return resultR
                                 }else{
                                     //VALOR DE RETORNO NO IGUAL AL DECLARADO EN LA FUNCION
                                     B_datos.getInstance().addError("Semantico","Valor de retorno no igual al declarado en la funcion",this.line,this.column); 
+                                    B_datos.getInstance().addEnviroments("Funcion",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                                     return resultR
                                 }
                             }
                         }
                         Instruccion.execute(newEnv);
                     }
+                    B_datos.getInstance().addEnviroments("Funcion",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 }else{
                     //REPORTAR ERROR NO SE ESTA RETORNANDO NADA 
                     B_datos.getInstance().addError("Semantico","No se esta retornando nada en la funcion",this.line,this.column); 
+                    B_datos.getInstance().addEnviroments("Funcion",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 }
                 
             }

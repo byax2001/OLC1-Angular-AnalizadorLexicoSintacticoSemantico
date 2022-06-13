@@ -129,8 +129,8 @@ export class PrincipalComponent implements OnInit {
   }
     //==========================================EJECUTAR=====================================
   analizarEntrada(){
-    let textAst=this.TextAnalizar();
-    this.clientS.setDataTAst({textoAst:textAst}).subscribe(
+    let textAst=this.TextAnalizar(); //SE PROCEDE A OBTENER EL STRING DE LA VENTANA ABIERTA
+    this.clientS.setDataTAst({textoAst:textAst}).subscribe( //SE MANDA AL SERVICIO EN FORMA DE JSON EL STRING ENCERRADO EN UNA ETIQUETA TEXTOAST
       (res)=>{
         console.log("Fue realizado con exito")
       },
@@ -155,7 +155,7 @@ export class PrincipalComponent implements OnInit {
     return textAst;
   }
 
-  
+  //MODELO PARA PEDIR Y RECIBIR INFORMACION ==================================================================
   getData(){
     this.clientS.getData().subscribe(
       (res)=>{

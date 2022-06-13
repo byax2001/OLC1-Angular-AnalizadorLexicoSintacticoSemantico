@@ -3,11 +3,12 @@ import { Environment } from "../Symbols/Environment";
 export class B_datos{
     private static instance:B_datos;
     Errores:any[];
-    Enviroments:Environment[];
-
+    Enviroments:any[];
+    Consola:string[];
     private constructor(){
         this.Errores=[]
         this.Enviroments=[]
+        this.Consola=[]
     }
     
     public static getInstance():B_datos{
@@ -33,12 +34,28 @@ export class B_datos{
     }
     //ADD ENVIROMENTS
 
-    addEnviroments(env:Environment){
-        this.Enviroments.push(env);
+    addEnviroments(nombreEnv:string,env:Environment){
+        this.Enviroments.push([nombreEnv,env]);
     }
 
     //OBTENER LISTA DE ENVIROMENTS
     getListEnviroments():Environment[]{
         return this.Enviroments;
+    }
+    //PRINT CONSOLA
+    printConsola(print:string){
+        if(this.Consola.length!==0){
+            this.Consola[this.Consola.length-1]=this.Consola[this.Consola.length-1]+" "+print;
+        }else{
+            this.Consola.push(print);
+        }
+    }
+    //PRINTLN CONSOLA
+    printlnConsola(print:string){
+        this.Consola.push(print);
+    }
+    //GET CONSOLA
+    getConsola():string[]{
+        return this.Consola;
     }
 }

@@ -29,6 +29,7 @@ export class Dowhile extends instruction{
             }
             Instruccion.execute(newEnv);
         }
+        B_datos.getInstance().addEnviroments("doWhile",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
         let exp;
         do {
             exp = this.expresion.execute(env);
@@ -47,9 +48,11 @@ export class Dowhile extends instruction{
                         this.bloqueInst[i].execute(newEnv);
                     }
                 }
+                B_datos.getInstance().addEnviroments("doWhile",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
             }else{
                 //SI SI GENERA UN ERROR SALIRSE DE LA EJECUCION Y NO HACER NADA 
-                B_datos.getInstance().addError("Semantico","Expresion genera error en el Do While",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                B_datos.getInstance().addError("Semantico","Expresion genera error en el Do While",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS4
+                B_datos.getInstance().addEnviroments("doWhile",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 return null; 
             }
         } while (exp.value)
