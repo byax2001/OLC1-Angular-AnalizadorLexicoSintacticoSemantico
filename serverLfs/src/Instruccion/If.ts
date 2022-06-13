@@ -3,6 +3,9 @@ import { instruction } from "../Abstract/instruction";
 import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
+import { Break } from "./Break";
+import { Continue } from "./Continue";
+import { Return } from "./Return";
 
 export class If extends instruction{
 
@@ -20,15 +23,29 @@ export class If extends instruction{
     public execute(env: Environment) {
         let result = this.expresion.execute(env);
         if (result.type !== Type.error) {
+            let newEnviromet= new Environment(env);
+
             if (result.value === true) {
                 for (let i = 0; i < this.instruction.length; i++) {
-                    const res = this.instruction[i].execute(env);
+                    if(this.instruction[i] instanceof Return){
+                        return null; 
+                    }else if(this.instruction[i] instanceof Break || this.instruction[i] instanceof Continue){
+                        //REPORTAR ERROR 
+                        B_datos.getInstance().addError("Semantico","Sentencia Break o Continue en If",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                        return null; 
 
+                    }
+                    const res = this.instruction[i].execute(newEnviromet);
                 }
             } else {
 
                 for (let i = 0; i < this.instruction2.length; i++) {
-                    const res = this.instruction2[i].execute(env);
+                    if(this.instruction2[i] instanceof Return || this.instruction2[i] instanceof Break || this.instruction2[i] instanceof Continue){
+                        //REPORTAR ERROR 
+                        B_datos.getInstance().addError("Semantico","Sentencia Break, Return o Continue en If",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                        return null; 
+                    }
+                    const res = this.instruction2[i].execute(newEnviromet);
                 }
             }
         } else {

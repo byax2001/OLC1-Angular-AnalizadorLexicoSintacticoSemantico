@@ -21,7 +21,7 @@ export class Metodo extends instruction{
             //INGRESAR NUEVO METODO
             env.guardarSimboloMF(true,Type.VOID,this.id,[this.parametros,this.instrucciones],this.line,this.column,this.parametros.length);
         }else{
-            let metodo=env.getSimbolo(this.id);
+            let metodo=env.getFunMetodo(this.id,this.parametros.length);
             if(metodo.type==Type.VOID){ //SI ES TIPO VOID ENTONCES SI ES UN METODO
                 if(metodo.nParametros!=this.parametros.length){ //nparamteros distintos, distintos metodos
                     //INGREAR NUEVO METODO 

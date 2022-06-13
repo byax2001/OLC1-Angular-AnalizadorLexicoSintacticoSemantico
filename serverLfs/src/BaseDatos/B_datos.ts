@@ -1,8 +1,13 @@
+import { Environment } from "../Symbols/Environment";
+
 export class B_datos{
     private static instance:B_datos;
     Errores:any[];
+    Enviroments:Environment[];
+
     private constructor(){
         this.Errores=[]
+        this.Enviroments=[]
     }
     
     public static getInstance():B_datos{
@@ -26,5 +31,14 @@ export class B_datos{
     getListError():any[]{
         return this.Errores
     }
+    //ADD ENVIROMENTS
 
+    addEnviroments(env:Environment){
+        this.Enviroments.push(env);
+    }
+
+    //OBTENER LISTA DE ENVIROMENTS
+    getListEnviroments():Environment[]{
+        return this.Enviroments;
+    }
 }

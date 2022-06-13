@@ -23,7 +23,7 @@ export class Declaracion extends instruction{
             //SI SUCEDE UN ERROR CON LA EXPRESION O SI ESTA ES ERRONEA
             if(exp.type!==Type.error){ 
                 this.id.forEach((id)=>{
-                    let existe=env.existeSimbolo(id);
+                    let existe=env.existeSimDeclaracion(id);
                     if(existe==true){
                         //ERROR YA FUE DECLARADA ESTA VARIABLE CON ANTERIORIDAD
                         B_datos.getInstance().addError("Semantico","Intento de declarar 2 veces una variable",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS

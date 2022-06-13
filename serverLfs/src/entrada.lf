@@ -20,6 +20,7 @@
         print("Honduras");
     }else if(true){
         print("EEUU");
+        print(b);
     }else{
         print("El salvador");
     }

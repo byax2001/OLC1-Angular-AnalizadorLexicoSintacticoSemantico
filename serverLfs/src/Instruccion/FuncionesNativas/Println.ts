@@ -11,7 +11,7 @@ export class Println extends instruction{
         super(line,column);
     }
     public execute(env:Environment){
-        if(this.expresion!=null){
+        if(this.expresion!==null){
             let exp=this.expresion.execute(env);
             console.log(">>"+exp.value+"\n");
         }else{

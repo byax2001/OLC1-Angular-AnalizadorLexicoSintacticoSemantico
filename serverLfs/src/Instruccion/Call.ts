@@ -24,18 +24,18 @@ export class Call extends instruction{
         let MeFun=env.getFunMetodo(this.idMF,this.paramsCall.length);
         if(MeFun.type!=Type.error){//SI SE ENCONTRO LA FUNCION O METODO SE PROCEDE A REALIZAR
             if(MeFun.type===Type.VOID){
-               
+                let newEnv= new Environment(env); //Nuevo Enviroment
                 //METODOS
                 let parametrosMf=MeFun.value[0];
                 let instrucciones= MeFun.value[1];
                 for(let i=0;i<this.paramsCall.length;i++){
                     parametrosMf[i].changeExpresion(this.paramsCall[i]); //ENVIROMENT ANTERIOR
-                    parametrosMf[i].execute(env); //NUEVO ENVIROMENT
+                    parametrosMf[i].execute(newEnv); //NUEVO ENVIROMENT
                 }
                 for(let Instruccion of instrucciones){
                     if(Instruccion instanceof Return){
                  
-                        let result= Instruccion.execute(env);
+                        let result= Instruccion.execute(newEnv);
                         if(result.expR.value!==undefined){
                             //ERROR ESTA INTENTANDO RETORNAR UN VALOR 
                             B_datos.getInstance().addError("Semantico","Intento de retornar un valor en un metodo",this.line,this.column); 
@@ -43,19 +43,17 @@ export class Call extends instruction{
                         }
                         return resultR ;
                     }
-                    Instruccion.execute(env);
+                    Instruccion.execute(newEnv);
                 }
             }else{
                 //FUNCIONES
+                let newEnv= new Environment(env); //Nuevo Enviroment
                 let parametrosMf=MeFun.value[0];
                 let instrucciones= MeFun.value[1];
                 //PARAMETROS DE LLAMADA
                 for(let i=0;i<this.paramsCall.length;i++){
-                    console.log(this.paramsCall);
-                    console.log(parametrosMf);
                     parametrosMf[i].changeExpresion(this.paramsCall[i]); //ENVIROMENT ANTERIOR
-                    console.log(parametrosMf);
-                    parametrosMf[i].execute(env); //NUEVO ENVIROMENT
+                    parametrosMf[i].execute(newEnv); //NUEVO ENVIROMENT
                 }
                
                 //INSTRUCCIONES 
@@ -68,7 +66,7 @@ export class Call extends instruction{
                 if(existeR){
                     for(let Instruccion of instrucciones){
                         if(Instruccion instanceof Return){
-                            let result= Instruccion.execute(env);
+                            let result= Instruccion.execute(newEnv);
                             if(result.expR.value===undefined){
                                 //ERROR NO ESTA RETORNANDO UN VALOR 
                                 B_datos.getInstance().addError("Semantico","No se esta retornando nada en la funcion",this.line,this.column); 
@@ -83,9 +81,8 @@ export class Call extends instruction{
                                     return resultR
                                 }
                             }
-                            break;
                         }
-                        Instruccion.execute(env);
+                        Instruccion.execute(newEnv);
                     }
                 }else{
                     //REPORTAR ERROR NO SE ESTA RETORNANDO NADA 

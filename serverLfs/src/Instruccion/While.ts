@@ -3,6 +3,9 @@ import { instruction } from "../Abstract/instruction";
 import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
+import { Break } from "./Break";
+import { Continue } from "./Continue";
+import { Return } from "./Return";
 
 export class While extends instruction  {
     constructor(
@@ -16,11 +19,19 @@ export class While extends instruction  {
     public execute(env: Environment) {
         let exp;
         do {
-            exp = this.expresion.execute(env); 
+            exp = this.expresion.execute(env); //ENVIROMENT ANTERIOR
+            let newEnv= new Environment(env); //Nuevo Enviroment
             if (exp.type !== Type.error) {
                 if (exp.value === true) {
                     for (let i = 0; i < this.bloqueInst.length; i++) {
-                        this.bloqueInst[i].execute(env);
+                        if(this.bloqueInst[i] instanceof Break ){
+                            return null; 
+                        }else if(this.bloqueInst[i] instanceof Return || this.bloqueInst[i] instanceof Continue){
+                            //REPORTAR ERROR 
+                            B_datos.getInstance().addError("Semantico","Sentencia Return o Continue en un While",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                            return null; 
+                        }
+                        this.bloqueInst[i].execute(newEnv); //CON EL NUEVO ENVIROMENT
                     }
                 }
             } else {

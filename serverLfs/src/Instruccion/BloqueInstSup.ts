@@ -13,8 +13,9 @@ export class BloqueInstSup extends instruction{
 
     public execute(env:Environment){
         for(let Instruccion of this.instrucciones){
+            let newEnviromet= new Environment(env);
             try{
-                Instruccion.execute(env);
+                Instruccion.execute(newEnviromet);
             }
             catch(e){
                 console.log(e)

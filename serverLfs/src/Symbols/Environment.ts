@@ -20,6 +20,10 @@ export class Environment{
         this.variables.set(id,new Symbol(constante,type,id,value,linea,column,nParametros));
         return true 
     }
+    public existeSimDeclaracion(id:string):boolean{
+        return this.variables.has(id);
+    }
+
     public existeSimbolo(id:string):boolean{
         let envActual:Environment=this;
         let existe=this.variables.has(id);

@@ -23,8 +23,6 @@ export class Funcion extends instruction{
         }else{
             B_datos.getInstance().addError("Semantico","Intento de guardar una funcion ya existente",this.line,this.column); 
         }
-
-        console.log(env);
     }
         
 }

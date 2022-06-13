@@ -46,8 +46,9 @@ export class Switch extends instruction{
                 }
             }
             for (let x = indexCase; x < this.caselist.length; x++) {
+                let newEnv= new Environment(env); //Nuevo Enviroment
                 if (this.caselist[x] instanceof Case) { //SI ES UN TIPO CASE 
-                    let caseJstament = this.caselist[x].execute(env);//EJECUTARA TODAS LAS INSTRUCCIONES DE ESTA CASE
+                    let caseJstament = this.caselist[x].execute(newEnv);//EJECUTARA TODAS LAS INSTRUCCIONES DE ESTA CASE
                     if (caseJstament != null) { //SI NO RETURNA UN NULL ES QUE HABIA UN SALTO DE SENTENCIA
                         if (caseJstament instanceof Break) {
                             break;
@@ -66,7 +67,7 @@ export class Switch extends instruction{
                             B_datos.getInstance().addError("Semantico","Salto de sentencia incorrecto para el switch",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
                             return null;
                         } else {
-                            instDefault.execute(env);
+                            instDefault.execute(newEnv);
                         }
                     }
                 }
