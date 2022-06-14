@@ -24,9 +24,10 @@ export class For extends instruction{
         let inc_dec;
         let exp;
         do {
-            exp = this.expresion.execute(env);//ANTERIOR ENVIROMENT
-            newEnv= new Environment(env); //Nuevo Enviroment
-            if (exp.type !== Type.error) {
+            let newEnv2= new Environment(newEnv); //Nuevo Enviroment procedente del anterior nuevo, este se pierde no importa
+            exp = this.expresion.execute(newEnv);//ANTERIOR ENVIROMENT
+            
+            if (exp.type !== Type.error && exp.type===Type.BOOLEAN) {
                 //SI LA EXPRESION NO DA UN ERROR ENTONCES SEGUIR
                 if (exp.value) { //SI SIGUE SIENDO VERDADERA LA CONDICION SEGUIR ITERANDO
                     for (let Instruction of this.bloqueInst) {
@@ -40,15 +41,15 @@ export class For extends instruction{
                             B_datos.getInstance().addEnviroments("For",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                             return null;
                         }
-                        Instruction.execute(newEnv);
+                        Instruction.execute(newEnv2);
                     }
                 }
             } else {
                 //EXPRESION DA ERROR EN FOR DETENER
-                B_datos.getInstance().addError("Semantico", "Expresion genera un error en el for", this.line, this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                B_datos.getInstance().addError("Semantico", "Comparacion genera un error en el for, el resultado debe de ser booleano", this.line, this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
                 return null;
             }
-            inc_dec = this.incDec.execute(env);
+            inc_dec = this.incDec.execute(newEnv);
             if (inc_dec.type === Type.error) {
                 //INCREMENTO RETORNA UN ERROR DETENER 
                 B_datos.getInstance().addError("Semantico", "Incremento genera un error en el for", this.line, this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS

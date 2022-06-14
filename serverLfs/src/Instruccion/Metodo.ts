@@ -34,7 +34,68 @@ export class Metodo extends instruction{
         }
         
     }
-    public ast(){
+    public ast(idPadre:string,NoHijo:number){
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:"Instruction: Declaracion de Funcion"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        //TIPO
+        let tipo="void"
+        nodo={
+            id:id+""+0,
+            label:tipo
+        }
+        let edge={
+            from:id,
+            to:id+""+0
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        //ID
+        nodo={
+            id:id+""+1,
+            label:this.id
+        }
+        edge={
+            from:id,
+            to:id+""+1
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        //PARAMETROS
+        let n=2
+        for(let i=0; i<this.parametros.length; i++){
+            let edge={
+                from:id,
+                to:id+""+n,
+            }
+            n++;
+            B_datos.getInstance().addEdgesAst(edge);
+        }
+        //NODOS INSTRUCCIONES
+        n=2;
+        for(let i=0; i<this.parametros.length; i++){
+            this.parametros[i].ast(id,n);
+            n++;
+        }
+        //INSTRUCCIONES
+        n=3
+        for(let i=0; i<this.instrucciones.length; i++){
+            let edge={
+                from:id,
+                to:id+""+n,
+            }
+            n++;
+            B_datos.getInstance().addEdgesAst(edge);
+        }
+        //NODOS INSTRUCCIONES
+        n=3;
+        for(let i=0; i<this.instrucciones.length; i++){
+            this.instrucciones[i].ast(id,n);
+            n++;
+        }
         
     }
 }

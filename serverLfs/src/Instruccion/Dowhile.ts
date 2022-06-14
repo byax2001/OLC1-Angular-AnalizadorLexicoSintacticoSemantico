@@ -33,7 +33,7 @@ export class Dowhile extends instruction{
         do {
             exp = this.expresion.execute(env);
             newEnv= new Environment(env); //Nuevo Enviroment
-            if (exp.type !== Type.error) {
+            if (exp.type !== Type.error && exp.type===Type.BOOLEAN) {
                 //SI LA EXPRESION NO GENERA ALGUN ERROR OPERAR NORMAL
                 if (exp.value === true) {
                     for (let i = 0; i < this.bloqueInst.length; i++) {
@@ -50,7 +50,7 @@ export class Dowhile extends instruction{
                 B_datos.getInstance().addEnviroments("doWhile",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
             }else{
                 //SI SI GENERA UN ERROR SALIRSE DE LA EJECUCION Y NO HACER NADA 
-                B_datos.getInstance().addError("Semantico","Expresion genera error en el Do While",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS4
+                B_datos.getInstance().addError("Semantico","Expresion genera error en el Do While, el resultado debe de ser booleano",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS4
                 B_datos.getInstance().addEnviroments("doWhile",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 return null; 
             }

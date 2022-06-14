@@ -21,7 +21,7 @@ export class While extends instruction  {
         do {
             exp = this.expresion.execute(env); //ENVIROMENT ANTERIOR
             let newEnv= new Environment(env); //Nuevo Enviroment
-            if (exp.type !== Type.error) {
+            if (exp.type !== Type.error && exp.type===Type.BOOLEAN) {
                 if (exp.value === true) {
                     for (let i = 0; i < this.bloqueInst.length; i++) {
                         if(this.bloqueInst[i] instanceof Break ){
@@ -37,7 +37,7 @@ export class While extends instruction  {
                 B_datos.getInstance().addEnviroments("While",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
             } else {
                 //SI SI GENERA UN ERROR SALIRSE DE LA EJECUCION Y NO HACER NADA 
-                B_datos.getInstance().addError("Semantico", "Expresion genera error en el While", this.line, this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+                B_datos.getInstance().addError("Semantico", "Expresion genera error en el While, el resultado debe de ser booleano", this.line, this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
                 return null;
             }
         } while (exp.value)

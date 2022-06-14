@@ -22,7 +22,8 @@ export class If extends instruction{
 
     public execute(env: Environment) {
         let result = this.expresion.execute(env);
-        if (result.type !== Type.error) {
+        //NO TIENE QUE GENERAR ERRORES LA EXPRESION Y TIENE QUE SER POR FUERZAS UN TIPO BOOLEANO
+        if (result.type !== Type.error && result.type === Type.BOOLEAN) {
             let newEnviromet= new Environment(env);
             if (result.value === true) {
                 for (let i = 0; i < this.instruction.length; i++) {
@@ -48,7 +49,7 @@ export class If extends instruction{
             }
         } else {
             //EXPRESION GENERA ERROR EN EL IF 
-            B_datos.getInstance().addError("Semantico","Expresion genera un error en el if",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
+            B_datos.getInstance().addError("Semantico","Expresion genera un error en el if, el resultado debe de ser booleano",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
             return null
         }
         return null;

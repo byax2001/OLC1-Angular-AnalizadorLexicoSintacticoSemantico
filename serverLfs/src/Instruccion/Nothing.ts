@@ -1,4 +1,5 @@
 import { instruction } from "../Abstract/instruction";
+import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
 
 export class Nothing extends instruction{
@@ -12,7 +13,12 @@ export class Nothing extends instruction{
     public execute(env:Environment){
         return this;
     }
-    public ast(){
-        
+    public ast(idPadre:string,NoHijo:number){
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:"(Espacio sin instrucciones)"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
     }
 }
