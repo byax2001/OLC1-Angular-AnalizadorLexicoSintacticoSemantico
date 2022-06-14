@@ -22,8 +22,9 @@ export class Print extends instruction{
         }
     }
 
-    public ast(idPadre: string, NoHijo: number) {
-        let id = idPadre + "" + NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo = {
             id: id,
             label: "Instruction:\nPrint"
@@ -32,10 +33,10 @@ export class Print extends instruction{
         if (this.expresion !== null) {
             let edge = {
                 from: id,
-                to: id + "" + 0,
+                to:`${id}0N${(nivel+1)}`
             }
             B_datos.getInstance().addEdgesAst(edge);
-            this.expresion.ast(id, 0);//NODO HIJO: EXPRESION
+            this.expresion.ast(id, 0,nivel);//NODO HIJO: EXPRESION
         }
     }
 }

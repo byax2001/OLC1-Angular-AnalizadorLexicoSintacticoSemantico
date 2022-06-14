@@ -101,34 +101,39 @@ export class Call extends instruction{
         }
         
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
-        let nodo={
-            id:id,
-            label:"Instruction: Call"
+    public ast(idPadre: string, NoHijo: number, NivelPadre: number) {
+        let nivel = NivelPadre + 1; //NIVEL NODO ACTUAL
+        let nivelHijo = nivel + 1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
+        let nodo = {
+            id: id,
+            label: "Instruction:\nCall"
         }
-    //NODOS y EDGYS: ID    Se puede agregar de si es metodo a funcion en el label
-        let nodoId={
-            id:id+""+0, //Padre+1
-            label:this.idMF
-        }
-        B_datos.getInstance().addNodosAst(nodoId);
-        let edge={
-            from:id,
-            to:id+""+0,
-        }
-        B_datos.getInstance().addEdgesAst(edge);
-    //PARAMETROS 
-        nodoId={
-            id:id+""+1, //Padre+1
-            label:this.paramsCall.toString()
+        B_datos.getInstance().addNodosAst(nodo);
+        //NODOS y EDGYS: ID    Se puede agregar de si es metodo a funcion en el label
+        let nodoId = {
+            id: `${id}${0}N${nivelHijo}`, //Padre+1
+            label: this.idMF
         }
         B_datos.getInstance().addNodosAst(nodoId);
-        edge={
-            from:id,
-            to:id+""+1,
+        let edge = {
+            from: id,
+            to: `${id}${0}N${nivelHijo}`
         }
         B_datos.getInstance().addEdgesAst(edge);
+        //PARAMETROS 
+        if (this.paramsCall.length!==0) {
+            nodoId = {
+                id: `${id}${1}N${nivelHijo}`, //Padre+1
+                label: this.paramsCall.toString()
+            }
+            B_datos.getInstance().addNodosAst(nodoId);
+            edge = {
+                from: id,
+                to: `${id}${1}N${nivelHijo}`,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+        }
     }
 
 }

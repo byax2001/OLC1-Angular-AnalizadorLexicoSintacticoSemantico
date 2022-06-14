@@ -43,20 +43,22 @@ export class While extends instruction  {
         } while (exp.value)
         return null;
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo={
             id:id,
             label:"Instruction:\nWhile"
         }
         B_datos.getInstance().addNodosAst(nodo);
         //NODO CON LA EXPRESION
-        this.expresion.ast(id,0);
+        this.expresion.ast(id,0,nivel);
         
         //EDGE CON LA EXRESION
         let edge={
             from:id,
-            to:id+""+0,
+            to:`${id}${0}N${nivelHijo}`,
         }
         B_datos.getInstance().addEdgesAst(edge);
         //EDGES CON INSTRUCCIONES
@@ -65,7 +67,7 @@ export class While extends instruction  {
         for(let i=0; i<this.bloqueInst.length; i++){
             let edge={
                 from:id,
-                to:id+""+n,
+                to:`${id}${n}N${nivelHijo}`,
             }
             n++;
             B_datos.getInstance().addEdgesAst(edge);
@@ -73,7 +75,7 @@ export class While extends instruction  {
         n=1;
         //NODOS INSTRUCCIONES
         for(let i=0; i<this.bloqueInst.length; i++){
-            this.bloqueInst[i].ast(id,n);
+            this.bloqueInst[i].ast(id,n,nivel);
             n++;
         }
     }

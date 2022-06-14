@@ -34,32 +34,37 @@ export class Case extends instruction{
         let expresion=this.expresion.execute(env);
         return expresion;
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
-
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo={
             id:id,
-            label:"Instruction: Case"
+            label:"Instruction:\nCase"
         }
         B_datos.getInstance().addNodosAst(nodo);
         //EXPRESION
-        this.expresion.ast(id,0);
+        this.expresion.ast(id,0,nivel);
         let edge={
             from:id,
-            to:id+""+0,
+            to:`${id}${0}N${nivelHijo}`,
         }
         B_datos.getInstance().addEdgesAst(edge);
         //INSTRUCCIONES
+        let n=1;
         for(let i=0; i<this.instruccion.length; i++){
             let edge={
                 from:id,
-                to:id+""+(i+1),
+                to:`${id}${n}N${nivelHijo}`,
             }
             B_datos.getInstance().addEdgesAst(edge);
+            n++;
         }
+        n=1;
         //NODOS INSTRUCCIONES
         for(let i=0; i<this.instruccion.length; i++){
-            this.instruccion[i].ast(id,(i+1));
+            this.instruccion[i].ast(id,n,nivel);
+            n++;
         }
     }
 

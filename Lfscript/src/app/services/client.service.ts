@@ -26,8 +26,6 @@ export class ClientService {
     this.ast=ast;
   }
   getAst():any[]{
-    console.log("MANANDNASFSad")
-    console.log(this.ast)
     return this.ast
   }
 }

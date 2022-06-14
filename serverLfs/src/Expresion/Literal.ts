@@ -64,8 +64,10 @@ export class Literal extends expresion {
         cadenat=cadenat.replace("\\\'","\'");
         return cadenat
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo={
             id:id,
             label:`Literal:\n ${this.value}`

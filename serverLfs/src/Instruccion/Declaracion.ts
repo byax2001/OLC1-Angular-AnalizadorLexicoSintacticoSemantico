@@ -71,8 +71,10 @@ export class Declaracion extends instruction{
     public changeExpresion(expresion:expresion){
         this.expresion=expresion
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo={
             id:id,
             label:"Instruction:\n Declaracion"
@@ -80,12 +82,12 @@ export class Declaracion extends instruction{
         B_datos.getInstance().addNodosAst(nodo);
         //CONSTANTE
         nodo={
-            id:id+""+0,
+            id:`${id}${0}N${nivelHijo}`,
             label:"Constante:\n"+String(this.constante)
         }
         let edge={
             from:id,
-            to:id+""+0
+            to:`${id}${0}N${nivelHijo}`
         }
         B_datos.getInstance().addNodosAst(nodo);
         B_datos.getInstance().addEdgesAst(edge);
@@ -103,23 +105,23 @@ export class Declaracion extends instruction{
             tipo="string"
         }
         nodo={
-            id:id+""+1,
+            id:`${id}${1}N${nivelHijo}`,
             label:"Tipo:\n"+tipo
         }
         edge={
             from:id,
-            to:id+""+1
+            to:`${id}${1}N${nivelHijo}`
         }
         B_datos.getInstance().addNodosAst(nodo);
         B_datos.getInstance().addEdgesAst(edge);
         //ID'S
         nodo={
-            id:id+""+2,
+            id:`${id}${2}N${nivelHijo}`,
             label:"ID:\n"+this.id.toString()
         }
         edge={
             from:id,
-            to:id+""+2
+            to:`${id}${2}N${nivelHijo}`
         }
         B_datos.getInstance().addNodosAst(nodo);
         B_datos.getInstance().addEdgesAst(edge);
@@ -127,10 +129,10 @@ export class Declaracion extends instruction{
         if(this.expresion!==null){
             edge={
                 from:id,
-                to:id+""+3
+                to:`${id}${3}N${nivelHijo}`
             }
             B_datos.getInstance().addEdgesAst(edge);
-            this.expresion.ast(id,3);
+            this.expresion.ast(id,3,nivel);
         }
     }
 }

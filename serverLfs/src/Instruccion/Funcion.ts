@@ -24,11 +24,13 @@ export class Funcion extends instruction {
             B_datos.getInstance().addError("Semantico", "Intento de guardar una funcion ya existente", this.line, this.column);
         }
     }
-    public ast(idPadre: string, NoHijo: number) {
-        let id = idPadre + "" + NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo = {
             id: id,
-            label: "Instruction: Declaracion de Funcion"
+            label: "Instruction:\nDeclaracion de Funcion"
         }
         B_datos.getInstance().addNodosAst(nodo);
         //TIPO
@@ -45,23 +47,23 @@ export class Funcion extends instruction {
             tipo = "string"
         }
         nodo = {
-            id: id + "" + 0,
+            id: `${id}${0}N${nivelHijo}`,
             label: tipo
         }
         let edge = {
             from: id,
-            to: id + "" + 0
+            to: `${id}${0}N${nivelHijo}`
         }
         B_datos.getInstance().addNodosAst(nodo);
         B_datos.getInstance().addEdgesAst(edge);
         //ID
         nodo = {
-            id: id + "" + 1,
+            id: `${id}${1}N${nivelHijo}`,
             label: this.id
         }
         edge = {
             from: id,
-            to: id + "" + 1
+            to: `${id}${1}N${nivelHijo}`
         }
         B_datos.getInstance().addNodosAst(nodo);
         B_datos.getInstance().addEdgesAst(edge);
@@ -71,7 +73,7 @@ export class Funcion extends instruction {
             for (let i = 0; i < this.parametros.length; i++) {
                 let edge = {
                     from: id,
-                    to: id + "" + n,
+                    to: `${id}${n}N${nivelHijo}`
                 }
                 n++;
                 B_datos.getInstance().addEdgesAst(edge);
@@ -79,24 +81,31 @@ export class Funcion extends instruction {
             //NODOS INSTRUCCIONES
             n = 2;
             for (let i = 0; i < this.parametros.length; i++) {
-                this.parametros[i].ast(id, n);
+                this.parametros[i].ast(id, n,nivel);
                 n++;
             }
         }
         //INSTRUCCIONES
-        n = 3
+        let x;
+        if(n!==2){ //SIGNIFICA QUE  HAY INSTRUCCIONES DE PARAMETROS
+            x=n; //SE REPETIRIAN NODOS CON LAS INSTRUCCIONES DE ABAJO SI NO SE SIGUE CON LA SECUENCIA N RESULTANTE POR LOS PARAMETROS Y SE SUMA 1
+        }else{
+            x=2
+        }
+        
+        n = x+1;
         for (let i = 0; i < this.instrucciones.length; i++) {
             let edge = {
                 from: id,
-                to: id + "" + n,
+                to: `${id}${n}N${nivelHijo}`,
             }
             n++;
             B_datos.getInstance().addEdgesAst(edge);
         }
         //NODOS INSTRUCCIONES
-        n = 3;
+        n = x+1;
         for (let i = 0; i < this.instrucciones.length; i++) {
-            this.instrucciones[i].ast(id, n);
+            this.instrucciones[i].ast(id, n, nivel);
             n++;
         }
     }

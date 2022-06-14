@@ -29,8 +29,10 @@ export class Typeof extends instruction{
         }
         return tipoDato
     }
-    public ast(idPadre: string, NoHijo: number) {
-        let id = idPadre + "" + NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let id = `${idPadre}${NoHijo}N${nivel}`
+
         let nodo = {
             id: id,
             label: "Instruction:\nTypeOf"
@@ -39,10 +41,10 @@ export class Typeof extends instruction{
             B_datos.getInstance().addNodosAst(nodo);
             let edge = {
                 from: id,
-                to: id + "" + 0,
+                to: `${id}0N${(nivel+1)}`
             }
             B_datos.getInstance().addEdgesAst(edge);
-            this.expresion.ast(id, 0);//NODO HIJO: EXPRESION
+            this.expresion.ast(id, 0,nivel);//NODO HIJO: EXPRESION
         }
     }
 }

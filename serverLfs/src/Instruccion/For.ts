@@ -58,8 +58,10 @@ export class For extends instruction{
             B_datos.getInstance().addEnviroments("For",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
         } while (exp.value);
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo={
             id:id,
             label:"Instruction: For"
@@ -68,30 +70,30 @@ export class For extends instruction{
         //ASIGNACION
         let edge={
             from:id,
-            to:id+""+0,
+            to:`${id}${0}N${nivelHijo}`
         }
         B_datos.getInstance().addEdgesAst(edge);
-        this.AsigDec.ast(id,0);
+        this.AsigDec.ast(id,0,nivel);
         //EXPRESION
         edge={
             from:id,
-            to:id+""+1,
+            to:`${id}${1}N${nivelHijo}`,
         }
         B_datos.getInstance().addEdgesAst(edge);
-        this.expresion.ast(id,1);
+        this.expresion.ast(id,1,nivel);
         //INCREMENTO/DECREMENTO
         edge={
             from:id,
-            to:id+""+2,
+            to:`${id}${2}N${nivelHijo}`,
         }
         B_datos.getInstance().addEdgesAst(edge);
-        this.incDec.ast(id,2);
+        this.incDec.ast(id,2,nivel);
         //INSTRUCCIONES
         let n=3
         for(let i=0; i<this.bloqueInst.length; i++){
             let edge={
                 from:id,
-                to:id+""+n,
+                to:`${id}${n}N${nivelHijo}`,
             }
             n++;
             B_datos.getInstance().addEdgesAst(edge);
@@ -99,7 +101,7 @@ export class For extends instruction{
         //NODOS INSTRUCCIONES
         n=3;
         for(let i=0; i<this.bloqueInst.length; i++){
-            this.bloqueInst[i].ast(id,n);
+            this.bloqueInst[i].ast(id,n,nivel);
             n++;
         }
     }

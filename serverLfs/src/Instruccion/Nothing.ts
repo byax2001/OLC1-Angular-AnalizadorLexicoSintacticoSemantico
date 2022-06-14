@@ -13,8 +13,9 @@ export class Nothing extends instruction{
     public execute(env:Environment){
         return this;
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo={
             id:id,
             label:"(Espacio sin instrucciones)"

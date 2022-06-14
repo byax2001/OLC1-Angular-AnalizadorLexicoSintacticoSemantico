@@ -24,20 +24,22 @@ export class Return extends instruction{
         }
         return this;     
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo={
             id:id,
-            label:"Instruction: Return"
+            label:"Instruction:\nReturn"
         }
         B_datos.getInstance().addNodosAst(nodo);
         if(this.expresion!=null){
             let edge={
                 from:id,
-                to:id+""+0,
+                to:`${id}${0}N${nivelHijo}`,
             }
             B_datos.getInstance().addEdgesAst(edge);
-            this.expresion.ast(id,0);
+            this.expresion.ast(id,0,nivel);
         }
     }
 }

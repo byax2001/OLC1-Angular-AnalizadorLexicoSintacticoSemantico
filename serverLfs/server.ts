@@ -59,7 +59,7 @@ app.post('/setTextoAst', function (req: any, res: any) {
         let n = 0
         for (const instruction of ast) {
             try {
-                instruction.ast("0", n);
+                instruction.ast("0", n,0);
             } catch (error) {
                 console.log(error);
             }
@@ -69,7 +69,7 @@ app.post('/setTextoAst', function (req: any, res: any) {
         for (const instruction of ast) {
             let edge = {
                 from: "0",
-                to: "0"+n
+                to: "0"+n+"N1"
             }
             B_datos.getInstance().addEdgesAst(edge);
             n++;

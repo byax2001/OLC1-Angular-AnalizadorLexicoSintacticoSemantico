@@ -48,8 +48,10 @@ export class Asignacion extends instruction{
         }
         
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
     //NODO ASIGNACION
         let nodo={
             id:id,
@@ -57,13 +59,14 @@ export class Asignacion extends instruction{
         }
         B_datos.getInstance().addNodosAst(nodo);
     //NODO DEL COJUNTO DE ID'S ASIGNADOS
+    
         let nodoId={
-            id:id+""+0, //Padre+0
+            id:`${id}0N${nivelHijo}`, //Padre+0
             label:"ID:\n"+this.id.toString()
         }
         let edge={
             from:id,
-            to:id+""+0,
+            to:`${id}0N${nivelHijo}`,
         }
         B_datos.getInstance().addNodosAst(nodoId);
         B_datos.getInstance().addEdgesAst(edge);
@@ -72,9 +75,9 @@ export class Asignacion extends instruction{
         //Padre+1   
         edge={
             from:id,
-            to:id+""+1,
+            to:`${id}1N${nivelHijo}`,
         }
         B_datos.getInstance().addEdgesAst(edge);
-        this.expresion.ast(id,1);//NODO HIJO: EXPRESION
+        this.expresion.ast(id,1,nivel);//NODO HIJO: EXPRESION
     }
 }

@@ -92,8 +92,10 @@ export class IncDecremento extends expresion{
         }
         return result
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         if(this.typeArit==TypeAritmeticas.INCDER || this.typeArit==TypeAritmeticas.INCIZQ){
             let nodo={
                 id:id,

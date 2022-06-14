@@ -57,11 +57,13 @@ export class Dowhile extends instruction{
         } while (exp.value)
         return null;
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo={
             id:id,
-            label:"Instruction: DoWhile"
+            label:"Instruction:\nDoWhile"
         }
         B_datos.getInstance().addNodosAst(nodo);
 
@@ -69,13 +71,13 @@ export class Dowhile extends instruction{
         for(let i=0; i<this.bloqueInst.length; i++){
             let edge={
                 from:id,
-                to:id+""+i,
+                to:`${id}${i}N${nivelHijo}`
             }
             B_datos.getInstance().addEdgesAst(edge);
         }
         //NODOS INSTRUCCIONES
         for(let i=0; i<this.bloqueInst.length; i++){
-            this.bloqueInst[i].ast(id,i);
+            this.bloqueInst[i].ast(id,i,nivel);
         }
     }
 

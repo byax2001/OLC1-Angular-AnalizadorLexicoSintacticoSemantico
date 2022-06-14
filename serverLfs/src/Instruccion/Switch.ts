@@ -80,20 +80,22 @@ export class Switch extends instruction{
         }
         return null;
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo={
             id:id,
-            label:"Instruction: Switch"
+            label:"Instruction:\nSwitch"
         }
         B_datos.getInstance().addNodosAst(nodo);
         //EXPRESION
         let edge={
             from:id,
-            to:id+""+0
+            to:`${id}${0}N${nivelHijo}`
         }
         B_datos.getInstance().addEdgesAst(edge)
-        this.expresion.ast(id,0);
+        this.expresion.ast(id,0,nivel);
         //CASES LIST O 
         let n=1
         if(this.caselist.length!==0){
@@ -102,30 +104,31 @@ export class Switch extends instruction{
                     if(this.caselist[i] instanceof Case){
                         edge={
                             from:id,
-                            to:id+""+n
+                            to:`${id}${n}N${nivelHijo}`
                         }
                         B_datos.getInstance().addEdgesAst(edge)
-                        this.caselist[i].ast(id,n);
+                        this.caselist[i].ast(id,n,nivel);
                     }else{
                         //NODO DEFAULT
                         nodo={
-                            id:id+""+n,
+                            id:`${id}${n}N${nivelHijo}`,
                             label:"Default"
                         }
                         edge={
                             from:id,
-                            to:id+""+n
+                            to:`${id}${n}N${nivelHijo}`
                         }
                         B_datos.getInstance().addNodosAst(nodo);
                         B_datos.getInstance().addEdgesAst(edge);
-                        //INSTRUCCIONES DEL DEFAULT
-                        for(let i=0; i<this.caselist[i].length; i++){
+                        //INSTRUCCIONES DEL DEFAULT    
+                        for(let x=0; x<this.caselist[i].length; x++){
+                           
                             edge={
-                                from:id,
-                                to:id+""+n+""+i
+                                from:`${id}${n}N${nivelHijo}`,
+                                to:`${id}${n}N${nivelHijo}`+""+x+"N"+(nivelHijo+1)
                             }
                             B_datos.getInstance().addEdgesAst(edge)
-                            this.caselist[i].ast(id+""+n,n+""+i);
+                            this.caselist[i][x].ast(`${id}${n}N${nivelHijo}`,x,nivelHijo);
                         }
                     }
                     n++;

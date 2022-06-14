@@ -54,8 +54,10 @@ export class If extends instruction{
         }
         return null;
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo={
             id:id,
             label:"Instruction:\nIf"
@@ -63,12 +65,12 @@ export class If extends instruction{
         B_datos.getInstance().addNodosAst(nodo);
     //NODO "IF"
         nodo={
-            id:id+""+0,
+            id:`${id}${0}N${nivelHijo}`,
             label:"if"
         }
         let edge={
             from:id,
-            to:id+""+0
+            to:`${id}${0}N${nivelHijo}`
         }
         B_datos.getInstance().addNodosAst(nodo);
         B_datos.getInstance().addEdgesAst(edge);
@@ -76,38 +78,38 @@ export class If extends instruction{
         
         for(let i=0; i<this.instruction.length; i++){
             let edge={
-                from:id+"0",
-                to:id+"0"+i,
+                from:`${id}${0}N${nivelHijo}`,
+                to:`${id}${0}N${nivelHijo}`+i+"N"+(nivelHijo+1),
             }
             B_datos.getInstance().addEdgesAst(edge);
         }
         //NODOS INSTRUCCIONES
         for(let i=0; i<this.instruction.length; i++){
-            this.instruction[i].ast(id+"0",i);
+            this.instruction[i].ast(`${id}${0}N${nivelHijo}`,i,nivelHijo);
             
         }
     //"ELSE" 
         nodo={
-            id:id+""+1,
+            id:`${id}${1}N${nivelHijo}`,
             label:"else"
         }
         edge={
             from:id,
-            to:id+""+1
+            to:`${id}${1}N${nivelHijo}`
         }
         B_datos.getInstance().addNodosAst(nodo);
         B_datos.getInstance().addEdgesAst(edge);
         //INSTRUCCIONES ELSE
         for(let i=0; i<this.instruction2.length; i++){
             let edge={
-                from:id+"1",
-                to:id+"1"+i,
+                from:`${id}${1}N${nivelHijo}`,
+                to:`${id}${1}N${nivelHijo}`+i+"N"+(nivelHijo+1),
             }
             B_datos.getInstance().addEdgesAst(edge);
         }
         //NODOS INSTRUCCIONES
         for(let i=0; i<this.instruction2.length; i++){
-            this.instruction2[i].ast(id+"1",i);
+            this.instruction2[i].ast(`${id}${1}N${nivelHijo}`,i,nivelHijo);
         } 
     }
 

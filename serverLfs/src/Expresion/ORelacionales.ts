@@ -220,8 +220,10 @@ export class ORelacionales extends expresion{
         }
         return result
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id = idPadre + "" + NoHijo;
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo=nivel+1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
         let operacion = "";
         //QUE NI EL NODO DERECHO NI EL IZQUIERDO SEAN NULOS y si es negacion que el izquierdo no sea nulo
         if (this.typeRel === TypeRelacionales.MAYORQUE) {
@@ -246,17 +248,17 @@ export class ORelacionales extends expresion{
             //NODO IZQUIERDO
             let edge = {
                 from: id,
-                to: id + "" + 0,
+                to:  `${id}${0}N${nivelHijo}`,
             }
             B_datos.getInstance().addEdgesAst(edge);
-            this.left.ast(id, 0);
+            this.left.ast(id, 0,nivel);
             //NODO DERECHO
             edge = {
                 from: id,
-                to: id + "" + 1,
+                to: `${id}${1}N${nivelHijo}`,
             }
             B_datos.getInstance().addEdgesAst(edge);
-            this.right.ast(id, 1);
+            this.right.ast(id, 1,nivel);
         }
     }
 }
