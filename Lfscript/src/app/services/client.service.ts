@@ -5,6 +5,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ClientService {
+  //ESTOS SERVICES PUEDEN FUNCIONAR COMO SERVIDOR O COMO BASE DE DATOS 
+  ast:any[]=[];
+
   Url="http://localhost:8080"
   constructor(
     private http:HttpClient
@@ -17,5 +20,14 @@ export class ClientService {
   }
   setDataTAst(json:any){
     return this.http.post(`${this.Url}/setTextoAst`,json);
+  }
+  //AST 
+  setAst(ast:any[]){
+    this.ast=ast;
+  }
+  getAst():any[]{
+    console.log("MANANDNASFSad")
+    console.log(this.ast)
+    return this.ast
   }
 }

@@ -94,10 +94,19 @@ export class IncDecremento extends expresion{
     }
     public ast(idPadre:string,NoHijo:number){
         let id=idPadre+""+NoHijo;
-        let nodo={
-            id:id,
-            label:`Incremento/Decremento: var ${this.id}`
+        if(this.typeArit==TypeAritmeticas.INCDER || this.typeArit==TypeAritmeticas.INCIZQ){
+            let nodo={
+                id:id,
+                label:`Incremento:\n ${this.id}`
+            }
+            B_datos.getInstance().addNodosAst(nodo);
+        }else{
+            let nodo={
+                id:id,
+                label:`Decremento:\n ${this.id}`
+            }
+            B_datos.getInstance().addNodosAst(nodo);
         }
-        B_datos.getInstance().addNodosAst(nodo);
+        
     }
 }

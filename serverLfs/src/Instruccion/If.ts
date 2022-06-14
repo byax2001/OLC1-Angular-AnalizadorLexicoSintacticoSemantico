@@ -58,7 +58,7 @@ export class If extends instruction{
         let id=idPadre+""+NoHijo;
         let nodo={
             id:id,
-            label:"Instruction: If"
+            label:"Instruction:\nIf"
         }
         B_datos.getInstance().addNodosAst(nodo);
     //NODO "IF"
@@ -98,7 +98,7 @@ export class If extends instruction{
         B_datos.getInstance().addNodosAst(nodo);
         B_datos.getInstance().addEdgesAst(edge);
         //INSTRUCCIONES ELSE
-        for(let i=0; i<this.instruction.length; i++){
+        for(let i=0; i<this.instruction2.length; i++){
             let edge={
                 from:id+"1",
                 to:id+"1"+i,
@@ -106,8 +106,8 @@ export class If extends instruction{
             B_datos.getInstance().addEdgesAst(edge);
         }
         //NODOS INSTRUCCIONES
-        for(let i=0; i<this.instruction.length; i++){
-            this.instruction[i].ast(id+"1",i);
+        for(let i=0; i<this.instruction2.length; i++){
+            this.instruction2[i].ast(id+"1",i);
         } 
     }
 

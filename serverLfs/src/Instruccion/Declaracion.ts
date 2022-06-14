@@ -75,13 +75,13 @@ export class Declaracion extends instruction{
         let id=idPadre+""+NoHijo;
         let nodo={
             id:id,
-            label:"Instruction: Declaracion"
+            label:"Instruction:\n Declaracion"
         }
         B_datos.getInstance().addNodosAst(nodo);
         //CONSTANTE
         nodo={
             id:id+""+0,
-            label:String(this.constante)
+            label:"Constante:\n"+String(this.constante)
         }
         let edge={
             from:id,
@@ -104,7 +104,7 @@ export class Declaracion extends instruction{
         }
         nodo={
             id:id+""+1,
-            label:tipo
+            label:"Tipo:\n"+tipo
         }
         edge={
             from:id,
@@ -115,7 +115,7 @@ export class Declaracion extends instruction{
         //ID'S
         nodo={
             id:id+""+2,
-            label:this.id.toString()
+            label:"ID:\n"+this.id.toString()
         }
         edge={
             from:id,
@@ -124,11 +124,12 @@ export class Declaracion extends instruction{
         B_datos.getInstance().addNodosAst(nodo);
         B_datos.getInstance().addEdgesAst(edge);
         //EXPRESION
-        if(expresion!==null){
+        if(this.expresion!==null){
             edge={
                 from:id,
                 to:id+""+3
             }
+            B_datos.getInstance().addEdgesAst(edge);
             this.expresion.ast(id,3);
         }
     }

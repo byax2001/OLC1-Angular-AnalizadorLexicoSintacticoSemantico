@@ -72,4 +72,15 @@ export class B_datos{
     addEdgesAst(Edge:any){
         this.EdgesAst.push(Edge)
     }
+    clearAst(){
+        this.NodosAst=[];
+        this.EdgesAst=[];
+    }
+    getAst():any[]{
+        //RETORNA NODOS Y EDGES 
+        let ast:any[]=[]
+        ast.push(this.NodosAst);
+        ast.push(this.EdgesAst)
+        return ast; 
+    }
 }

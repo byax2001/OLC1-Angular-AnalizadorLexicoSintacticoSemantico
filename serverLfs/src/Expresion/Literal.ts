@@ -68,7 +68,7 @@ export class Literal extends expresion {
         let id=idPadre+""+NoHijo;
         let nodo={
             id:id,
-            label:`Literal: ${this.value}`
+            label:`Literal:\n ${this.value}`
         }
         B_datos.getInstance().addNodosAst(nodo);
     }

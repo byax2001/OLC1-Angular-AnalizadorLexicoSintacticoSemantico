@@ -21,18 +21,20 @@ export class Println extends instruction{
             B_datos.getInstance().printlnConsola(">>\n");
         }
     }
-    public ast(idPadre:string,NoHijo:number){
-        let id=idPadre+""+NoHijo;
-        let nodo={
-            id:id,
-            label:"Instruction: Println"
+    public ast(idPadre: string, NoHijo: number) {
+        let id = idPadre + "" + NoHijo;
+        let nodo = {
+            id: id,
+            label: "Instruction:\nPrintln"
         }
         B_datos.getInstance().addNodosAst(nodo);
-        let edge={
-            from:id,
-            to:id+""+0,
+        if (this.expresion !== null) {
+            let edge = {
+                from: id,
+                to: id + "" + 0,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.expresion.ast(id, 0);//NODO HIJO: EXPRESION 
         }
-        B_datos.getInstance().addEdgesAst(edge);
-        this.expresion.ast(id,0);//NODO HIJO: EXPRESION 
     }
 }

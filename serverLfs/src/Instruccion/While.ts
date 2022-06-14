@@ -47,21 +47,34 @@ export class While extends instruction  {
         let id=idPadre+""+NoHijo;
         let nodo={
             id:id,
-            label:"Instruction: While"
+            label:"Instruction:\nWhile"
         }
         B_datos.getInstance().addNodosAst(nodo);
-
+        //NODO CON LA EXPRESION
+        this.expresion.ast(id,0);
+        
+        //EDGE CON LA EXRESION
+        let edge={
+            from:id,
+            to:id+""+0,
+        }
+        B_datos.getInstance().addEdgesAst(edge);
         //EDGES CON INSTRUCCIONES
+
+        let n=1;
         for(let i=0; i<this.bloqueInst.length; i++){
             let edge={
                 from:id,
-                to:id+""+i,
+                to:id+""+n,
             }
+            n++;
             B_datos.getInstance().addEdgesAst(edge);
         }
+        n=1;
         //NODOS INSTRUCCIONES
         for(let i=0; i<this.bloqueInst.length; i++){
-            this.bloqueInst[i].ast(id,i);
+            this.bloqueInst[i].ast(id,n);
+            n++;
         }
     }
 }

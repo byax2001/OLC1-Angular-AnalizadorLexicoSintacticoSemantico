@@ -7,6 +7,11 @@ header{
     right: 20px;
     top: 20px;
 }
+#btnMostrar{
+  position:absolute;
+  left: 100px;
+  top: 60px;
+}
 
 #AreaGraficaAst{
     position:relative;

@@ -20,6 +20,20 @@ try{
             console.log(error);
         }
     }
+    let nodo = {
+        id:"0",
+        label: "Ast"
+    }
+    B_datos.getInstance().addNodosAst(nodo);
+    let n=0
+    for(const instruction of ast){
+        try{
+            instruction.ast("0",n);
+        }catch (error){
+            console.log(error);
+        }
+        n++;
+    }
     
 }catch(error){
     console.log(error);

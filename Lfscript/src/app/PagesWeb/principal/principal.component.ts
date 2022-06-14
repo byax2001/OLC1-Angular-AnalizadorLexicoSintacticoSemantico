@@ -31,7 +31,7 @@ export class PrincipalComponent implements OnInit {
     private clientS: ClientService,
     private Renderer2: Renderer2
   ) {
-    this.MjsExt.CargarJs(['metodos.js']);
+    this.MjsExt.CargarJs(['metodos.js']); //PARA CARGAR ARCHIVOS JAVASCRIPT EXTERNOS
   }
   //INICIO
   ngOnInit(): void {
@@ -135,7 +135,6 @@ export class PrincipalComponent implements OnInit {
     this.clientS.setDataTAst({ textoAst: textAst }).subscribe( //SE MANDA AL SERVICIO EN FORMA DE JSON EL STRING ENCERRADO EN UNA ETIQUETA TEXTOAST
       (res) => {
         console.log("Fue realizado con exito")
-        console.log(res);
         //SE RECIBE LA RESPUESTA
         let respuesta: any[] = [];
         Object.entries(res).forEach(item => {
@@ -143,6 +142,9 @@ export class PrincipalComponent implements OnInit {
         });
         //APARTADO PARA LA CONSOLA 
         let Consola = respuesta[1];
+        let ast=respuesta[3];
+        this.clientS.setAst(ast);
+        console.log(respuesta);
         for (let line of Consola) {
           this.TextConsola = this.TextConsola + line;
         }

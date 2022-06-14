@@ -34,26 +34,53 @@ app.get('/retornoTexto', function (req:any,res:any){
     res.send("este mensaje esta en texto")
 })
 //TEXTO A ANALIZAR PARA EL AST 
-app.post('/setTextoAst', function(req:any,res:any){
-    let textoAst=req.body.textoAst;
+app.post('/setTextoAst', function (req: any, res: any) {
+    let textoAst = req.body.textoAst;
     B_datos.getInstance().clearConsola();//LIMPIAR LA CONSOLA 
-    try{
+    try {
         const ast = parser.parse(textoAst);
         const env = new Environment(null);
-        
-        for(const instruction of ast){
-            try{
+        for (const instruction of ast) {
+            try {
                 instruction.execute(env);
-    
-            }catch (error){
+
+            } catch (error) {
                 console.log(error);
             }
         }
-        B_datos.getInstance().addEnviroments("Principal",env);//SE AÑANDIO ESTA BASE DE DATOS A LA LISTA, recorrer esta lista al revez
+        B_datos.getInstance().addEnviroments("Principal", env);//SE AÑANDIO ESTA BASE DE DATOS A LA LISTA, recorrer esta lista al revez
+        //SE LIMPIAN LOS NODOS Y EDGES
+        B_datos.getInstance().clearAst();
+        let nodo = {
+            id: "0",
+            label: "AST"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        let n = 0
+        for (const instruction of ast) {
+            try {
+                instruction.ast("0", n);
+            } catch (error) {
+                console.log(error);
+            }
+            n++;
+        }
+        n=0
+        for (const instruction of ast) {
+            let edge = {
+                from: "0",
+                to: "0"+n
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            n++;
+        }
         
-    }catch(error){
+
+
+    } catch (error) {
         console.log(error);
     }
-    let consola= B_datos.getInstance().getConsola();
-    res.json({consola:consola});
+    let Consola = B_datos.getInstance().getConsola();
+    let Ast=B_datos.getInstance().getAst();
+    res.json({ consola: Consola,ast:Ast });
 })

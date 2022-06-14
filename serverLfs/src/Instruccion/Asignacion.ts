@@ -53,13 +53,13 @@ export class Asignacion extends instruction{
     //NODO ASIGNACION
         let nodo={
             id:id,
-            label:"Instruction: Asignacion"
+            label:"Instruction:\nAsignacion"
         }
         B_datos.getInstance().addNodosAst(nodo);
     //NODO DEL COJUNTO DE ID'S ASIGNADOS
         let nodoId={
             id:id+""+0, //Padre+0
-            label:this.id.toString()
+            label:"ID:\n"+this.id.toString()
         }
         let edge={
             from:id,
