@@ -43,7 +43,25 @@ export class While extends instruction  {
         } while (exp.value)
         return null;
     }
-    public ast(){
-        
+    public ast(idPadre:string,NoHijo:number){
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:"Instruction: While"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+
+        //EDGES CON INSTRUCCIONES
+        for(let i=0; i<this.bloqueInst.length; i++){
+            let edge={
+                from:id,
+                to:id+""+i,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+        }
+        //NODOS INSTRUCCIONES
+        for(let i=0; i<this.bloqueInst.length; i++){
+            this.bloqueInst[i].ast(id,i);
+        }
     }
 }

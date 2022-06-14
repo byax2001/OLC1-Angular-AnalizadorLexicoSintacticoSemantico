@@ -67,7 +67,47 @@ export class OLogicas extends expresion{
         return result 
 
     }
-    public ast(idPadre:string,NoHijo:number){
-
+    public ast(idPadre: string, NoHijo: number) {
+        let id = idPadre + "" + NoHijo;
+        let operacion = "";
+        //QUE NI EL NODO DERECHO NI EL IZQUIERDO SEAN NULOS y si es negacion que el izquierdo no sea nulo
+        if (this.typeLogic === TypeLogic.AND) {
+            operacion = "And";
+        } else if (this.typeLogic === TypeLogic.OR) {
+            operacion = "Or";
+        } else if (this.typeLogic === TypeLogic.XOR) {
+            operacion = "Xor";
+        } else if (this.typeLogic === TypeLogic.NOT) {
+            operacion = "Not";
+        } 
+        let nodo = {
+            id: id,
+            label: operacion
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        if (this.left !== null && this.right !== null) {
+            //NODO IZQUIERDO
+            let edge = {
+                from: id,
+                to: id + "" + 0,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.left.ast(id, 0);
+            //NODO DERECHO
+            edge = {
+                from: id,
+                to: id + "" + 1,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.right.ast(id, 1);
+        }else if (this.left !== null){
+            //NODO IZQUIERDO
+            let edge = {
+                from: id,
+                to: id + "" + 0,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.left.ast(id, 0);
+        }
     }
 }

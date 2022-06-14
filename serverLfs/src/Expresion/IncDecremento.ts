@@ -93,6 +93,11 @@ export class IncDecremento extends expresion{
         return result
     }
     public ast(idPadre:string,NoHijo:number){
-
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:`Incremento/Decremento: var ${this.id}`
+        }
+        B_datos.getInstance().addNodosAst(nodo);
     }
 }

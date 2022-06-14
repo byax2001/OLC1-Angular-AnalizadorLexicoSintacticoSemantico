@@ -193,10 +193,10 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | METODOS {$$= $1;}
             | LLAMADA puntoycoma {$$= $1;}
             | BLOQUE_INST {$$=new BloqueInstSup($1,@1.first_line,@1.last_column);}
-            | error {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
+            | error puntoycoma {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
-                    bDatos.addError("Sintactico","No se esperaba este caracter",@1.first_line,yylloc.@1.last_column);       
+                    bDatos.addError("Sintactico","No se esperaba este caracter",@1.first_line,@1.last_column);       
                     }
             ;
 DECLARACION: TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(false,$1,$2,$4,@1.first_line,@1.last_column);}

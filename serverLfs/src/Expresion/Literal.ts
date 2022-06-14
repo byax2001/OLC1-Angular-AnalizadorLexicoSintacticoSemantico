@@ -65,6 +65,11 @@ export class Literal extends expresion {
         return cadenat
     }
     public ast(idPadre:string,NoHijo:number){
-
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:`Literal: ${this.value}`
+        }
+        B_datos.getInstance().addNodosAst(nodo);
     }
 }   

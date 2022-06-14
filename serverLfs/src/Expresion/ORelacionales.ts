@@ -221,6 +221,42 @@ export class ORelacionales extends expresion{
         return result
     }
     public ast(idPadre:string,NoHijo:number){
-
+        let id = idPadre + "" + NoHijo;
+        let operacion = "";
+        //QUE NI EL NODO DERECHO NI EL IZQUIERDO SEAN NULOS y si es negacion que el izquierdo no sea nulo
+        if (this.typeRel === TypeRelacionales.MAYORQUE) {
+            operacion = ">";
+        } else if (this.typeRel === TypeRelacionales.MENORQUE) {
+            operacion = "<";
+        } else if (this.typeRel === TypeRelacionales.MAYORIGUALQUE) {
+            operacion = ">=";
+        } else if (this.typeRel === TypeRelacionales.MENORIGUALQUE) {
+            operacion = "<=";
+        } else if (this.typeRel === TypeRelacionales.IGUALQUE) {
+            operacion = "==";
+        } else if (this.typeRel === TypeRelacionales.DIFERENTEQUE) {
+            operacion = "!=";
+        } 
+        let nodo = {
+            id: id,
+            label: operacion
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        if (this.left !== null && this.right !== null) {
+            //NODO IZQUIERDO
+            let edge = {
+                from: id,
+                to: id + "" + 0,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.left.ast(id, 0);
+            //NODO DERECHO
+            edge = {
+                from: id,
+                to: id + "" + 1,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.right.ast(id, 1);
+        }
     }
 }

@@ -95,24 +95,40 @@ export class Switch extends instruction{
         B_datos.getInstance().addEdgesAst(edge)
         this.expresion.ast(id,0);
         //CASES LIST O 
-        let n=0
+        let n=1
         if(this.caselist.length!==0){
             for(let i=0; i<this.caselist.length; i++){
                 //CASE
                     if(this.caselist[i] instanceof Case){
                         edge={
                             from:id,
-                            to:id+""+1
+                            to:id+""+n
                         }
                         B_datos.getInstance().addEdgesAst(edge)
-                        this.caselist[i].ast(id,);
+                        this.caselist[i].ast(id,n);
                     }else{
-
                         //NODO DEFAULT
+                        nodo={
+                            id:id+""+n,
+                            label:"Default"
+                        }
+                        edge={
+                            from:id,
+                            to:id+""+n
+                        }
+                        B_datos.getInstance().addNodosAst(nodo);
+                        B_datos.getInstance().addEdgesAst(edge);
                         //INSTRUCCIONES DEL DEFAULT
+                        for(let i=0; i<this.caselist[i].length; i++){
+                            edge={
+                                from:id,
+                                to:id+""+n+""+i
+                            }
+                            B_datos.getInstance().addEdgesAst(edge)
+                            this.caselist[i].ast(id+""+n,n+""+i);
+                        }
                     }
                     n++;
-                //DEFAULT
             }
         }
     }

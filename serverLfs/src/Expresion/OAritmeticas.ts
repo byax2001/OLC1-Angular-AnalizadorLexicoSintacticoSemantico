@@ -247,7 +247,53 @@ export class OAritmeticas extends expresion{
         }
         return result
     }
-    public ast(idPadre:string,NoHijo:number){
-
+    public ast(idPadre: string, NoHijo: number) {
+        let id = idPadre + "" + NoHijo;
+        let operacion = "";
+        //QUE NI EL NODO DERECHO NI EL IZQUIERDO SEAN NULOS y si es negacion que el izquierdo no sea nulo
+        if (this.typeArit === TypeAritmeticas.SUMA) {
+            operacion = "+";
+        } else if (this.typeArit === TypeAritmeticas.RESTA) {
+            operacion = "-";
+        } else if (this.typeArit === TypeAritmeticas.MULTIPLICACION) {
+            operacion = "*";
+        } else if (this.typeArit === TypeAritmeticas.DIVISION) {
+            operacion = "/";
+        } else if (this.typeArit === TypeAritmeticas.POW) {
+            operacion = "**";
+        } else if (this.typeArit === TypeAritmeticas.MOD) {
+            operacion = "%";
+        } else if (this.typeArit === TypeAritmeticas.NEGACION) {
+            operacion = "-";
+        }
+        let nodo = {
+            id: id,
+            label: operacion
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        if (this.left !== null && this.right !== null) {
+            //NODO IZQUIERDO
+            let edge = {
+                from: id,
+                to: id + "" + 0,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.left.ast(id, 0);
+            //NODO DERECHO
+            edge = {
+                from: id,
+                to: id + "" + 1,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.right.ast(id, 1);
+        }else if(this.left !== null){
+            //NODO IZQUIERDO
+            let edge = {
+                from: id,
+                to: id + "" + 0,
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.left.ast(id, 0);
+        }
     }
 }
