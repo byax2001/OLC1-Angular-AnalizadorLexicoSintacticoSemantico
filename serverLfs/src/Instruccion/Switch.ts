@@ -80,8 +80,41 @@ export class Switch extends instruction{
         }
         return null;
     }
-    public ast(){
-        
+    public ast(idPadre:string,NoHijo:number){
+        let id=idPadre+""+NoHijo;
+        let nodo={
+            id:id,
+            label:"Instruction: Switch"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        //EXPRESION
+        let edge={
+            from:id,
+            to:id+""+0
+        }
+        B_datos.getInstance().addEdgesAst(edge)
+        this.expresion.ast(id,0);
+        //CASES LIST O 
+        let n=0
+        if(this.caselist.length!==0){
+            for(let i=0; i<this.caselist.length; i++){
+                //CASE
+                    if(this.caselist[i] instanceof Case){
+                        edge={
+                            from:id,
+                            to:id+""+1
+                        }
+                        B_datos.getInstance().addEdgesAst(edge)
+                        this.caselist[i].ast(id,);
+                    }else{
+
+                        //NODO DEFAULT
+                        //INSTRUCCIONES DEL DEFAULT
+                    }
+                    n++;
+                //DEFAULT
+            }
+        }
     }
 
 }
