@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class ClientService {
   //ESTOS SERVICES PUEDEN FUNCIONAR COMO SERVIDOR O COMO BASE DE DATOS 
   ast:any[]=[];
-
+  terror:any[]=[];
   Url="http://localhost:8080"
   constructor(
     private http:HttpClient
@@ -27,5 +27,12 @@ export class ClientService {
   }
   getAst():any[]{
     return this.ast
+  }
+  //TABLA DE ERRORES
+  getTError(){
+    return this.http.get(`${this.Url}/ObtenerError`);
+  }
+  getTEnvs(){
+    return this.http.get(`${this.Url}/ObtenerEnvs`);
   }
 }

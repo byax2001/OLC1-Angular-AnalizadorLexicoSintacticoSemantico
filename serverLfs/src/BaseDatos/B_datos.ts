@@ -24,13 +24,11 @@ export class B_datos{
 
     //AÑADIR ERROR
     addError(tipoError:string,Descripcion:String,line:number,column:number){
-        let error={
-            typeError:tipoError,
-            Decription:Descripcion,
-            linea:line,
-            columna:column
-        }
-        this.Errores.push(error)
+        this.Errores.push([this.Errores.length,tipoError,Descripcion,line,column]);
+    }
+
+    clearErrores(){
+        this.Errores=[];
     }
     //Retornar lista de errores
     getListError():any[]{
@@ -43,8 +41,18 @@ export class B_datos{
     }
 
     //OBTENER LISTA DE ENVIROMENTS
-    getListEnviroments():Environment[]{
-        return this.Enviroments;
+    getListEnviroments(){
+        let envs:any[]=[];
+        for(let env of this.Enviroments){
+            let envValue:Environment=env[1];
+            let variables=envValue.getVariables(); //[[variable1],[variable2],[variable3]]
+            envs.push([env[0],variables]); //[id_enviroment, [variables del enviroment y sus propiedades]]
+        }
+        console.log(envs);
+        return envs;
+    }
+    clearEnviroments(){
+        this.Enviroments=[];
     }
     //PRINT CONSOLA
     printConsola(print:string){

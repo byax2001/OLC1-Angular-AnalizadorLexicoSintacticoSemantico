@@ -7,6 +7,14 @@ header{
     right: 20px;
     top: 20px;
 }
+#TablaEnvs{
+  position: relative;
+  top: 40px;
+}
+#btnMostrar{
+  position: relative;
+  top:35px;
+}
 
 
 /*EFECTOS DE BOTONES*/

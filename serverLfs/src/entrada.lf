@@ -1,72 +1,54 @@
+string encabezado = "\"Universidad San Carlos de Guatemala\"\nEscuela de Ciencias y Sistmas";
+string copia_encabezado = encabezado;
+string nombre = "compiladores";
+string nombre_dos = "organizacion";
+string nombre_tres = "-45";
+string nombre_tres = "-45"; //error, ya existe esta variable
+string nombre_cuatro = "%%%#\n\""; 
+string nombre_cinco = ""; 
 
-    int a_numero2, variable2, variable3 = 3000;
-    const double avion = 12.25+1;
-    boolean flag = true;
-    //UN COMENTARIO POR ACA 
-    int b=50;
-    a_numero2=b++;
-    
-    string ballena=typeof(avion);
-    println(typeof("hola"));
-    
-     /*****************************************
-     *********COMENTARIO MULTILINEA************
-     ******************************************/
 
-    if(false){
-        print("Guatemala");
-        print("Enfermera");
-    }else if(false){
-        print("Honduras");
-    }else if(true){
-        print("EEUU");
-        print(b);
-    }else{
-        print("El salvador");
-    }
 
-    int x=0;
-    while(x<4){
-        print("manzana");
-        x=x+1;
-    }
-    x=0;
-    do{
-        print("uva");
-        x=x+1;
-    }  while(x<0);
 
-    for(int y=0; y<3 ;y++){
-        print(y);
-    }
 
-    switch(3){
-        case 1:
-            print("Maria");
-        case 2:
-            print("Jorge");
-        case 3:
-            print("pedro");
-            break;
-        default:
-            print("Martin");
-    }
+{
+
+    //ASIGNACIONES------
+    encabezado= 45; //error de asignacion int con string
+    banderita_uno= truE;
+    nombre_tres="ganare compiladores \"1\"";
+    nombre_y_apellido= "<insertar nombre aqui>" ; //error, no existte esta variable
+    int numero = 13;
+    char caracter_uno = '>' ;
+
+    numero++;
+    banderita_dos++; //error no se puede aumentar 
+    int numero=1; //error, variable ya existe;
+
+    numero++;
+    numero++;
+    numero++;
+    ++caracter_uno_uno; // error, no es posible ingrementar
 
     {
-        print(-2+5);
-        print('\"'+1.2);
+        int nivel_intermedio= ' '+2; //resutlado 34
+        int nivel_intermedio_dos= ' '+'>'; 
+        int nivel_intermedio_tres= ' '+'_a';  //error, no se acepta el caracter de mas en char
+        
+        {
+            //espacio en blanco
+        }
+
     }
+
     {
 
     }
 
-    void metodo1(){
-        print("Imprimio las instrucciones de un metodo 1");
-        return;
-    }
-    string Funcion2(string aF, int bF){
-        print(aF);
-        return aF;
+    {
+        caracter_uno_dos = '}' ;
     }
 
-    print(metodo1());
+
+}
+print(nombre_dos);

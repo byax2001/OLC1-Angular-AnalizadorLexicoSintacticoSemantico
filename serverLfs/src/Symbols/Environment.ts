@@ -9,7 +9,41 @@ export class Environment{
     ){
         this.variables=new Map();
     }
-    
+
+    public getVariables() {
+        let variables:any[] = []
+        let simbolo = new Symbol(false, Type.error, "", "", 0, 0);
+        this.variables.forEach((value, key) => {
+            simbolo = value; //OBTIENE EL ELEMENTO ACTUAL RECORRIDO DEL MAP DE VARIABLES 
+            let tipo = "any"   //OBTIENE SU TIPO
+            if (simbolo.type === Type.INT) {
+                tipo = "int"
+            } else if (simbolo.type === Type.DOUBLE) {
+                tipo = "double"
+            } else if (simbolo.type === Type.CHAR) {
+                tipo = "char"
+            } else if (simbolo.type === Type.BOOLEAN) {
+                tipo = "boolean"
+            } else if (simbolo.type === Type.STRING) {
+                tipo = "string"
+            }else if (simbolo.type === Type.VOID) {
+                tipo = "void"
+            }
+            let constante=" "; //VERIFICA SI ES CONSTANTE O NO
+            if(simbolo.constante===true){
+                constante="constante"
+            }else{
+                constante=" "
+            }
+            let parametros=0
+            if(simbolo.nParametros!==undefined){
+                parametros=simbolo.nParametros //VERIFICA SI TIENE PARAMETROS 
+            }
+                            //CONSTANTE,TIPO,ID,VALOR,LINEA,COLUMNA,PARAMETROS 
+            variables.push([constante,tipo,value.id,value.value,value.line,value.column,parametros]);//GUARDA ESTOS DATOS EN UN ARRAY DE ARRAYS
+        })
+        return variables;
+    }
 
     public guardarSimbolo(constante:boolean,type:Type,id:string,value:any,linea:number,column:number){
         this.variables.set(id,new Symbol(constante,type,id,value,linea,column));

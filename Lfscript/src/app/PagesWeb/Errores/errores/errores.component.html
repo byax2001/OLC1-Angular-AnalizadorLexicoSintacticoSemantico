@@ -1,5 +1,17 @@
 <header><h1 class="text-center text-light">Reporte de errores</h1></header>
 <div class="container-fluid">
     <button id="btnSalir"  class="btn btn-secondary  btnEffect" routerLink="">Salir</button>
-    
+    <button id="btnMostrar"  class="btn btn-secondary  btnEffect" (click)="graficarTabla()">Mostrar Tabla</button>
+    <table id="TablaError" class="table table-dark pt-4 animate__animated animate__zoomInDown" *ngIf="TableVisibility">
+        <thead>
+        <tr>
+          <th *ngFor="let x of cabecera" class="text-center">{{x}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let error of errores">
+          <td *ngFor="let elemento of error" class="text-center">{{elemento}}</td>
+        </tr>
+        </tbody>
+      </table>
 </div>

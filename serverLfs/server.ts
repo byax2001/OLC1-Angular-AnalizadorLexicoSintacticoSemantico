@@ -29,14 +29,19 @@ app.listen(puerto, function(){
 app.get('/', function (req:any,res:any){
     res.json({mensaje:"hola mundo"})
 })
+app.get('/ObtenerEnvs', function (req:any,res:any){
+    res.send({Envs:B_datos.getInstance().getListEnviroments()});
+})
 
-app.get('/retornoTexto', function (req:any,res:any){
-    res.send("este mensaje esta en texto")
+app.get('/ObtenerError', function (req:any,res:any){
+    res.send({bDatos:B_datos.getInstance().getListError()});
 })
 //TEXTO A ANALIZAR PARA EL AST 
 app.post('/setTextoAst', function (req: any, res: any) {
     let textoAst = req.body.textoAst;
     B_datos.getInstance().clearConsola();//LIMPIAR LA CONSOLA 
+    B_datos.getInstance().clearErrores();//LIMPIA LA TABLA DE ERRORES
+    B_datos.getInstance().clearEnviroments();//LIMPIAR LA TABLA DE ENVIROMENTS
     try {
         const ast = parser.parse(textoAst);
         const env = new Environment(null);
