@@ -36,16 +36,19 @@ export class AstComponent implements OnInit {
       },
       nodes:{
         color:{
-          border:"white",background:"red"
+          //border:"#13B0D3",background:"black",hover:{border:"#51C8E3",background:"#54919F"}  Con estilo
+          border:"white",background:"red",hover:{border:"#51C8E3",background:"#54919F"}
         },
         shape:"box",
         font:{
-          color:"white"
+          //color:"#13B0D3", Con estilo
+          color:"white",
+          align:"center"
         }
       }, physics:{
         enabled: true,
         barnesHut: {
-          gravitationalConstant: -1000,
+          gravitationalConstant: -100,
           centralGravity: 0.3,
           springLength: 95
         }},

@@ -56,12 +56,12 @@ export class Literal extends expresion {
 
     public LimpiarString(cadenat:string):string{
         cadenat=cadenat.slice(1,cadenat.length-1); //QUITAR COMILLAS A LOS CHAR Y STRING 
-        cadenat=cadenat.replace("\\\"","\"");
-        cadenat=cadenat.replace("\\\\","\\");
-        cadenat=cadenat.replace("\\n","\n");
-        cadenat=cadenat.replace("\\r","\r");
-        cadenat=cadenat.replace("\\t","\t");
-        cadenat=cadenat.replace("\\\'","\'");
+        cadenat=cadenat.replace(/\\\"/g,"\"");
+        cadenat=cadenat.replace(/\\n/g,"\n");
+        cadenat=cadenat.replace(/\\r/g,"\r");
+        cadenat=cadenat.replace(/\\t/g,"\t");
+        cadenat=cadenat.replace(/\\\'/g,"\'");
+        cadenat=cadenat.replace(/\\\\/g,"\\");
         return cadenat
     }
     public ast(idPadre: string, NoHijo: number,NivelPadre:number) {

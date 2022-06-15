@@ -45,9 +45,10 @@ ENTERO [0-9]+
 DECIMAL {ENTERO}("."{ENTERO})
 ID {LETRAS}({LETRAS}|{ENTERO}|"_")*
 
-CESPECIALES \\[\'\"\\nrt]
+ESCAPECHAR [\'\"\\nrt]
+CESPECIALES \\{ESCAPECHAR}
 ACEPTACION [^\"\n]    
-CADENA \"({ACEPTACION}|{CESPECIALES})*\"
+CADENA \"({CESPECIALES}|{ACEPTACION})*\"
 
 ACEPTACIONC [^\'\n]     
 CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
@@ -56,7 +57,7 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 
 [ \r\t\n\s]+  {}
 "//".*      {}
-"/*"([\n]|[^"*/"]|\*)*"*/" {}
+[/][*]([\n]|[^"*/"]|\*|"/")*[*][/] {}
 
 //se deben de reconocer primero los == != antes de = y ! por que los reconocera antes, si no a la hora de usar un == lo reconocio primero como = =
 "++"                 { console.log("Reconocio : " + yytext);  return 'inc' } 
@@ -193,10 +194,13 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | METODOS {$$= $1;}
             | LLAMADA puntoycoma {$$= $1;}
             | BLOQUE_INST {$$=new BloqueInstSup($1,@1.first_line,@1.last_column);}
-            | error puntoycoma {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
+            | id inc puntoycoma {$$=new IncDecremento ($1,TypeAritmeticas.INCDER,@1.first_line,@1.last_column);}
+            | id dec puntoycoma {$$=new IncDecremento ($1,TypeAritmeticas.DECDER,@1.first_line,@1.last_column);}
+            | error  {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
-                    bDatos.addError("Sintactico","No se esperaba este caracter",@1.first_line,@1.last_column);       
+                    bDatos.addError("Sintactico","No se esperaba este caracter",@1.first_line,@1.last_column);    
+                    $$=new Nothing(@1.first_line,@1.last_column);
                     }
             ;
 DECLARACION: TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(false,$1,$2,$4,@1.first_line,@1.last_column);}
