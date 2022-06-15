@@ -39,8 +39,13 @@ export class Environment{
             if(simbolo.nParametros!==undefined){
                 parametros=simbolo.nParametros //VERIFICA SI TIENE PARAMETROS 
             }
+            let valor= value.value;
+            
+            if(Array.isArray(value.value)){
+                valor="Instrucciones"
+            }
                             //CONSTANTE,TIPO,ID,VALOR,LINEA,COLUMNA,PARAMETROS 
-            variables.push([constante,tipo,value.id,value.value,value.line,value.column,parametros]);//GUARDA ESTOS DATOS EN UN ARRAY DE ARRAYS
+            variables.push([constante,tipo,value.id,valor,value.line,value.column,parametros]);//GUARDA ESTOS DATOS EN UN ARRAY DE ARRAYS
         })
         return variables;
     }

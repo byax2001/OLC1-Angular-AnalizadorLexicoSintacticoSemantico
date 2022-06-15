@@ -31,7 +31,7 @@ export class Literal extends expresion {
             result=  {value:rstring,type:Type.STRING}
         }else if(this.type==Type.CHAR){
             let rstring= this.LimpiarString(this.value);
-            result=  {value:rstring.charCodeAt(0),type:Type.CHAR}
+            result=  {value:rstring,type:Type.CHAR}
         }else if(this.type==Type.ID){
             let existe=env.existeSimbolo(this.value)
             if(existe==true){

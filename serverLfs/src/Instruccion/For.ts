@@ -64,7 +64,7 @@ export class For extends instruction{
         let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo={
             id:id,
-            label:"Instruction: For"
+            label:"Instruction:\nFor"
         }
         B_datos.getInstance().addNodosAst(nodo);
         //ASIGNACION

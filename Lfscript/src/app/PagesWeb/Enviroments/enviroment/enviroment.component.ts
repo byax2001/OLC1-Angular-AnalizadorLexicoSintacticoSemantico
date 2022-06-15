@@ -7,7 +7,7 @@ import { ClientService } from 'src/app/services/client.service';
   styleUrls: ['./enviroment.component.css']
 })
 export class EnviromentComponent implements OnInit {
-  cabecera=["No.","Constante","Tipo","Id","Valor","Linea","Columna","Parametros"];
+  cabecera=["No.","Environment","Constante","Tipo","Id","Valor","Linea","Columna","Parametros"];
   Tablevisibility=true;
   enviroments:any=[]
   constructor(

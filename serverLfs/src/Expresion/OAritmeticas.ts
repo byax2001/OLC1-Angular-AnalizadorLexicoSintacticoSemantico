@@ -29,7 +29,7 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value + nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.INT && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value + nodoDer.value), type: Type.INT }
+                    result = { value: (nodoIzq.value + nodoDer.value.charCodeAt(0)), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.INT && nodoDer.type === Type.STRING) {
                     result = { value: (nodoIzq.value + "" + nodoDer.value), type: Type.STRING }
@@ -41,21 +41,22 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value + nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value + nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value + nodoDer.value.charCodeAt(0)), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.STRING) {
                     result = { value: (nodoIzq.value + "" + nodoDer.value), type: Type.STRING }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.INT) {
-                    result = { value: (nodoIzq.value + nodoDer.value), type: Type.INT }
+                    result = { value: (nodoIzq.value.charCodeAt(0) + nodoDer.value), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.DOUBLE) {
-                    result = { value: (nodoIzq.value + nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value.charCodeAt(0) + nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value + nodoDer.value), type: Type.CHAR }
+                    result = { value: (nodoIzq.value.charCodeAt(0) + nodoDer.value.charCodeAt(0)), type: Type.CHAR }
                 }
-                else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.STRING) {
+                else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.STRING) { 
+                    //NO SE HACE EL CHAR_CODE_AT AQUI AL SER STRING EL OTRO DATO CON EL QUE SE COMPARA
                     result = { value: (nodoIzq.value + "" + nodoDer.value), type: Type.STRING }
                 }
                 else if (nodoIzq.type === Type.STRING && nodoDer.type === Type.INT) {
@@ -65,6 +66,7 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value + "" + nodoDer.value), type: Type.STRING }
                 }
                 else if (nodoIzq.type === Type.STRING && nodoDer.type === Type.CHAR) {
+                    //NO SE HACE EL CHAR_CODE_AT AQUI AL SER STRING EL OTRO DATO CON EL QUE SE COMPARA
                     result = { value: (nodoIzq.value + "" + nodoDer.value), type: Type.STRING }
                 }
                 else if (nodoIzq.type === Type.STRING && nodoDer.type === Type.STRING) {
@@ -81,7 +83,7 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value - nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.INT && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value - nodoDer.value), type: Type.INT }
+                    result = { value: (nodoIzq.value - nodoDer.value.charCodeAt(0)), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.INT) {
                     result = { value: (nodoIzq.value - nodoDer.value), type: Type.DOUBLE }
@@ -90,16 +92,16 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value - nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value - nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value - nodoDer.value.charCodeAt(0)), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.INT) {
-                    result = { value: (nodoIzq.value - nodoDer.value), type: Type.INT }
+                    result = { value: (nodoIzq.value.charCodeAt(0) - nodoDer.value), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.DOUBLE) {
-                    result = { value: (nodoIzq.value - nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value.charCodeAt(0) - nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value - nodoDer.value), type: Type.INT }
+                    result = { value: (nodoIzq.value.charCodeAt(0) - nodoDer.value.charCodeAt(0)), type: Type.INT }
                 } else {
                     //REPORTAR ERROR   
                     B_datos.getInstance().addError("Semantico", "Operacion no posible de realizar", this.line, this.column);
@@ -112,7 +114,7 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value * nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.INT && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value * nodoDer.value), type: Type.INT }
+                    result = { value: (nodoIzq.value * nodoDer.value.charCodeAt(0)), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.INT) {
                     result = { value: (nodoIzq.value * nodoDer.value), type: Type.DOUBLE }
@@ -121,16 +123,16 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value * nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value * nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value * nodoDer.value.charCodeAt(0)), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.INT) {
-                    result = { value: (nodoIzq.value * nodoDer.value), type: Type.INT }
+                    result = { value: (nodoIzq.value.charCodeAt(0) * nodoDer.value), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.DOUBLE) {
-                    result = { value: (nodoIzq.value * nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value.charCodeAt(0) * nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value * nodoDer.value), type: Type.INT }
+                    result = { value: (nodoIzq.value.charCodeAt(0) * nodoDer.value.charCodeAt(0)), type: Type.INT }
                 } else {
                     //REPORTAR ERROR   
                     B_datos.getInstance().addError("Semantico", "Operacion no posible de realizar", this.line, this.column);
@@ -143,7 +145,7 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value / nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.INT && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value / nodoDer.value), type: Type.INT }
+                    result = { value: (nodoIzq.value / nodoDer.value.charCodeAt(0)), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.INT) {
                     result = { value: (nodoIzq.value / nodoDer.value), type: Type.DOUBLE }
@@ -152,16 +154,16 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value / nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value / nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value / nodoDer.value.charCodeAt(0)), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.INT) {
-                    result = { value: (nodoIzq.value / nodoDer.value), type: Type.INT }
+                    result = { value: (nodoIzq.value.charCodeAt(0) / nodoDer.value), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.DOUBLE) {
-                    result = { value: (nodoIzq.value / nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value.charCodeAt(0)/ nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value / nodoDer.value), type: Type.INT }
+                    result = { value: (nodoIzq.value.charCodeAt(0) / nodoDer.value.charCodeAt(0)), type: Type.INT }
                 } else {
                     //REPORTAR ERROR  
                     B_datos.getInstance().addError("Semantico", "Operacion no posible de realizar", this.line, this.column);
@@ -174,7 +176,7 @@ export class OAritmeticas extends expresion{
                     result = { value: Math.pow(nodoIzq.value, nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.INT && nodoDer.type === Type.CHAR) {
-                    result = { value: Math.pow(nodoIzq.value, nodoDer.value), type: Type.DOUBLE }
+                    result = { value: Math.pow(nodoIzq.value, nodoDer.value.charCodeAt(0)), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.INT) {
                     result = { value: Math.pow(nodoIzq.value, nodoDer.value), type: Type.DOUBLE }
@@ -183,16 +185,16 @@ export class OAritmeticas extends expresion{
                     result = { value: Math.pow(nodoIzq.value, nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.CHAR) {
-                    result = { value: Math.pow(nodoIzq.value, nodoDer.value), type: Type.DOUBLE }
+                    result = { value: Math.pow(nodoIzq.value, nodoDer.value.charCodeAt(0)), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.INT) {
-                    result = { value: Math.pow(nodoIzq.value, nodoDer.value), type: Type.DOUBLE }
+                    result = { value: Math.pow(nodoIzq.value.charCodeAt(0), nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.DOUBLE) {
-                    result = { value: Math.pow(nodoIzq.value, nodoDer.value), type: Type.DOUBLE }
+                    result = { value: Math.pow(nodoIzq.value.charCodeAt(0), nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.CHAR) {
-                    result = { value: Math.pow(nodoIzq.value, nodoDer.value), type: Type.DOUBLE }
+                    result = { value: Math.pow(nodoIzq.value.charCodeAt(0), nodoDer.value.charCodeAt(0)), type: Type.DOUBLE }
                 } else {
                     //REPORTAR ERROR  
                     B_datos.getInstance().addError("Semantico", "Operacion no posible de realizar", this.line, this.column);
@@ -205,7 +207,7 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value % nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.INT && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value % nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value % nodoDer.value.charCodeAt(0)), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.INT) {
                     result = { value: (nodoIzq.value % nodoDer.value), type: Type.DOUBLE }
@@ -214,16 +216,16 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value % nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value % nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value % nodoDer.value.charCodeAt(0)), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.INT) {
-                    result = { value: (nodoIzq.value % nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value.charCodeAt(0) % nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.DOUBLE) {
-                    result = { value: (nodoIzq.value % nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value.charCodeAt(0) % nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value % nodoDer.value), type: Type.DOUBLE }
+                    result = { value: (nodoIzq.value.charCodeAt(0) % nodoDer.value.charCodeAt(0)), type: Type.DOUBLE }
                 } else {
                     //REPORTAR ERROR  
                     B_datos.getInstance().addError("Semantico", "Operacion no posible de realizar", this.line, this.column);
