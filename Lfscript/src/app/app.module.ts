@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http'
 import { FormsModule } from '@angular/forms';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 //SERVICIOS
 import{MJsExternosService} from './m-js-externos.service'
 import { AppRoutingModule } from './app-routing.module';
@@ -19,12 +20,14 @@ import { ErroresComponent } from './PagesWeb/Errores/errores/errores.component';
     AstComponent,
     EnviromentComponent,
     ErroresComponent,
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    CodemirrorModule
   ],
   providers: [
     MJsExternosService
