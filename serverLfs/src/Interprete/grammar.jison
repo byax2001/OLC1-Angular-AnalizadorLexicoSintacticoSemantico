@@ -142,7 +142,7 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 //EOF INDICA EL FIN DEL DOCUMENTO LEIDO 
 <<EOF>> return 'EOF';
 .       {
-            bDatos.addError("Lexico","Caracter no reconocido",yylloc.first_line,yylloc.first_column);
+            bDatos.addError("Lexico","Caracter no reconocido "+yytext,yylloc.first_line,yylloc.first_column);
             console.log('Este error es un error lexico: '+yytext+' en al linea '+yylloc.first_line+' en la columna '+yylloc.first_column);
         }
 
@@ -199,7 +199,7 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | error  {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
-                    bDatos.addError("Sintactico","No se esperaba este caracter",@1.first_line,@1.last_column);    
+                    bDatos.addError("Sintactico","No se esperaba este caracter "+yytext,@1.first_line,@1.last_column);    
                     $$=new Nothing(@1.first_line,@1.last_column);
                     }
             ;

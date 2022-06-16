@@ -107,7 +107,7 @@ option5.addEventListener('click',()=>{
         el.CodeMirror.refresh();
     });
 })
-
+CodeMirror.setSize("100%", "100%");
 }catch(e){}
 
 

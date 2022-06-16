@@ -126,7 +126,7 @@ case 23:
 console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
-                    bDatos.addError("Sintactico","No se esperaba este caracter",_$[$0].first_line,_$[$0].last_column);    
+                    bDatos.addError("Sintactico","No se esperaba este caracter "+yytext,_$[$0].first_line,_$[$0].last_column);    
                     this.$=new Nothing(_$[$0].first_line,_$[$0].last_column);
                     
 break;
@@ -1088,7 +1088,7 @@ break;
 case 62:return 5;
 break;
 case 63:
-            bDatos.addError("Lexico","Caracter no reconocido",yy_.yylloc.first_line,yy_.yylloc.first_column);
+            bDatos.addError("Lexico","Caracter no reconocido "+yy_.yytext,yy_.yylloc.first_line,yy_.yylloc.first_column);
             console.log('Este error es un error lexico: '+yy_.yytext+' en al linea '+yy_.yylloc.first_line+' en la columna '+yy_.yylloc.first_column);
         
 break;

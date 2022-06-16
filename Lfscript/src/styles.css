@@ -1,5 +1,6 @@
 @import "~codemirror/lib/codemirror.css";
 @import "~codemirror/theme/material.css";
+
 body{
     background-image: url('../images/fondo2.jpg');
     height: 100vh4;
@@ -15,3 +16,6 @@ body{
     padding: 0; /* To remove default left padding */
 }
 
+.CodeMirror {
+  height: 100%;
+}
