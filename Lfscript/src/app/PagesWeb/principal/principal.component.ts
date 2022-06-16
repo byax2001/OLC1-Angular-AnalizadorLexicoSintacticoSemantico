@@ -26,12 +26,13 @@ export class PrincipalComponent implements OnInit {
   tTextArea5 = "";
   Npestañas: number;
   indexPActual: number;
+  
   constructor(
     private MjsExt: MJsExternosService,
     private clientS: ClientService,
     private Renderer2: Renderer2
   ) {
-    this.MjsExt.CargarJs(['metodos.js']); //PARA CARGAR ARCHIVOS JAVASCRIPT EXTERNOS
+    this.MjsExt.CargarJs(['metodos.js']); //PARA CARGAR ARCHIVOS JAVASCRIPT EXTERNOS  
   }
   //INICIO
   ngOnInit(): void {

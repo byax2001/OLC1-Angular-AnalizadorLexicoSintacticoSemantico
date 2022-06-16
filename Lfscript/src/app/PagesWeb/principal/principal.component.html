@@ -35,22 +35,15 @@
         <li id="option4" class="option" style="visibility: hidden;" (click)="updateIndex(3)" #p4>4</li>
         <li id="option5" class="option" style="visibility: hidden;" (click)="updateIndex(4)" #p5>5</li>
       </ul>
-      <ngx-codemirror
-
-  [options]="{
-    lineNumbers: true,
-    theme: 'material',
-    mode: 'markdown'
-  }"
-></ngx-codemirror>
      
+      
       <div class="contents" id="ContPest" #contPest>
         
-        <textarea id="content1" class="tAreaW content content-active" [(ngModel)]="tTextArea1"></textarea> 
-        <textarea id="content2" class="tAreaW content" [(ngModel)]="tTextArea2"> </textarea>
-        <textarea id="content3" class="tAreaW content" [(ngModel)]="tTextArea3"></textarea>
-        <textarea id="content4" class="tAreaW content" [(ngModel)]="tTextArea4"></textarea>
-        <textarea id="content5" class="tAreaW content" [(ngModel)]="tTextArea5"></textarea>
+        <ngx-codemirror id="content1" class="tAreaW content content-active"  [(ngModel)]="tTextArea1" [options]="{lineNumbers: true,theme: 'material',mode: 'markdown'}"></ngx-codemirror>
+        <ngx-codemirror id="content2" class="tAreaW content"  [(ngModel)]="tTextArea2" [options]="{lineNumbers: true,theme: 'material',mode: 'markdown'}"></ngx-codemirror>
+        <ngx-codemirror id="content3" class="tAreaW content"  [(ngModel)]="tTextArea3" [options]="{lineNumbers: true,theme: 'material',mode: 'markdown'}"></ngx-codemirror>
+        <ngx-codemirror id="content4" class="tAreaW content"  [(ngModel)]="tTextArea4" [options]="{lineNumbers: true,theme: 'material',mode: 'markdown'}"></ngx-codemirror>
+        <ngx-codemirror id="content5" class="tAreaW content"  [(ngModel)]="tTextArea5" [options]="{lineNumbers: true,theme: 'material',mode: 'markdown'}"></ngx-codemirror>
       </div>
     </div>
     <div class="col-1"></div>
