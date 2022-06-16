@@ -35,20 +35,18 @@
         <li id="option4" class="option" style="visibility: hidden;" (click)="updateIndex(3)" #p4>4</li>
         <li id="option5" class="option" style="visibility: hidden;" (click)="updateIndex(4)" #p5>5</li>
       </ul>
-      <ngx-codemirror id=""
-    
-      [options]="{
-        lineNumbers: true,
-        theme: 'material',
-        mode: 'markdown'
-      }"
-    ></ngx-codemirror>
-      
+      <ngx-codemirror
+
+  [options]="{
+    lineNumbers: true,
+    theme: 'material',
+    mode: 'markdown'
+  }"
+></ngx-codemirror>
+     
       <div class="contents" id="ContPest" #contPest>
         
-        <textarea id="content1" class="tAreaW content content-active" [(ngModel)]="tTextArea1">
-          
-        </textarea> 
+        <textarea id="content1" class="tAreaW content content-active" [(ngModel)]="tTextArea1"></textarea> 
         <textarea id="content2" class="tAreaW content" [(ngModel)]="tTextArea2"> </textarea>
         <textarea id="content3" class="tAreaW content" [(ngModel)]="tTextArea3"></textarea>
         <textarea id="content4" class="tAreaW content" [(ngModel)]="tTextArea4"></textarea>
