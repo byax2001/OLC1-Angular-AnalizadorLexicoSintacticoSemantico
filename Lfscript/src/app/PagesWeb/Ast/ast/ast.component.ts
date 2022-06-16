@@ -46,7 +46,7 @@ export class AstComponent implements OnInit {
           align:"center"
         }
       }, physics:{
-        enabled: true,
+        enabled: false,
         barnesHut: {
           gravitationalConstant: -100,
           centralGravity: 0.3,

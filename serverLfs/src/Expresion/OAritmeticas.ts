@@ -53,7 +53,7 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value.charCodeAt(0) + nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value.charCodeAt(0) + nodoDer.value.charCodeAt(0)), type: Type.CHAR }
+                    result = { value: (nodoIzq.value.charCodeAt(0) + nodoDer.value.charCodeAt(0)), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.STRING) { 
                     //NO SE HACE EL CHAR_CODE_AT AQUI AL SER STRING EL OTRO DATO CON EL QUE SE COMPARA

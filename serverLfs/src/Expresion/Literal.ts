@@ -20,10 +20,10 @@ export class Literal extends expresion {
             result=  {value:Number(this.value),type:Type.INT}
         }else if(this.type==Type.DOUBLE){
             result=  {value:Number(this.value),type:Type.DOUBLE}
-        }else if(this.type==Type.BOOLEAN){
-            if(this.value=="true"){
+        }else if(this.type===Type.BOOLEAN){
+            if(String(this.value).toLowerCase()==="true"){
                 result=  {value:Boolean(true),type:Type.BOOLEAN}
-            }else if(this.value=="false"){
+            }else if(String(this.value).toLowerCase()==="false"){
                 result=  {value:Boolean(false),type:Type.BOOLEAN}
             }      
         }else if(this.type==Type.STRING){

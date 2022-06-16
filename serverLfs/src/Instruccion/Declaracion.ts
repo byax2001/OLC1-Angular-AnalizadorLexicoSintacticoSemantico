@@ -22,9 +22,9 @@ export class Declaracion extends instruction{
             let exp=this.expresion.execute(env);
             //SI SUCEDE UN ERROR CON LA EXPRESION O SI ESTA ES ERRONEA
             if(exp.type!==Type.error){ 
-                this.id.forEach((id)=>{
+                for(let id of this.id){
                     let existe=env.existeSimDeclaracion(id);
-                    if(existe==true){
+                    if(existe===true){
                         //ERROR YA FUE DECLARADA ESTA VARIABLE CON ANTERIORIDAD
                         B_datos.getInstance().addError("Semantico","Intento de declarar 2 veces una variable",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
                         //ERROR  2
@@ -32,10 +32,11 @@ export class Declaracion extends instruction{
                             B_datos.getInstance().addError("Semantico","Tipo de declaracion y dato no coinciden",this.line,this.column);
                             console.log("error semantico distintos tipos");
                         }
-                
                         console.log("error semantico ya existia la variable")   
+                        //SE LE DA RETURN PARA QUE YA NO SIGA CON EL CICLO de CONJUNTO de id's si una ya existe no se pueden declarar las demas.
+                        break;
                     }else{    
-                        if(this.tipo==exp.type){
+                        if(this.tipo===exp.type){
                             //GUARDAR DATO
                             env.guardarSimbolo(this.constante,this.tipo,id,exp.value,this.line,this.column);
                             console.log('--------------------acabo de guardar una variable------------------')
@@ -47,7 +48,7 @@ export class Declaracion extends instruction{
                         }
                     }
     
-                })  
+                }  
             }else{
                 B_datos.getInstance().addError("Semantico","Declaracion no posible de realizar",this.line,this.column)
             } 

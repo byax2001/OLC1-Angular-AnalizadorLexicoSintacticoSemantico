@@ -48,7 +48,6 @@ export class B_datos{
             let variables=envValue.getVariables(); //[[variable1],[variable2],[variable3]]
             envs.push([env[0],variables]); //[id_enviroment, [variables del enviroment y sus propiedades]]
         }
-        console.log(envs);
         return envs;
     }
     clearEnviroments(){
@@ -68,6 +67,7 @@ export class B_datos{
     }
     //GET CONSOLA
     getConsola():string[]{
+        this.Consola.push("\n--Se termino de analizar la entrada de texto--")
         return this.Consola;
     }
     clearConsola(){
