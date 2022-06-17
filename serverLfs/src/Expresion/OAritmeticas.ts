@@ -139,13 +139,13 @@ export class OAritmeticas extends expresion{
                 }
             } else if (this.typeArit === TypeAritmeticas.DIVISION) {
                 if (nodoIzq.type === Type.INT && nodoDer.type === Type.INT) {
-                    result = { value: (nodoIzq.value / nodoDer.value), type: Type.INT }
+                    result = { value: Math.trunc(nodoIzq.value / nodoDer.value), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.INT && nodoDer.type === Type.DOUBLE) {
                     result = { value: (nodoIzq.value / nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.INT && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value / nodoDer.value.charCodeAt(0)), type: Type.INT }
+                    result = { value: Math.trunc(nodoIzq.value / nodoDer.value.charCodeAt(0)), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.DOUBLE && nodoDer.type === Type.INT) {
                     result = { value: (nodoIzq.value / nodoDer.value), type: Type.DOUBLE }
@@ -157,13 +157,13 @@ export class OAritmeticas extends expresion{
                     result = { value: (nodoIzq.value / nodoDer.value.charCodeAt(0)), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.INT) {
-                    result = { value: (nodoIzq.value.charCodeAt(0) / nodoDer.value), type: Type.INT }
+                    result = { value: Math.trunc(nodoIzq.value.charCodeAt(0) / nodoDer.value), type: Type.INT }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.DOUBLE) {
                     result = { value: (nodoIzq.value.charCodeAt(0)/ nodoDer.value), type: Type.DOUBLE }
                 }
                 else if (nodoIzq.type === Type.CHAR && nodoDer.type === Type.CHAR) {
-                    result = { value: (nodoIzq.value.charCodeAt(0) / nodoDer.value.charCodeAt(0)), type: Type.INT }
+                    result = { value: Math.trunc(nodoIzq.value.charCodeAt(0) / nodoDer.value.charCodeAt(0)), type: Type.INT }
                 } else {
                     //REPORTAR ERROR  
                     B_datos.getInstance().addError("Semantico", "Operacion no posible de realizar", this.line, this.column);
@@ -247,6 +247,10 @@ export class OAritmeticas extends expresion{
                 }
             }
         }
+        if(result.type===Type.DOUBLE){
+            result.value=result.value.toFixed(2);
+        }
+        //if type==double entonces .tofixed(2)
         return result
     }
     public ast(idPadre: string, NoHijo: number,NivelPadre:number) {

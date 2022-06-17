@@ -67,7 +67,7 @@ export class B_datos{
     }
     //GET CONSOLA
     getConsola():string[]{
-        this.Consola.push("\n--Se termino de analizar la entrada de texto--")
+        this.Consola.push("\n==Se termino de analizar la entrada de texto==")
         return this.Consola;
     }
     clearConsola(){

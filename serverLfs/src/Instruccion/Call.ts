@@ -29,8 +29,10 @@ export class Call extends instruction{
                 let instrucciones= MeFun.value[1];
                 for(let i=0;i<this.paramsCall.length;i++){
                     parametrosMf[i].changeExpresion(this.paramsCall[i]); //ENVIROMENT ANTERIOR
-                    parametrosMf[i].execute(newEnv); //NUEVO ENVIROMENT
+                    parametrosMf[i].execute(newEnv); //ENVIROMENT ANTERIOR 
                 }
+                //ENVIROMENT BLOQUE 
+                // LET ENVBloque= new enviroment(ENVANTERIOR);
                 for(let Instruccion of instrucciones){
                     if(Instruccion instanceof Return){
                         let result= Instruccion.execute(newEnv);

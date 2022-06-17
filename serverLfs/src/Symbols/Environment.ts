@@ -127,6 +127,7 @@ export class Environment{
     }
 
     public getFunMetodo(id:string,nparametros:number):Symbol{
+        let envActual:Environment=this;
         let simbolo= new Symbol(false,Type.error,"","",0,0);
         this.variables.forEach((value,key)=>{
             if(key==id){
@@ -135,6 +136,19 @@ export class Environment{
                 }
             }
         })
+        /*
+        if(simbolo.type==Type.error){
+            if(envActual.anterior===null){
+                return simbolo;
+            }else{
+                envActual=envActual.anterior;
+            }
+            simbolo=envActual.getFunMetodo(id,nparametros);
+            if(simbolo.type!==Type.error){
+                return simbolo;
+            }
+            
+        }*/
         return simbolo;
     }
 
