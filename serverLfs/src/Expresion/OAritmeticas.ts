@@ -248,7 +248,7 @@ export class OAritmeticas extends expresion{
             }
         }
         if(result.type===Type.DOUBLE){
-            result.value=result.value.toFixed(2);
+            result = { value: Number(Number(result.value).toFixed(2)), type: Type.DOUBLE }
         }
         //if type==double entonces .tofixed(2)
         return result

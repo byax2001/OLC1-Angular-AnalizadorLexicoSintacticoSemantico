@@ -1,4 +1,5 @@
 import { B_datos } from "./src/BaseDatos/B_datos";
+import { Call } from "./src/Instruccion/Call";
 import { Environment } from "./src/Symbols/Environment";
 const express =require('express');
 const morgan= require('morgan');
@@ -42,18 +43,25 @@ app.post('/setTextoAst', function (req: any, res: any) {
     B_datos.getInstance().clearConsola();//LIMPIAR LA CONSOLA 
     B_datos.getInstance().clearErrores();//LIMPIA LA TABLA DE ERRORES
     B_datos.getInstance().clearEnviroments();//LIMPIAR LA TABLA DE ENVIROMENTS
+
+    
     try {
         const ast = parser.parse(textoAst);
         const env = new Environment(null);
+        //PRIMERA PASADA GUARDAR TODO Y NO EJECUTAR LAS CALL DEL ENVIROMENT PRINCIPAL================
         for (const instruction of ast) {
-            try {
-                instruction.execute(env);
+            if(!(instruction instanceof Call)){
+                try {
+                    instruction.execute(env);
 
-            } catch (error) {
-                console.log(error);
+                } catch (error) {
+                    console.log(error);
+                }
             }
         }
         B_datos.getInstance().addEnviroments("Principal", env);//SE AÑANDIO ESTA BASE DE DATOS A LA LISTA, recorrer esta lista al revez
+        
+        //GRAFICAR AST===========================================================
         //SE LIMPIAN LOS NODOS Y EDGES
         B_datos.getInstance().clearAst();
         let nodo = {
@@ -79,7 +87,19 @@ app.post('/setTextoAst', function (req: any, res: any) {
             B_datos.getInstance().addEdgesAst(edge);
             n++;
         }
-        
+
+
+        //SEGUNDA PASADA EJECUTA LOS CALL DEL ENVIROMENT PRINCIAPL================
+        for (const instruction of ast) {
+            if(instruction instanceof Call){
+                try {
+                    instruction.execute(env);
+
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        }
 
 
     } catch (error) {

@@ -18,8 +18,8 @@ export class Literal extends expresion {
         let result:Retorno={value:null,type:Type.error};
         if(this.type==Type.INT){
             result=  {value:Number(this.value),type:Type.INT}
-        }else if(this.type==Type.DOUBLE){
-            result=  {value:Number(this.value).toFixed(2),type:Type.DOUBLE}
+        }else if(this.type===Type.DOUBLE){
+            result=  {value:Number(Number(this.value).toFixed(2)),type:Type.DOUBLE}
         }else if(this.type===Type.BOOLEAN){
             if(String(this.value).toLowerCase()==="true"){
                 result=  {value:Boolean(true),type:Type.BOOLEAN}

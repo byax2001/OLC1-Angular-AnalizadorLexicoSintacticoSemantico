@@ -136,7 +136,7 @@ export class Environment{
                 }
             }
         })
-        /*
+        
         if(simbolo.type==Type.error){
             if(envActual.anterior===null){
                 return simbolo;
@@ -148,7 +148,7 @@ export class Environment{
                 return simbolo;
             }
             
-        }*/
+        }
         return simbolo;
     }
 

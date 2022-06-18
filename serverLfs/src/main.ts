@@ -1,4 +1,5 @@
 import { B_datos } from "./BaseDatos/B_datos";
+import { Call } from "./Instruccion/Call";
 import { Environment } from "./Symbols/Environment";
 
 const fs = require('fs');
@@ -14,12 +15,12 @@ try{
     const env = new Environment(null);
     
     for(const instruction of ast){
-        try{
-            
-            instruction.execute(env);
-
-        }catch (error){
-            console.log(error);
+        if(!(instruction instanceof Call)){
+            try{
+                instruction.execute(env);
+            }catch (error){
+                console.log(error);
+            }
         }
     }
     let nodo = {
@@ -36,6 +37,18 @@ try{
         }
         n++;
     }
+
+    for(const instruction of ast){
+        if(instruction instanceof Call){
+            try{
+                instruction.execute(env);
+            }catch (error){
+                console.log(error);
+            }
+        }
+    }
+
+
     
 }catch(error){
     console.log(error);
