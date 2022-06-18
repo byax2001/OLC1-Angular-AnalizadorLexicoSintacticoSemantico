@@ -17,13 +17,17 @@ export class Call extends instruction{
     }
 
     public execute(env:Environment){
+        //DEBEN DE EXISTIR DOS NUEVOS ENVIROMENTS
+            //1: PARA DECLARAR LAS VARIABLES DE LOS PARAMETROS INGRESADOS EN LA FUNCION O METODOS
+            //2: PARA LAS INSTRUCCIONES ADENTRO DE ESA FUNCION O METODO
+
         //for declaracion-ids elemenentos
         //MeFun: Metodos y funcion
         let resultR:Retorno={value:null,type:Type.error}
         let MeFun=env.getFunMetodo(this.idMF,this.paramsCall.length);
         if(MeFun.type!=Type.error){//SI SE ENCONTRO LA FUNCION O METODO SE PROCEDE A REALIZAR
+            let newEnv= new Environment(env); //Nuevo Enviroment
             if(MeFun.type===Type.VOID){
-                let newEnv= new Environment(env); //Nuevo Enviroment
                 //METODOS
                 let parametrosMf=MeFun.value[0];
                 let instrucciones= MeFun.value[1];
@@ -32,24 +36,24 @@ export class Call extends instruction{
                     parametrosMf[i].execute(newEnv); //ENVIROMENT ANTERIOR 
                 }
                 //ENVIROMENT BLOQUE 
-                // LET ENVBloque= new enviroment(ENVANTERIOR);
+                let newEnv2= new Environment(newEnv); //Nuevo Enviroment
                 for(let Instruccion of instrucciones){
-                    if(Instruccion instanceof Return){
-                        let result= Instruccion.execute(newEnv);
+                    if(Instruccion instanceof Return){ //SI TIENE UNA INSTRUCCION RETURN 
+                        let result= Instruccion.execute(newEnv2);
                         if(result.expR.value!==undefined){
                             //ERROR ESTA INTENTANDO RETORNAR UN VALOR 
                             B_datos.getInstance().addError("Semantico","Intento de retornar un valor en un metodo",this.line,this.column); 
-                            B_datos.getInstance().addEnviroments("Metodo",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
+                            B_datos.getInstance().addEnviroments("Metodo",newEnv2);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                             return resultR 
                         }
                         return resultR ;
                     }
-                    Instruccion.execute(newEnv);
+                    Instruccion.execute(newEnv2);
                 }
-                B_datos.getInstance().addEnviroments("Metodo",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
+                B_datos.getInstance().addEnviroments("Metodo",newEnv2);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
             }else{
-                //FUNCIONES
-                let newEnv= new Environment(env); //Nuevo Enviroment
+                //FUNCIONES ===================================================================
+               
                 let parametrosMf=MeFun.value[0];
                 let instrucciones= MeFun.value[1];
                 //PARAMETROS DE LLAMADA
@@ -57,7 +61,8 @@ export class Call extends instruction{
                     parametrosMf[i].changeExpresion(this.paramsCall[i]); //ENVIROMENT ANTERIOR
                     parametrosMf[i].execute(newEnv); //NUEVO ENVIROMENT
                 }
-               
+                //NUEVO ENVIROMENT 2 PARA LAS INTRUCCIONES ADENTRO DE LA FUNCION
+                let newEnv2= new Environment(newEnv); //Nuevo Enviroment
                 //INSTRUCCIONES 
                 let existeR=false;
                 for(let Instruccion of instrucciones){
@@ -68,7 +73,7 @@ export class Call extends instruction{
                 if(existeR){
                     for(let Instruccion of instrucciones){
                         if(Instruccion instanceof Return){
-                            let result= Instruccion.execute(newEnv);
+                            let result= Instruccion.execute(newEnv2);
                             if(result.expR.value===undefined){
                                 //ERROR NO ESTA RETORNANDO UN VALOR 
                                 B_datos.getInstance().addError("Semantico","No se esta retornando nada en la funcion",this.line,this.column); 
@@ -76,19 +81,19 @@ export class Call extends instruction{
                             }else{
                                 if(result.expR.type===MeFun.type){
                                     resultR={value:result.expR.value,type:result.expR.type}
-                                    B_datos.getInstance().addEnviroments("Funcion",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
+                                    B_datos.getInstance().addEnviroments("Funcion",newEnv2);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                                     return resultR
                                 }else{
                                     //VALOR DE RETORNO NO IGUAL AL DECLARADO EN LA FUNCION
                                     B_datos.getInstance().addError("Semantico","Valor de retorno no igual al declarado en la funcion",this.line,this.column); 
-                                    B_datos.getInstance().addEnviroments("Funcion",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
+                                    B_datos.getInstance().addEnviroments("Funcion",newEnv2);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                                     return resultR
                                 }
                             }
                         }
-                        Instruccion.execute(newEnv);
+                        Instruccion.execute(newEnv2);
                     }
-                    B_datos.getInstance().addEnviroments("Funcion",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
+                    B_datos.getInstance().addEnviroments("Funcion",newEnv2);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 }else{
                     //REPORTAR ERROR NO SE ESTA RETORNANDO NADA 
                     B_datos.getInstance().addError("Semantico","No se esta retornando nada en la funcion",this.line,this.column); 

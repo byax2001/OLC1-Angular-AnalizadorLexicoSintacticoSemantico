@@ -18,6 +18,9 @@ export class Case extends instruction{
     }
     public execute(env:Environment){
         let jumpStament=null; //SALTOS DE CODIGO break,return,continue si no hay ninguno de estos se retornara null
+        
+    //A CASE NO SE LE DECLARA UN NUEVO ENVIROMENT POR QUE YA DE POR SI TRAE UNO NUEVO A TRAVES DEL SWITCH
+    
         for(let Instruction of this.instruccion){
             //La instruccion es alguna de estas?
             if(Instruction instanceof Break || Instruction instanceof Return || Instruction instanceof Continue){

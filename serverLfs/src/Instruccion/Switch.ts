@@ -22,7 +22,7 @@ export class Switch extends instruction{
         let indexDefault = -1;
         let expSwitch = this.expresion.execute(env);
         if (expSwitch.type !== Type.error) {
-            //PARA SABER SI EXISTE ALGUN CASE ENTRE EL CONJUNTO DE INSTRUCCIONES
+            //PARA SABER SI EXISTE ALGUN CASE ENTRE EL CONJUNTO DE INSTRUCCIONES QUE CUMPLA CON LA EXPRESION Y ENCONTRAR SU POSICION EN EL ARRAY DE INSTRUCCIONES
             for (let i = 0; i < this.caselist.length; i++) {
                 if (this.caselist[i] instanceof Case) {
                     let caseExp = this.caselist[i].rExpresion(env);
