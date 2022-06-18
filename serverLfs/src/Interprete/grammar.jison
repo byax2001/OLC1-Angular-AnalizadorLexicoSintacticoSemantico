@@ -196,6 +196,8 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | BLOQUE_INST {$$=new BloqueInstSup($1,@1.first_line,@1.last_column);}
             | id inc puntoycoma {$$=new IncDecremento ($1,TypeAritmeticas.INCDER,@1.first_line,@1.last_column);}
             | id dec puntoycoma {$$=new IncDecremento ($1,TypeAritmeticas.DECDER,@1.first_line,@1.last_column);}
+            | inc id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.INCIZQ,@1.first_line,@1.last_column);}
+            | dec id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
             | error  {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
@@ -205,7 +207,7 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             ;
 DECLARACION: TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(false,$1,$2,$4,@1.first_line,@1.last_column);}
     | const TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(true,$2,$3,$5,@1.first_line,@1.last_column);}
-    | TIPOVAR CONJID puntoycoma {new Declaracion(false,$1,$2,null,@1.first_line,@1.last_column);}
+    | TIPOVAR CONJID puntoycoma {$$= new Declaracion(false,$1,$2,null,@1.first_line,@1.last_column);}
     ;
 
 ASIGNACION: CONJID igual EXPRESION puntoycoma {$$=new Asignacion($1,$3,@1.first_line,@1.last_column)};
