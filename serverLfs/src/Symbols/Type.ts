@@ -6,5 +6,6 @@ export enum Type{
     STRING,
     ID,
     VOID,
+    NULL,
     error
 }
