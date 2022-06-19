@@ -98,11 +98,12 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 "^"                  { console.log("Reconocio : " + yytext);  return 'xor' } 
 
 
-"int"             {console.log("Reconocio: "+yytext); return 'int'}
-"double"             {console.log("Reconocio: "+yytext); return 'double'}
-"boolean"             {console.log("Reconocio: "+yytext); return 'boolean'}
-"char"             {console.log("Reconocio: "+yytext); return 'char'}
-"string"             {console.log("Reconocio: "+yytext); return 'string'}
+"int"               {console.log("Reconocio: "+yytext); return 'int'}
+"double"            {console.log("Reconocio: "+yytext); return 'double'}
+"boolean"           {console.log("Reconocio: "+yytext); return 'boolean'}
+"char"              {console.log("Reconocio: "+yytext); return 'char'}
+"string"            {console.log("Reconocio: "+yytext); return 'string'}
+"null"              {console.log("Reconocio: "+yytext); return 'null'}
 
 //para asignaciones 
 "const"             {console.log("Reconocio: "+yytext); return 'const'}
@@ -231,6 +232,7 @@ TIPODATO: cadena  {$$= new Literal($1,Type.STRING,@1.first_line,@1.last_column);
     | entero {$$= new Literal($1,Type.INT,@1.first_line,@1.last_column);}
     | true {$$= new Literal($1,Type.BOOLEAN,@1.first_line,@1.last_column);}
     | false {$$= new Literal($1,Type.BOOLEAN,@1.first_line,@1.last_column);}
+    | null  {$$= new Literal($1,Type.NULL,@1.first_line,@1.last_column);}
     ;
 
 
