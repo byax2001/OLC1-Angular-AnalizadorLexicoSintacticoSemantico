@@ -130,18 +130,21 @@ export class Call extends instruction{
         }
         B_datos.getInstance().addEdgesAst(edge);
         //PARAMETROS 
-        if (this.paramsCall.length!==0) {
-            nodoId = {
-                id: `${id}${1}N${nivelHijo}`, //Padre+1
-                label: " Parametros "
-            }
-            B_datos.getInstance().addNodosAst(nodoId);
-            edge = {
-                from: id,
-                to: `${id}${1}N${nivelHijo}`,
-            }
-            B_datos.getInstance().addEdgesAst(edge);
+        let parametros = "(sin parametros)"
+        if (this.paramsCall.length !== 0) {
+            parametros = "Parametros";
         }
+        nodoId = {
+            id: `${id}${1}N${nivelHijo}`, //Padre+1
+            label: parametros
+        }
+        B_datos.getInstance().addNodosAst(nodoId);
+        edge = {
+            from: id,
+            to: `${id}${1}N${nivelHijo}`,
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+        
     }
 
 }
