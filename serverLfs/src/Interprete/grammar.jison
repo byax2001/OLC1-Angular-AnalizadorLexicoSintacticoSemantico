@@ -153,7 +153,7 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 
 //PRECEDENCIA
 //LAS PRECEDENCIAS VAN DE ABAJO A ARRIBA
-%left 'coma','puntoycoma'
+%left 'coma','puntoycoma', 'igual'
 %left 'or'
 %left 'and'
 %right 'xor'
@@ -177,9 +177,10 @@ INICIO:INSTRUCCIONES  EOF { console.log("termine de analizar" ); return $$; }
 INSTRUCCIONES : INSTRUCCIONES INSTRUCCION { $1.push($2); $$=$1;   }
             | INSTRUCCION {$$= [$1];}
             ;
-INSTRUCCION: ASIGNACION {$$= $1;}
-            | DECLARACION {$$= $1;}
+INSTRUCCION: ASIGNACION puntoycoma {$$= $1;}
+            | DECLARACION puntoycoma {$$= $1;}
             | IF {$$= $1;}
+            | IF_SINLLAVES {$$= $1;}
             | SWITCH {$$= $1;}
             | FOR {$$=$1;}
             | WHILE {$$=$1;}
@@ -188,8 +189,8 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | continue puntoycoma  {$$= new Continue(@1.first_line,@1.last_column);}
             | return puntoycoma  {$$= new Return(null,@1.first_line,@1.last_column);}
             | return EXPRESION puntoycoma {$$= new Return($2,@1.first_line,@1.last_column);}
-            | N_PRINT {$$= $1;}     
-            | N_PRINTLN {$$= $1;}
+            | N_PRINT puntoycoma {$$= $1;}     
+            | N_PRINTLN puntoycoma {$$= $1;}
             | FUNCIONES {$$= $1;}
             | METODOS {$$= $1;}
             | LLAMADA puntoycoma {$$= $1;}
@@ -198,19 +199,20 @@ INSTRUCCION: ASIGNACION {$$= $1;}
             | id dec puntoycoma {$$=new IncDecremento ($1,TypeAritmeticas.DECDER,@1.first_line,@1.last_column);}
             | inc id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.INCIZQ,@1.first_line,@1.last_column);}
             | dec id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
-            | error  {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
+            | error puntoycoma {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
                     bDatos.addError("Sintactico","No se esperaba este caracter "+yytext,@1.first_line,@1.last_column);    
                     $$=new Nothing(@1.first_line,@1.last_column);
                     }
             ;
-DECLARACION: TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(false,$1,$2,$4,@1.first_line,@1.last_column);}
-    | const TIPOVAR CONJID igual EXPRESION puntoycoma {$$= new Declaracion(true,$2,$3,$5,@1.first_line,@1.last_column);}
-    | TIPOVAR CONJID puntoycoma {$$= new Declaracion(false,$1,$2,null,@1.first_line,@1.last_column);}
+DECLARACION: TIPOVAR CONJID igual EXPRESION  {$$= new Declaracion(false,$1,$2,$4,@1.first_line,@1.last_column);}
+    | const TIPOVAR CONJID igual EXPRESION {$$= new Declaracion(true,$2,$3,$5,@1.first_line,@1.last_column);}
+    | TIPOVAR CONJID  {$$= new Declaracion(false,$1,$2,null,@1.first_line,@1.last_column);}
     ;
 
-ASIGNACION: CONJID igual EXPRESION puntoycoma {$$=new Asignacion($1,$3,@1.first_line,@1.last_column)};
+ASIGNACION: CONJID igual EXPRESION{$$=new Asignacion($1,$3,@1.first_line,@1.last_column)}
+    ;
 
 CONJID: CONJID coma id  { $1.push($3); $$=$1; }
     | id  {  $$=[$1];   }
@@ -237,6 +239,21 @@ IF: if parentesisa EXPRESION parentesisc BLOQUE_INST {$$=new If($3,$5,[],@1.firs
     | if parentesisa EXPRESION parentesisc BLOQUE_INST else IF {$$= new If($3,$5,[$7],@1.first_line,@1.last_column);}
     ;
 
+IF_SINLLAVES: if parentesisa EXPRESION parentesisc INSTRUCCION    {$$=new If($3,$5,[],@1.first_line,@1.last_column);}
+    | if parentesisa EXPRESION parentesisc INSTRUCCION  else INSTRUCCION  {$$= new If($3,$5,$7,@1.first_line,@1.last_column);}
+    | if parentesisa EXPRESION parentesisc INSTRUCCION  else IF_SINLLAVES {$$= new If($3,$5,[$7],@1.first_line,@1.last_column);}
+    ;
+
+INSTRUCCION_IFSINLLAVES: ASIGNACION puntoycoma {$$=$1} 
+    | DECLARACION puntoycoma {$$=$1}
+    | N_PRINT puntoycoma {$$=$1}
+    | N_PRINTLN puntoycoma  {$$=$1}
+    | id inc puntoycoma {$$=new IncDecremento ($1,TypeAritmeticas.INCDER,@1.first_line,@1.last_column);}
+    | id dec puntoycoma {$$=new IncDecremento ($1,TypeAritmeticas.DECDER,@1.first_line,@1.last_column);}
+    | inc id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.INCIZQ,@1.first_line,@1.last_column);}
+    | dec id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
+    ;
+
 
 //SWITCH
 SWITCH: switch parentesisa EXPRESION parentesisc llavea CASES_LIST llavec {$$=new Switch($3,$6,@1.first_line,@1.last_column);}
@@ -259,8 +276,8 @@ DEFAULT: default dospuntos INSTRUCCIONES {$$=$3;}
 
 
 //FOR (DECASIG de por si ya tiene puntoycoma)
-FOR: for parentesisa DECLARACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$4,$6,$8,@1.first_line,@1.last_column);}
-    | for parentesisa ASIGNACION EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$4,$6,$8,@1.first_line,@1.last_column);}
+FOR: for parentesisa DECLARACION puntoycoma EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$5,$7,$9,@1.first_line,@1.last_column);}
+    | for parentesisa ASIGNACION puntoycoma EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$5,$7,$9,@1.first_line,@1.last_column);}
     ;
 
 
@@ -299,13 +316,11 @@ PARAMETROSLLAMADA: PARAMETROSLLAMADA coma EXPRESION {$1.push($3); $$=$1;}
     | EXPRESION {$$=[$1];}
     ;
 
-N_PRINTLN: println parentesisa EXPRESION parentesisc puntoycoma {$$=new Println($3,@1.first_line,@1.last_column);}
-    | println parentesisa LLAMADA parentesisc puntoycoma {$$=new Println($3,@1.first_line,@1.last_column);}
-    | println parentesisa parentesisc  puntoycoma  {$$=new Println(null,@1.first_line,@1.last_column);}
+N_PRINTLN: println parentesisa EXPRESION parentesisc {$$=new Println($3,@1.first_line,@1.last_column);}
+    | println parentesisa parentesisc  {$$=new Println(null,@1.first_line,@1.last_column);}
     ;
-N_PRINT: print parentesisa EXPRESION parentesisc puntoycoma  {$$=new Print($3,@1.first_line,@1.last_column);}
-    | print parentesisa LLAMADA parentesisc puntoycoma {$$=new Print($3,@1.first_line,@1.last_column);}
-    | print parentesisa parentesisc  puntoycoma  {$$=new Print(null,@1.first_line,@1.last_column);}
+N_PRINT: print parentesisa EXPRESION parentesisc  {$$=new Print($3,@1.first_line,@1.last_column);}
+    | print parentesisa parentesisc  {$$=new Print(null,@1.first_line,@1.last_column);}
     ;
 N_TYPEOF: typeof parentesisa EXPRESION parentesisc {$$=new Typeof($3,@1.first_line,@1.last_column);} ;
 
@@ -344,4 +359,7 @@ EXPRESION:
         | parentesisa EXPRESION parentesisc {$$=$2;}
         | TIPODATO {$$=$1;}
         | N_TYPEOF {$$=$1;}
+
+        | id igual EXPRESION {$$=new Asignacion([$1],$3,@1.first_line,@1.last_column)}
+        | LLAMADA {$$=$1;}
         ;

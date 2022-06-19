@@ -22,9 +22,9 @@ export class If extends instruction{
 
     public execute(env: Environment) {
         let result = this.expresion.execute(env);
+        let newEnviromet= new Environment(env);
         //NO TIENE QUE GENERAR ERRORES LA EXPRESION Y TIENE QUE SER POR FUERZAS UN TIPO BOOLEANO
         if (result.type !== Type.error && result.type === Type.BOOLEAN) {
-            let newEnviromet= new Environment(env);
             if (result.value === true) {
                 for (let i = 0; i < this.instruction.length; i++) {
                     if(this.instruction[i] instanceof Return || this.instruction[i] instanceof Break || this.instruction[i] instanceof Continue){

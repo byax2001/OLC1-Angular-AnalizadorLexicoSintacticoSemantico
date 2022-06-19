@@ -50,11 +50,12 @@ export class For extends instruction{
                 return null;
             }
             inc_dec = this.incDec.execute(newEnv);
+            /*
             if (inc_dec.type === Type.error) {
                 //INCREMENTO RETORNA UN ERROR DETENER 
                 B_datos.getInstance().addError("Semantico", "Incremento genera un error en el for", this.line, this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
                 return null
-            }
+            }*/
             B_datos.getInstance().addEnviroments("For",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
         } while (exp.value);
     }

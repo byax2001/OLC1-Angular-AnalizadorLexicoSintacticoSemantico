@@ -1,5 +1,7 @@
 import { B_datos } from "./BaseDatos/B_datos";
 import { Call } from "./Instruccion/Call";
+import { Funcion } from "./Instruccion/Funcion";
+import { Metodo } from "./Instruccion/Metodo";
 import { Environment } from "./Symbols/Environment";
 
 const fs = require('fs');
@@ -14,8 +16,9 @@ try{
     const ast = parser.parse(entrada.toString());
     const env = new Environment(null);
     
+    //RECONOCER METODOS Y FUNCIONES
     for(const instruction of ast){
-        if(!(instruction instanceof Call)){
+        if(instruction instanceof Metodo || instruction instanceof Funcion){
             try{
                 instruction.execute(env);
             }catch (error){
@@ -37,9 +40,9 @@ try{
         }
         n++;
     }
-
+    //RECONOCER TODAS LAS DEMAS INSTRUCCIONES
     for(const instruction of ast){
-        if(instruction instanceof Call){
+        if(!(instruction instanceof Metodo || instruction instanceof Funcion)){
             try{
                 instruction.execute(env);
             }catch (error){

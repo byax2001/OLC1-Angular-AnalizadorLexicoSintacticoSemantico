@@ -17,52 +17,60 @@ export class OLogicas extends expresion{
     }
     public execute(env:Environment):Retorno{
         let result:Retorno={value:null,type:Type.error}
-        const nodoIzq=this.left.execute(env);
-        const nodoDer=this.right.execute(env);
-        if(this.typeLogic===TypeLogic.OR){
-            if(nodoIzq.type===Type.BOOLEAN && nodoDer.type===Type.BOOLEAN){
-                if(nodoIzq.value===true){
-                    result={value:true, type:Type.BOOLEAN}
-                }else{
-                    result={value:(nodoIzq || nodoDer), type:Type.BOOLEAN}
+        if (this.left !== null && this.right !== null) {
+            const nodoIzq = this.left.execute(env);
+            const nodoDer = this.right.execute(env);
+            if (this.typeLogic === TypeLogic.OR) {
+                if (nodoIzq.type === Type.BOOLEAN && nodoDer.type === Type.BOOLEAN) {
+                    if (nodoIzq.value === true) {
+                        result = { value: true, type: Type.BOOLEAN }
+                    } else {
+
+                        result = { value: (nodoIzq.value || nodoDer.value), type: Type.BOOLEAN }
+                    }
+                } else {
+                    //REPORTE DE ERROR OR EN ELEMENTOS NO BOOLEANOS 
+                    B_datos.getInstance().addError("Semantico", "Or en elementos no booleanos", this.line, this.column);
+                }
+            } else if (this.typeLogic === TypeLogic.AND) {
+                if (nodoIzq.type === Type.BOOLEAN && nodoDer.type === Type.BOOLEAN) {
+                    if (nodoIzq.value === false) {
+                        result = { value: false, type: Type.BOOLEAN }
+                    } else {
+                        result = { value: (nodoIzq.value && nodoDer.value), type: Type.BOOLEAN }
+                    }
+                } else {
+                    //REPORTE DE ERROR OR EN ELEMENTOS NO BOOLEANOS 
+                    B_datos.getInstance().addError("Semantico", "And en elementos no booleanos", this.line, this.column);
+                }
+            } else if (this.typeLogic === TypeLogic.XOR) {
+                if (nodoIzq.type === Type.BOOLEAN && nodoDer.type === Type.BOOLEAN) {
+                    if (nodoIzq.value === true && nodoDer.value === false) {
+                        result = { value: true, type: Type.BOOLEAN }
+                    } else if (nodoIzq.value === false && nodoDer.value === true) {
+                        result = { value: true, type: Type.BOOLEAN }
+                    } else {
+                        result = { value: false, type: Type.BOOLEAN }
+                    }
+                } else {
+                    //REPORTE DE ERROR OR EN ELEMENTOS NO BOOLEANOS 
+                    B_datos.getInstance().addError("Semantico", "Xor en elementos no booleanos", this.line, this.column);
                 }
             }else{
-                //REPORTE DE ERROR OR EN ELEMENTOS NO BOOLEANOS 
-                B_datos.getInstance().addError("Semantico","Or en elementos no booleanos",this.line,this.column);  
+                B_datos.getInstance().addError("Semantico","Operacion desconocida",this.line,this.column);  
             }
-        }else if(this.typeLogic===TypeLogic.AND){
-            if(nodoIzq.type===Type.BOOLEAN && nodoDer.type===Type.BOOLEAN){
-                if(nodoIzq.value===false){
-                    result={value:false, type:Type.BOOLEAN}
-                }else{
-                    result={value:(nodoIzq && nodoDer), type:Type.BOOLEAN}
+        } else if (this.left !== null) {
+            if (this.typeLogic === TypeLogic.NOT) {
+                const nodoIzq = this.left.execute(env);
+                if (nodoIzq.type === Type.BOOLEAN) {
+                    result = { value: !(nodoIzq.value), type: Type.BOOLEAN }
+                } else {
+                    //REPORTE DE ERROR OR EN ELEMENTOS NO BOOLEANOS 
+                    B_datos.getInstance().addError("Semantico", "Not en elemento no booleano", this.line, this.column);
                 }
             }else{
-                //REPORTE DE ERROR OR EN ELEMENTOS NO BOOLEANOS 
-                B_datos.getInstance().addError("Semantico","And en elementos no booleanos",this.line,this.column);  
+                B_datos.getInstance().addError("Semantico","Operacion desconocida",this.line,this.column);  
             }
-        }else if(this.typeLogic===TypeLogic.XOR){
-            if(nodoIzq.type===Type.BOOLEAN && nodoDer.type===Type.BOOLEAN){
-                if(nodoIzq.value===true && nodoDer.value===false){
-                    result={value:true, type:Type.BOOLEAN}
-                }else if(nodoIzq.value===false && nodoDer.value===true){
-                    result={value:true, type:Type.BOOLEAN}
-                }else{
-                    result={value:false, type:Type.BOOLEAN}
-                }
-            }else{
-                //REPORTE DE ERROR OR EN ELEMENTOS NO BOOLEANOS 
-                B_datos.getInstance().addError("Semantico","Xor en elementos no booleanos",this.line,this.column);
-            }
-        }else if(this.typeLogic===TypeLogic.NOT){
-            if(nodoIzq.type===Type.BOOLEAN){
-                result={value:!nodoIzq, type: Type.BOOLEAN}
-            }else{
-                //REPORTE DE ERROR OR EN ELEMENTOS NO BOOLEANOS 
-                B_datos.getInstance().addError("Semantico","Not en elemento no booleano",this.line,this.column);
-            }
-        }else{
-            B_datos.getInstance().addError("Semantico","Operacion desconocida",this.line,this.column);  
         }
         return result 
 

@@ -1,5 +1,7 @@
 import { B_datos } from "./src/BaseDatos/B_datos";
 import { Call } from "./src/Instruccion/Call";
+import { Funcion } from "./src/Instruccion/Funcion";
+import { Metodo } from "./src/Instruccion/Metodo";
 import { Environment } from "./src/Symbols/Environment";
 const express =require('express');
 const morgan= require('morgan');
@@ -48,9 +50,9 @@ app.post('/setTextoAst', function (req: any, res: any) {
     try {
         const ast = parser.parse(textoAst);
         const env = new Environment(null);
-        //PRIMERA PASADA GUARDAR TODO Y NO EJECUTAR LAS CALL DEL ENVIROMENT PRINCIPAL================
+        //PRIMERA PASADA: SE RECONOCE TODAS LAS FUNCIONES Y METODOS ================
         for (const instruction of ast) {
-            if(!(instruction instanceof Call)){
+            if(instruction instanceof Metodo || instruction instanceof Funcion){
                 try {
                     instruction.execute(env);
 
@@ -89,9 +91,9 @@ app.post('/setTextoAst', function (req: any, res: any) {
         }
 
 
-        //SEGUNDA PASADA EJECUTA LOS CALL DEL ENVIROMENT PRINCIAPL================
+        //SEGUNDA PASADA,SE EJECUTA EL RESTO DE INSTRUCCIONES================
         for (const instruction of ast) {
-            if(instruction instanceof Call){
+            if(!(instruction instanceof Metodo || instruction instanceof Funcion)){
                 try {
                     instruction.execute(env);
 
