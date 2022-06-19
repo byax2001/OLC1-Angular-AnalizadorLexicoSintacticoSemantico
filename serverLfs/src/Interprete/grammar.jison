@@ -275,7 +275,7 @@ DEFAULT: default dospuntos INSTRUCCIONES {$$=$3;}
 
 
 
-//FOR (DECASIG de por si ya tiene puntoycoma)
+//FOR 
 FOR: for parentesisa DECLARACION puntoycoma EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$5,$7,$9,@1.first_line,@1.last_column);}
     | for parentesisa ASIGNACION puntoycoma EXPRESION puntoycoma EXPRESION parentesisc BLOQUE_INST {$$=new For($3,$5,$7,$9,@1.first_line,@1.last_column);}
     ;
