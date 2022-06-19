@@ -23,27 +23,51 @@ export class If extends instruction{
     public execute(env: Environment) {
         let result = this.expresion.execute(env);
         let newEnviromet= new Environment(env);
+        let retInf=null;
         //NO TIENE QUE GENERAR ERRORES LA EXPRESION Y TIENE QUE SER POR FUERZAS UN TIPO BOOLEANO
         if (result.type !== Type.error && result.type === Type.BOOLEAN) {
             if (result.value === true) {
                 for (let i = 0; i < this.instruction.length; i++) {
-                    if(this.instruction[i] instanceof Return || this.instruction[i] instanceof Break || this.instruction[i] instanceof Continue){
+                    if(this.instruction[i] instanceof Return || this.instruction[i] instanceof Continue){
                         //REPORTAR ERROR 
                         B_datos.getInstance().addError("Semantico","Sentencia Break o Continue en If",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
-                        return null; 
-
-                    }
-                    const res = this.instruction[i].execute(newEnviromet);
+                        break;
+                    } else if(this.instruction[i] instanceof Break){
+                        //RETORNA BREAK EL IF PARA PARALIZAR CICLOS QUE LO CONTENGAN
+                        retInf=this.instruction[i]; 
+                    }else if(this.instruction[i] instanceof If){
+                        let estadoIf= this.instruction[i].execute(newEnviromet);
+                        if(estadoIf instanceof Break){
+                            retInf=estadoIf; 
+                            return retInf;
+                        }
+                    }else{
+                        this.instruction[i].execute(newEnviromet);
+                    }  
+                    
                 }
                 B_datos.getInstance().addEnviroments("If",newEnviromet);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
             } else {
                 for (let i = 0; i < this.instruction2.length; i++) {
-                    if(this.instruction2[i] instanceof Return || this.instruction2[i] instanceof Break || this.instruction2[i] instanceof Continue){
+                    if(this.instruction2[i] instanceof Return || this.instruction2[i] instanceof Continue){
                         //REPORTAR ERROR 
                         B_datos.getInstance().addError("Semantico","Sentencia Break, Return o Continue en If",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
-                        return null; 
+                        break;
+                    }else if(this.instruction2[i] instanceof Break){
+                        //RETORNA BREAK EL IF PARA PARALIZAR CICLOS QUE LO CONTENGAN
+                        retInf= this.instruction2[i];
+                        break; 
+                    }else if(this.instruction2[i] instanceof If){
+                        let estadoIf= this.instruction2[i].execute(newEnviromet);
+                        if(estadoIf instanceof Break){
+                            retInf=estadoIf;
+                            return retInf;
+                        }
+                    }else{
+                        const res = this.instruction2[i].execute(newEnviromet);
                     }
-                    const res = this.instruction2[i].execute(newEnviromet);
+                        
+                     
                 }
                 B_datos.getInstance().addEnviroments("If",newEnviromet);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
             }
@@ -52,7 +76,7 @@ export class If extends instruction{
             B_datos.getInstance().addError("Semantico","Expresion genera un error en el if, el resultado debe de ser booleano",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
             return null
         }
-        return null;
+        return retInf;
     }
     public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
         let nivel= NivelPadre+1; //NIVEL NODO ACTUAL

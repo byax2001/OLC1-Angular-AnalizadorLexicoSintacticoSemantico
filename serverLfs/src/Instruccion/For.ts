@@ -5,6 +5,7 @@ import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 import { Break } from "./Break";
 import { Continue } from "./Continue";
+import { If } from "./If";
 import { Return } from "./Return";
 
 export class For extends instruction{
@@ -40,8 +41,14 @@ export class For extends instruction{
                             B_datos.getInstance().addError("Semantico", "Sentencia Return en un for", this.line, this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
                             B_datos.getInstance().addEnviroments("For",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                             return null;
+                        }else if(Instruction instanceof If){
+                            let estadoIf= Instruction.execute(newEnv2);
+                            if(estadoIf instanceof Break){
+                                return null; 
+                            }
+                        }else{
+                            Instruction.execute(newEnv2);
                         }
-                        Instruction.execute(newEnv2);
                     }
                 }
             } else {

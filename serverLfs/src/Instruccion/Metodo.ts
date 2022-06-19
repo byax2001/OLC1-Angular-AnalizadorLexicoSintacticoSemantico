@@ -40,7 +40,7 @@ export class Metodo extends instruction{
         let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo = {
             id: id,
-            label: "Instruction:\n Declaracion de Metodo"
+            label: "Instruction:\n Declaracion de Metodo\n"+this.id
         }
         B_datos.getInstance().addNodosAst(nodo);
         //TIPO

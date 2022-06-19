@@ -30,7 +30,7 @@ export class Funcion extends instruction {
         let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo = {
             id: id,
-            label: "Instruction:\nDeclaracion de Funcion"
+            label: "Instruction:\nDeclaracion de Funcion\n"+ this.id
         }
         B_datos.getInstance().addNodosAst(nodo);
         //TIPO

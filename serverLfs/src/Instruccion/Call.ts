@@ -114,10 +114,11 @@ export class Call extends instruction{
         let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo = {
             id: id,
-            label: "Instruction:\nCall"
+            label: "Instruction:\nCall "
         }
         B_datos.getInstance().addNodosAst(nodo);
         //NODOS y EDGYS: ID    Se puede agregar de si es metodo a funcion en el label
+
         let nodoId = {
             id: `${id}${0}N${nivelHijo}`, //Padre+1
             label: this.idMF
@@ -132,7 +133,7 @@ export class Call extends instruction{
         if (this.paramsCall.length!==0) {
             nodoId = {
                 id: `${id}${1}N${nivelHijo}`, //Padre+1
-                label: this.paramsCall.toString()
+                label: " Parametros "
             }
             B_datos.getInstance().addNodosAst(nodoId);
             edge = {

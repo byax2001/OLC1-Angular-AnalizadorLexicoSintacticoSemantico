@@ -5,6 +5,7 @@ import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 import { Break } from "./Break";
 import { Continue } from "./Continue";
+import { If } from "./If";
 import { Return } from "./Return";
 
 export class Dowhile extends instruction{
@@ -26,8 +27,14 @@ export class Dowhile extends instruction{
                 //REPORTAR ERROR 
                 B_datos.getInstance().addError("Semantico","Sentencia Return o Continue en un While",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
                 return null; 
+            }else if(Instruccion instanceof If){
+                let estadoIf= Instruccion.execute(newEnv); //SI DEVUELVE UN BREAK, ES QUE EXISTIA UNO EN SU HABER QUE SE CUMPLIO EN ESE CASO DAR
+                if(estadoIf instanceof Break){
+                    return null; 
+                }
+            }else{
+                Instruccion.execute(newEnv);
             }
-            Instruccion.execute(newEnv);
         }
         let exp;
         do {
@@ -43,8 +50,14 @@ export class Dowhile extends instruction{
                             //REPORTAR ERROR 
                             B_datos.getInstance().addError("Semantico","Sentencia Return o Continue en un While",this.line,this.column);//SE AGREGAN LOS ERRORES A LA BASE DE DATOS
                             return null; 
+                        }else if(this.bloqueInst[i] instanceof If){
+                            let estadoIf= this.bloqueInst[i].execute(newEnv);
+                            if(estadoIf instanceof Break){
+                                return null; 
+                            }
+                        }else{
+                            this.bloqueInst[i].execute(newEnv);
                         }
-                        this.bloqueInst[i].execute(newEnv);
                     }
                 }
                 B_datos.getInstance().addEnviroments("doWhile",newEnv);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
