@@ -239,12 +239,12 @@ IF: if parentesisa EXPRESION parentesisc BLOQUE_INST {$$=new If($3,$5,[],@1.firs
     | if parentesisa EXPRESION parentesisc BLOQUE_INST else IF {$$= new If($3,$5,[$7],@1.first_line,@1.last_column);}
     ;
 
-IF_SINLLAVES: if parentesisa EXPRESION parentesisc INSTRUCCION    {$$=new If($3,$5,[],@1.first_line,@1.last_column);}
-    | if parentesisa EXPRESION parentesisc INSTRUCCION  else INSTRUCCION  {$$= new If($3,$5,$7,@1.first_line,@1.last_column);}
-    | if parentesisa EXPRESION parentesisc INSTRUCCION  else IF_SINLLAVES {$$= new If($3,$5,[$7],@1.first_line,@1.last_column);}
+IF_SINLLAVES: if parentesisa EXPRESION parentesisc IFS_INSTRUCCION  {$$=new If($3,[$5],[],@1.first_line,@1.last_column);}
+    | if parentesisa EXPRESION parentesisc IFS_INSTRUCCION  else IFS_INSTRUCCION  {$$= new If($3,[$5],$7,@1.first_line,@1.last_column);}
+    | if parentesisa EXPRESION parentesisc IFS_INSTRUCCION  else IF_SINLLAVES {$$= new If($3,[$5],[$7],@1.first_line,@1.last_column);}
     ;
 
-INSTRUCCION_IFSINLLAVES: ASIGNACION puntoycoma {$$=$1} 
+IFS_INSTRUCCION: ASIGNACION puntoycoma {$$=$1} 
     | DECLARACION puntoycoma {$$=$1}
     | N_PRINT puntoycoma {$$=$1}
     | N_PRINTLN puntoycoma  {$$=$1}

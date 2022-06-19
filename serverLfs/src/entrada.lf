@@ -137,6 +137,21 @@ void sentencia_if(){
     }else{
         println("Sentencia if 4/"+pasos+" status: nooo!...");
     }
+
+    if(anio==145/8*9)    println("Sentencia if 5/"+pasos+" status: nooo!...");
+    else if(anio== 2022) println("Sentencia if 5/"+pasos+" status: si!...");
+    else                 println("Sentencia if 5/"+pasos+" status: nooo!...");
+
+    if (anio==2022) tmp= tmp+0.5;
+
+    anio= 2023;
+
+    if(anio==145/8*9)    println("Sentencia if 6/"+pasos+" status: nooo!...");
+    else if(anio== 2023) println("Sentencia if 6/"+pasos+" status: si!...");
+    else                 println("Sentencia if 6/"+pasos+" status: nooo!...");
+
+    if (anio==2022+1) tmp= tmp+1.0;
+
     calificacion= calificacion+tmp;
     println("Calificacion= "+calificacion);
 }
@@ -276,6 +291,3 @@ void expresiones(){
     }
 }
 //FIN DE ARCHIVO 
-
-    
-
