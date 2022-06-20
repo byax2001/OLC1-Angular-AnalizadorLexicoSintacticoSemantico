@@ -1,6 +1,7 @@
 import { expresion } from "../Abstract/expresion";
 import { instruction } from "../Abstract/instruction";
 import { Retorno } from "../Abstract/Retorno";
+import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 
@@ -26,6 +27,7 @@ export class Ternario extends instruction{
                 }
             }else{
                 //REPORTAR ERROR 
+                B_datos.getInstance().addError("Semantico","La expresion debe de dar un resultado booleano",this.line,this.column);
             }
         }else if(this.bloque1 instanceof expresion && this.bloque2 instanceof expresion){
             let exp=this.expresion.execute(env);
@@ -37,7 +39,10 @@ export class Ternario extends instruction{
                 }
             }else{
                 //REPORTAR ERROR 
+                B_datos.getInstance().addError("Semantico","La expresion debe de dar un resultado booleano",this.line,this.column);
             }
+        }else{
+            B_datos.getInstance().addError("Semantico","Las opciones deben de ser o solo expresiones o solo instrucciones",this.line,this.column);
         }
         return result
     }
