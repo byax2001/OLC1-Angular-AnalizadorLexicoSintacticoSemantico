@@ -40,6 +40,12 @@
 
     //FASE 2
     const {Ternario}= require('../Instruccion/Ternario.ts');
+    const {ToLower}= require('../Expresion/ToLower.ts');
+    const {ToUpper}= require('../Expresion/ToUpper.ts');
+    const {Round}= require('../Expresion/Round.ts');
+    
+
+
 %}
 %lex
 %options case-insensitive          
@@ -135,6 +141,11 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 "void"             {console.log("Reconocio: "+yytext); return 'void'}
 "length"             {console.log("Reconocio: "+yytext); return 'length'}
 "call"             {console.log("Reconocio: "+yytext); return 'call'}
+
+//OTROS METODOS
+"toLower"   {console.log("Reconocio: "+yytext); return 'tolower'}
+"toUpper"   {console.log("Reconocio: "+yytext); return 'toupper'}
+"round"     {console.log("Reconocio: "+yytext); return 'round'}
 
 {ID}        {console.log("Reconocio: "+yytext); return 'id'}
 {CADENA}    {console.log("Reconocio: "+yytext); return 'cadena'}
@@ -386,4 +397,7 @@ EXPRESION:
         | id igual EXPRESION {$$=new Asignacion([$1],$3,@1.first_line,@1.last_column)}
         | LLAMADA {$$=$1;}
         | parentesisa EXPRESION parentesisc interrogacion EXPRESION dospuntos EXPRESION {$$=new Ternario($2,$5,$7,@1.first_line,@1.last_column);}
+        | tolower parentesisa EXPRESION parentesisc   {$$=new ToUpper($3,@1.first_line,@1.last_column)}
+        | toupper parentesisa EXPRESION parentesisc   {$$=new ToLower($3,@1.first_line,@1.last_column)}
+        | round parentesisa EXPRESION parentesisc   {$$=new Round($3,@1.first_line,@1.last_column)}
         ;
