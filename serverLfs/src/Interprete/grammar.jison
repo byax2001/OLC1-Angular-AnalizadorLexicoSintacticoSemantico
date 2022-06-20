@@ -37,6 +37,9 @@
     //EXTRAS
     const {Nothing}= require('../Instruccion/Nothing.ts');
     const {BloqueInstSup}= require('../Instruccion/BloqueInstSup.ts');
+
+    //FASE 2
+    const {Ternario}= require('../Instruccion/Ternario.ts');
 %}
 %lex
 %options case-insensitive          
@@ -154,6 +157,7 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 
 //PRECEDENCIA
 //LAS PRECEDENCIAS VAN DE ABAJO A ARRIBA
+%right 'interrogacion'
 %left 'coma','puntoycoma', 'igual'
 %left 'or'
 %left 'and'
@@ -200,6 +204,8 @@ INSTRUCCION: ASIGNACION puntoycoma {$$= $1;}
             | id dec puntoycoma {$$=new IncDecremento ($1,TypeAritmeticas.DECDER,@1.first_line,@1.last_column);}
             | inc id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.INCIZQ,@1.first_line,@1.last_column);}
             | dec id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
+
+            |TERNARIO puntoycoma {$$=$1;}
             | error puntoycoma {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
@@ -331,6 +337,21 @@ BLOQUE_INST: llavea INSTRUCCIONES llavec {$$=$2;}
     | llavea llavec {$$=[new Nothing(@1.first_line,@1.last_column)];}
     ;
 
+//TERNARIOS
+TERNARIO: parentesisa EXPRESION parentesisc interrogacion INST_1LINE dospuntos INST_1LINE {$$=new Ternario($2,$5,$7,@1.first_line,@1.last_column);}
+    ;
+    
+INST_1LINE: ASIGNACION {$$=$1} 
+    | DECLARACION {$$=$1}
+    | N_PRINT {$$=$1}
+    | N_PRINTLN {$$=$1}
+    | LLAMADA {$$=$1}
+    | id inc {$$=new IncDecremento ($1,TypeAritmeticas.INCDER,@1.first_line,@1.last_column);}
+    | id dec {$$=new IncDecremento ($1,TypeAritmeticas.DECDER,@1.first_line,@1.last_column);}
+    | inc id  {$$=new IncDecremento ($2,TypeAritmeticas.INCIZQ,@1.first_line,@1.last_column);}
+    | dec id {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
+    ;    
+
 
 EXPRESION: 
          menos EXPRESION %prec UMINUS {$$=new OAritmeticas($2,null,TypeAritmeticas.NEGACION,@1.first_line,@1.last_column);}
@@ -364,4 +385,5 @@ EXPRESION:
 
         | id igual EXPRESION {$$=new Asignacion([$1],$3,@1.first_line,@1.last_column)}
         | LLAMADA {$$=$1;}
+        | parentesisa EXPRESION parentesisc interrogacion EXPRESION dospuntos EXPRESION {$$=new Ternario($2,$5,$7,@1.first_line,@1.last_column);}
         ;
