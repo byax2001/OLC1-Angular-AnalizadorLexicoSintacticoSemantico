@@ -1,2 +1,2 @@
-string hola[]= ["HOLA","como","estan"];
+string hola[][]= [["HOLA","como","estan"],["HOLA","como","estan"]];
 

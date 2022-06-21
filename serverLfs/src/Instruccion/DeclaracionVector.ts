@@ -16,6 +16,7 @@ export class DeclaracionVector extends instruction{
         public nColumnas:expresion,
         //DECLARACION VECTOR TIPO 2
         public vector: any[],
+        public nfilasT2: number,//PARA DIFERENCIAR UN VECTOR TIPO [] Y UNO [][] SI HAY MAS DE 1 FILA EL VECTOR DEJA DE SER []
         line:number,
         column:number
     ){
@@ -76,41 +77,48 @@ export class DeclaracionVector extends instruction{
                 //REPORTAR ERROR NO SON DEL MISMO TIPO EL ARRAY
             }
         } else if (this.tipoDecVec === 2) {
-            let existe = env.existeSimDeclaracion(this.id)
-            if (existe) {
-                //REPORTAR ERROR VARIABLE YA DECLARADA 
-            } else {
-                let matriz = [];
-                let fila = [];
-                let nfilas = 0;
-                let ncolumnas = 0;
-                let error:number=0;
-                console.log(this.vector);
-                for (let line of this.vector) {
-                    console.log(line);
-                    fila = [];
-                    for (let element of line) {
-                        console.log(element);
-                        let exp = element.execute(env);
-                        if(exp.type===this.tipo){
-                            fila.push(exp);
-                        }else{
-                            error=1;
-                            break;
+            if ((this.vector.length === this.nfilasT2) || (this.vector.length > 1 && this.nfilasT2 > 1)) {
+                let existe = env.existeSimDeclaracion(this.id)
+                if (existe) {
+                    //REPORTAR ERROR VARIABLE YA DECLARADA 
+                } else {
+                    let matriz = [];
+                    let fila = [];
+                    let nfilas = this.vector.length;
+                    let ncolumnas = this.vector[0].length;
+                    let error: number = 0;
+                    console.log(this.vector);
+                    for (let line of this.vector) {
+                        if (line.length !== ncolumnas) {
+                            //REPORTAR ERROR HAY UNA FILA A LA QUE LE FALTAN DATOS 
+                            return null
                         }
+                        fila = [];
+                        for (let element of line) {
+                            console.log(element);
+                            let exp = element.execute(env);
+                            if (exp.type === this.tipo) {
+                                //SE INGRESA VALOR A LA FILA ACTUAL 
+                                fila.push(exp);
+                            } else {
+                                error = 1;
+                                break;
+                            }
+                        }
+                        if (error !== 0) {
+                            //REPORTAR ERROR HAY EXPRESIONES QUE NO SON IGUALES AL TIPO DE DATO DEL ARRAY
+                            return null
+                        }
+                        matriz.push(fila); //INGRESO DE FILA A LA MATRIZ 
                     }
-                    if(error!==0){
-                        //REPORTAR ERROR HAY EXPRESIONES QUE NO SON IGUALES AL TIPO DE DATO DEL CHAR
-                        return null
-                    }
-                    matriz.push(fila);
+                    let vec: Vector = { value: matriz, filas: nfilas, columnas: ncolumnas } //MATRIZ, FILAS,COLUMNAS
+                    console.log(vec)
+                    env.guardarSimbolo(false, this.tipo, this.id, vec, this.line, this.column);
                 }
-                let vec: Vector = { value: matriz, filas: nfilas, columnas: ncolumnas } //MATRIZ, FILAS,COLUMNAS
-                console.log(vec.value)
-                env.guardarSimbolo(false, this.tipo, this.id, vec, this.line, this.column);
             }
+        } else {
+            //REPORTAR ERROR TAMAÑOS DE FILAS Y [][] NO CUADRAN 
         }
-        console.log(env);
 
     }
     public ast(){
