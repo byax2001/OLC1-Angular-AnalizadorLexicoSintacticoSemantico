@@ -44,6 +44,7 @@
     const {ToUpper}= require('../Expresion/ToUpper.ts');
     const {Round}= require('../Expresion/Round.ts');
     const {DeclaracionVector} = require('../Instruccion/DeclaracionVector.ts');
+    const {AccesoVector} = require('../Expresion/AccesoVector.ts');
     
 
 
@@ -419,4 +420,6 @@ EXPRESION:
         | tolower parentesisa EXPRESION parentesisc   {$$=new ToLower($3,@1.first_line,@1.last_column)}
         | toupper parentesisa EXPRESION parentesisc   {$$=new ToUpper($3,@1.first_line,@1.last_column)}
         | round parentesisa EXPRESION parentesisc   {$$=new Round($3,@1.first_line,@1.last_column)}
+        | id corchetea EXPRESION corchetec {$$=new AccesoVector($1,$3,null,@1.first_line,@1.last_column)}
+        | id corchetea EXPRESION corchetec corchetea EXPRESION corchetec {$$=new AccesoVector($1,$3,$6,@1.first_line,@1.last_column)}
         ;

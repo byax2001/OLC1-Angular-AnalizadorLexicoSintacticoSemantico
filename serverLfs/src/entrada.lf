@@ -1,2 +1,3 @@
-string hola[]= [["HOLA","como","estan"],["HOLA","como","estan"],["HOLA","como","estan"]];
+string hola[][]= [["HOLA","como","estan"],["HOLA","como","estan"]];
+println(hola[1][2]);
 
