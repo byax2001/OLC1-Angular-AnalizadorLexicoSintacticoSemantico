@@ -371,12 +371,13 @@ VECTOR: TIPOVAR id corchetea corchetec igual new TIPOVAR corchetea EXPRESION cor
     | TIPOVAR id corchetea corchetec igual CONJVECTOR {$$= new DeclaracionVector($1,$2,2,null,null,null,$6,1,@1.first_line,@1.last_column);}
     | TIPOVAR id corchetea corchetec corchetea corchetec igual CONJVECTOR {$$= new DeclaracionVector($1,$2,2,null,null,null,$8,2,@1.first_line,@1.last_column);}
     ; 
-CONJVECTOR: corchetea CONJVECTOR coma corchetea CONJEXP corchetec  corchetec {$2.push($5);  $$= $2;}  //EL TAMAÑO DEL ARRAY GENERADO ES DE N  (N FILAS) EN ESTE CASO
+CONJVECTOR:  corchetea CONJVECTOR corchetec {$$=$2;}
+    | CONJVECTOR coma corchetea CONJEXP corchetec  {$1.push($4);  $$= $1;}  //EL TAMAÑO DEL ARRAY GENERADO ES DE N  (N FILAS) EN ESTE CASO
     | corchetea CONJEXP corchetec  {$$= [$2];} //EL TAMAÑO DEL ARRAY GENERADO ES DE 1  (1 FILA) EN ESTE CASO
     ;
 
 CONJEXP: CONJEXP coma EXPRESION {$1.push($3);  $$=$1; }
-    | EXPRESION { console.log("manzana"); $$= [$1]; }
+    | EXPRESION {$$= [$1];}
     ;
 
 

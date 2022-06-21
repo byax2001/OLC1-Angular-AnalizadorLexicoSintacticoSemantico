@@ -112,13 +112,14 @@ export class DeclaracionVector extends instruction{
                         matriz.push(fila); //INGRESO DE FILA A LA MATRIZ 
                     }
                     let vec: Vector = { value: matriz, filas: nfilas, columnas: ncolumnas } //MATRIZ, FILAS,COLUMNAS
-                    console.log(vec)
+                    console.log(vec.value)
                     env.guardarSimbolo(false, this.tipo, this.id, vec, this.line, this.column);
                 }
+            }else {
+                //REPORTAR ERROR TAMAÑOS DE FILAS Y [][] NO CUADRAN 
+                console.log("Tamaños no cuadran")
             }
-        } else {
-            //REPORTAR ERROR TAMAÑOS DE FILAS Y [][] NO CUADRAN 
-        }
+        } 
 
     }
     public ast(){
