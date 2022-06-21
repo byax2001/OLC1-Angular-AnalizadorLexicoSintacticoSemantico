@@ -50,6 +50,7 @@
     //NATIVAS
     const {Length}= require('../Instruccion/FuncionesNativas/Length.ts');
     const {ToCharArray}= require('../Instruccion/FuncionesNativas/ToCharArray.ts');
+    const {IndexOf} =require('../Instruccion/FuncionesNativas/IndexOf.ts');
 
 %}
 %lex
@@ -154,13 +155,14 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 "new"       {console.log("Reconocio: "+yytext); return 'new'}
 "length"    {console.log("Reconocio: "+yytext); return 'length'}
 "toCharArray" {console.log("Reconocio: "+yytext); return 'toCharArray'}
-
+"indexof"   {console.log("Reconocio: "+yytext); return 'indexof'}
 {ID}        {console.log("Reconocio: "+yytext); return 'id'}
 {CADENA}    {console.log("Reconocio: "+yytext); return 'cadena'}
 {DECIMAL}   {console.log("Reconocio: "+yytext); return 'decimal'}
 {ENTERO}    {console.log("Reconocio ENTERO: "+yytext); return 'entero'}
 {CARACTER}  {console.log("Reconocio: "+yytext); return 'caracter'}
 
+"."                  {console.log("Reconocio : " + yytext);  return 'punto' }
 
 //EOF INDICA EL FIN DEL DOCUMENTO LEIDO 
 <<EOF>> return 'EOF';
@@ -433,4 +435,5 @@ EXPRESION:
         | id corchetea EXPRESION corchetec {$$=new AccesoVector($1,$3,null,@1.first_line,@1.last_column)}
         | id corchetea EXPRESION corchetec corchetea EXPRESION corchetec {$$=new AccesoVector($1,$3,$6,@1.first_line,@1.last_column)}
         | length parentesisa EXPRESION parentesisc {$$= new Length($3,@1.first_line,@1.last_column)}
+        | id punto indexof parentesisa EXPRESION parentesisc {$$=new IndexOf($1,$5,@1.first_line,@1.last_column) }
         ;

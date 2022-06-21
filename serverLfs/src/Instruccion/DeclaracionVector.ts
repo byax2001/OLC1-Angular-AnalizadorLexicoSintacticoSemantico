@@ -64,7 +64,6 @@ export class DeclaracionVector extends instruction{
                             }
                             matriz.push(fila);
                             let vec:Vector={value:matriz,filas:1,columnas:ncolumnas.value} //MATRIZ, FILAS,COLUMNAS
-                            console.log(vec.value);
                             env.guardarSimbolo(true,this.tipo,this.id,vec,this.line,this.column);
                         } else {
                             //REPORTAR ERROR DEBEN DE SER ENTEROS LOS DATOS DE ACA
@@ -89,7 +88,6 @@ export class DeclaracionVector extends instruction{
                     let nfilas = this.vector.length;
                     let ncolumnas = this.vector[0].length;
                     let error: number = 0;
-                    console.log(this.vector);
                     for (let line of this.vector) {
                         if (line.length !== ncolumnas) {
                             //REPORTAR ERROR HAY UNA FILA A LA QUE LE FALTAN DATOS 
@@ -97,7 +95,6 @@ export class DeclaracionVector extends instruction{
                         }
                         fila = [];
                         for (let element of line) {
-                            console.log(element);
                             let exp = element.execute(env);
                             if (exp.type === this.tipo) {
                                 //SE INGRESA VALOR A LA FILA ACTUAL 
@@ -114,7 +111,6 @@ export class DeclaracionVector extends instruction{
                         matriz.push(fila); //INGRESO DE FILA A LA MATRIZ 
                     }
                     let vec: Vector = { value: matriz, filas: nfilas, columnas: ncolumnas } //MATRIZ, FILAS,COLUMNAS
-                    console.log(vec.value)
                     env.guardarSimbolo(true, this.tipo, this.id, vec, this.line, this.column);
                 }
             }else {
