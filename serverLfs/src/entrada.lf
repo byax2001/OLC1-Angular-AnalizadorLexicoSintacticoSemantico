@@ -1,3 +1,13 @@
 string hola[][]= [["HOLA","como","estan"],["HOLA","como","estan"]];
-println(hola[1][2]);
+println(hola[0][0]);
+hola[0][0]="PEDRO";
+println(hola[0][0]);
 
+string abc="manzana";
+
+string fer[]= ["hola","que","tal"];
+println(length(fer));
+
+char arraychar[] = toCharArray("Buenosdias");
+
+println(arraychar[0]);

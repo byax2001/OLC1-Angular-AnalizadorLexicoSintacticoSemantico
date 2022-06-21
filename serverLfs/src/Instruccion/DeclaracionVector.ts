@@ -17,6 +17,7 @@ export class DeclaracionVector extends instruction{
         //DECLARACION VECTOR TIPO 2
         public vector: any[],
         public nfilasT2: number,//PARA DIFERENCIAR UN VECTOR TIPO [] Y UNO [][] SI HAY MAS DE 1 FILA EL VECTOR DEJA DE SER []
+        //DECLARACION TIPO 3 TOCHARARRAY
         line:number,
         column:number
     ){
@@ -77,6 +78,7 @@ export class DeclaracionVector extends instruction{
                 //REPORTAR ERROR NO SON DEL MISMO TIPO EL ARRAY
             }
         } else if (this.tipoDecVec === 2) {
+                    //[]=[exp] o [][]=[[exp], [exp]]                [][]=[[exp], [exp],[exp],[exp]]
             if ((this.vector.length === this.nfilasT2) || (this.vector.length > 1 && this.nfilasT2 > 1)) {
                 let existe = env.existeSimDeclaracion(this.id)
                 if (existe) {
@@ -113,13 +115,29 @@ export class DeclaracionVector extends instruction{
                     }
                     let vec: Vector = { value: matriz, filas: nfilas, columnas: ncolumnas } //MATRIZ, FILAS,COLUMNAS
                     console.log(vec.value)
-                    env.guardarSimbolo(false, this.tipo, this.id, vec, this.line, this.column);
+                    env.guardarSimbolo(true, this.tipo, this.id, vec, this.line, this.column);
                 }
             }else {
                 //REPORTAR ERROR TAMAÑOS DE FILAS Y [][] NO CUADRAN 
                 console.log("Tamaños no cuadran")
             }
-        } 
+        } else if(this.tipoDecVec===3){
+            let matriz=this.vector[0].execute(env);
+            let existe = env.existeSimDeclaracion(this.id)
+            if (existe) {
+                    //REPORTAR ERROR VARIABLE YA DECLARADA 
+            } else {
+                if(this.tipo===Type.CHAR){
+                    if(matriz.length!==0){
+                        let vec: Vector = { value: matriz, filas:1, columnas: matriz[0].length}
+                        env.guardarSimbolo(true, this.tipo, this.id, vec, this.line, this.column);
+                    }
+                }else{
+                    //SE ESTA INTENTANDO ASIGNAR UN ARRAY DE CHARS A UN VECTOR DE OTRO TIPO
+                }    
+            }
+            
+        }
 
     }
     public ast(){

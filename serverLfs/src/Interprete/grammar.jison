@@ -47,6 +47,9 @@
     const {AccesoVector} = require('../Expresion/AccesoVector.ts');
     const {ModiVector} = require('../Instruccion/ModiVector.ts');
 
+    //NATIVAS
+    const {Length}= require('../Instruccion/FuncionesNativas/Length.ts');
+    const {ToCharArray}= require('../Instruccion/FuncionesNativas/ToCharArray.ts');
 
 %}
 %lex
@@ -149,6 +152,8 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 "toUpper"   {console.log("Reconocio: "+yytext); return 'toupper'}
 "round"     {console.log("Reconocio: "+yytext); return 'round'}
 "new"       {console.log("Reconocio: "+yytext); return 'new'}
+"length"    {console.log("Reconocio: "+yytext); return 'length'}
+"toCharArray" {console.log("Reconocio: "+yytext); return 'toCharArray'}
 
 {ID}        {console.log("Reconocio: "+yytext); return 'id'}
 {CADENA}    {console.log("Reconocio: "+yytext); return 'cadena'}
@@ -372,7 +377,9 @@ VECTOR: TIPOVAR id corchetea corchetec igual new TIPOVAR corchetea EXPRESION cor
     | TIPOVAR id corchetea corchetec corchetea corchetec igual new TIPOVAR corchetea EXPRESION corchetec corchetea EXPRESION corchetec {$$= new DeclaracionVector($1,$2,1,$7,$9,$12,null,null,@1.first_line,@1.last_column);}
     | TIPOVAR id corchetea corchetec igual CONJVECTOR {$$= new DeclaracionVector($1,$2,2,null,null,null,$6,1,@1.first_line,@1.last_column);}
     | TIPOVAR id corchetea corchetec corchetea corchetec igual CONJVECTOR {$$= new DeclaracionVector($1,$2,2,null,null,null,$8,2,@1.first_line,@1.last_column);}
+    | TIPOVAR id corchetea corchetec igual TO_CHAR_ARRAY {$$= new DeclaracionVector($1,$2,3,null,null,null,[$6],1,@1.first_line,@1.last_column);}
     ; 
+
 CONJVECTOR:  corchetea CONJVECTOR corchetec {$$=$2;}
     | CONJVECTOR coma corchetea CONJEXP corchetec  {$1.push($4);  $$= $1;}  //EL TAMAÑO DEL ARRAY GENERADO ES DE N  (N FILAS) EN ESTE CASO
     | corchetea CONJEXP corchetec  {$$= [$2];} //EL TAMAÑO DEL ARRAY GENERADO ES DE 1  (1 FILA) EN ESTE CASO
@@ -383,6 +390,8 @@ CONJEXP: CONJEXP coma EXPRESION {$1.push($3);  $$=$1;}
     ;
 MODIVECTOR: id corchetea EXPRESION corchetec igual EXPRESION {$$= new ModiVector($1,$3,null,$6,@1.first_line,@1.last_column);}
     | id corchetea EXPRESION corchetec corchetea EXPRESION corchetec igual EXPRESION {$$= new ModiVector($1,$3,$6,$9,@1.first_line,@1.last_column);}
+    ;
+TO_CHAR_ARRAY: toCharArray parentesisa EXPRESION parentesisc {$$= new ToCharArray($3,@1.first_line,@1.last_column)}
     ;
 
 EXPRESION: 
@@ -423,4 +432,5 @@ EXPRESION:
         | round parentesisa EXPRESION parentesisc   {$$=new Round($3,@1.first_line,@1.last_column)}
         | id corchetea EXPRESION corchetec {$$=new AccesoVector($1,$3,null,@1.first_line,@1.last_column)}
         | id corchetea EXPRESION corchetec corchetea EXPRESION corchetec {$$=new AccesoVector($1,$3,$6,@1.first_line,@1.last_column)}
+        | length parentesisa EXPRESION parentesisc {$$= new Length($3,@1.first_line,@1.last_column)}
         ;

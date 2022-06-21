@@ -15,8 +15,8 @@ export class AccesoVector extends expresion{
     public execute(env:Environment){
         let result:Retorno={value:null,type:Type.error}
         let vec=env.getSimbolo(this.id);
-
-        if(vec.type!==Type.error &&   typeof vec.value==="object"){
+        console.log(vec);
+        if(vec.type!==Type.error &&   typeof vec.value==="object"){ //QUE SI SE ENCONTRO Y QUE ES UN ARRAY
             if(this.index2!==null && this.index!==null){
                 let index=this.index.execute(env);
                 let index2=this.index2.execute(env);
@@ -37,6 +37,7 @@ export class AccesoVector extends expresion{
                 if(index.type===Type.INT){
                     let array=vec.value.value;
                     if(index.value<vec.value.columnas){
+                        console.log(array);
                         result= array[0][index.value]
                     }else{
                         //INDEX FUERA DEL TAMAÑO ESTABLECIDO 

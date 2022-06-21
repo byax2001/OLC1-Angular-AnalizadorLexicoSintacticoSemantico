@@ -27,8 +27,8 @@ export class ModiVector extends instruction{
                     let index=this.index.execute(env);
                     let index2=this.index2.execute(env);
                     if(index.type===Type.INT, index2.type===Type.INT){
-                        let array=vec.value.value;
-                        if(index.value<vec.value.filas && index2.value<vec.value.columnas){
+                        let array=vec.value.value;                                        // si funciona esto v, pero se supone que cuando tiene una sola fila es un array simple por lo cual teoricamente no deberia de funcionar
+                        if(index.value<vec.value.filas && index2.value<vec.value.columnas && vec.value.filas>1){
                              if(vec.type===exp.type){
                                 array[index.value][index2.value]=exp
                              }else{ 
@@ -40,7 +40,6 @@ export class ModiVector extends instruction{
                     }else{
                         //EL INDEX NO ES UN INT REPORTAR 
                     }
-                    
     
                 }else if(this.index!==null){
                     let index=this.index.execute(env);
