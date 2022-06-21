@@ -45,7 +45,7 @@
     const {Round}= require('../Expresion/Round.ts');
     const {DeclaracionVector} = require('../Instruccion/DeclaracionVector.ts');
     const {AccesoVector} = require('../Expresion/AccesoVector.ts');
-    
+    const {ModiVector} = require('../Instruccion/ModiVector.ts');
 
 
 %}
@@ -219,6 +219,7 @@ INSTRUCCION: ASIGNACION puntoycoma {$$= $1;}
             | inc id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.INCIZQ,@1.first_line,@1.last_column);}
             | dec id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
             | VECTOR puntoycoma {$$=$1;}
+            | MODIVECTOR puntoycoma {$$=$1;}
             | TERNARIO puntoycoma {$$=$1;}
             | error puntoycoma {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
@@ -377,12 +378,12 @@ CONJVECTOR:  corchetea CONJVECTOR corchetec {$$=$2;}
     | corchetea CONJEXP corchetec  {$$= [$2];} //EL TAMAÑO DEL ARRAY GENERADO ES DE 1  (1 FILA) EN ESTE CASO
     ;
 
-CONJEXP: CONJEXP coma EXPRESION {$1.push($3);  $$=$1; }
+CONJEXP: CONJEXP coma EXPRESION {$1.push($3);  $$=$1;}
     | EXPRESION {$$= [$1];}
     ;
-
-
-
+MODIVECTOR: id corchetea EXPRESION corchetec igual EXPRESION {$$= new ModiVector($1,$3,null,$6,@1.first_line,@1.last_column);}
+    | id corchetea EXPRESION corchetec corchetea EXPRESION corchetec igual EXPRESION {$$= new ModiVector($1,$3,$6,$9,@1.first_line,@1.last_column);}
+    ;
 
 EXPRESION: 
          menos EXPRESION %prec UMINUS {$$=new OAritmeticas($2,null,TypeAritmeticas.NEGACION,@1.first_line,@1.last_column);}
