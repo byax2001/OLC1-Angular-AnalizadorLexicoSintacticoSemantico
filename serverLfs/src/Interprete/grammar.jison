@@ -43,6 +43,7 @@
     const {ToLower}= require('../Expresion/ToLower.ts');
     const {ToUpper}= require('../Expresion/ToUpper.ts');
     const {Round}= require('../Expresion/Round.ts');
+    const {DeclaracionVector} = require('../Instruccion/DeclaracionVector.ts');
     
 
 
@@ -146,6 +147,7 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 "toLower"   {console.log("Reconocio: "+yytext); return 'tolower'}
 "toUpper"   {console.log("Reconocio: "+yytext); return 'toupper'}
 "round"     {console.log("Reconocio: "+yytext); return 'round'}
+"new"       {console.log("Reconocio: "+yytext); return 'new'}
 
 {ID}        {console.log("Reconocio: "+yytext); return 'id'}
 {CADENA}    {console.log("Reconocio: "+yytext); return 'cadena'}
@@ -215,8 +217,8 @@ INSTRUCCION: ASIGNACION puntoycoma {$$= $1;}
             | id dec puntoycoma {$$=new IncDecremento ($1,TypeAritmeticas.DECDER,@1.first_line,@1.last_column);}
             | inc id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.INCIZQ,@1.first_line,@1.last_column);}
             | dec id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
-
-            |TERNARIO puntoycoma {$$=$1;}
+            | VECTOR puntoycoma {$$=$1;}
+            | TERNARIO puntoycoma {$$=$1;}
             | error puntoycoma {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
@@ -363,6 +365,22 @@ INST_1LINE: ASIGNACION {$$=$1}
     | dec id {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
     ;    
 
+//VECTORES
+VECTOR: TIPOVAR id corchetea corchetec igual new TIPOVAR corchetea EXPRESION corchetec {$$= new DeclaracionVector($1,$2,1,$7,null,$9,null,@1.first_line,@1.last_column);}
+    | TIPOVAR id corchetea corchetec corchetea corchetec igual new TIPOVAR corchetea EXPRESION corchetec corchetea EXPRESION corchetec {$$= new DeclaracionVector($1,$2,1,$7,$9,$12,null,@1.first_line,@1.last_column);}
+    | TIPOVAR id corchetea corchetec igual CONJVECTOR {$$= new DeclaracionVector($1,$2,2,null,null,null,$6,@1.first_line,@1.last_column);}
+    | TIPOVAR id corchetea corchetec corchetea corchetec igual CONJVECTOR {$$= new DeclaracionVector($1,$2,2,null,null,null,$8,@1.first_line,@1.last_column);}
+    ; 
+CONJVECTOR: corchetea CONJVECTOR coma corchetea CONJEXP corchetec  corchetec {$2.push($5);  $$= $2;}  //EL TAMAÑO DEL ARRAY GENERADO ES DE N  (N FILAS) EN ESTE CASO
+    | corchetea CONJEXP corchetec  {$$= [$2];} //EL TAMAÑO DEL ARRAY GENERADO ES DE 1  (1 FILA) EN ESTE CASO
+    ;
+
+CONJEXP: CONJEXP coma EXPRESION {$1.push($3);  $$=$1; }
+    | EXPRESION { console.log("manzana"); $$= [$1]; }
+    ;
+
+
+
 
 EXPRESION: 
          menos EXPRESION %prec UMINUS {$$=new OAritmeticas($2,null,TypeAritmeticas.NEGACION,@1.first_line,@1.last_column);}
@@ -397,7 +415,7 @@ EXPRESION:
         | id igual EXPRESION {$$=new Asignacion([$1],$3,@1.first_line,@1.last_column)}
         | LLAMADA {$$=$1;}
         | parentesisa EXPRESION parentesisc interrogacion EXPRESION dospuntos EXPRESION {$$=new Ternario($2,$5,$7,@1.first_line,@1.last_column);}
-        | tolower parentesisa EXPRESION parentesisc   {$$=new ToUpper($3,@1.first_line,@1.last_column)}
-        | toupper parentesisa EXPRESION parentesisc   {$$=new ToLower($3,@1.first_line,@1.last_column)}
+        | tolower parentesisa EXPRESION parentesisc   {$$=new ToLower($3,@1.first_line,@1.last_column)}
+        | toupper parentesisa EXPRESION parentesisc   {$$=new ToUpper($3,@1.first_line,@1.last_column)}
         | round parentesisa EXPRESION parentesisc   {$$=new Round($3,@1.first_line,@1.last_column)}
         ;

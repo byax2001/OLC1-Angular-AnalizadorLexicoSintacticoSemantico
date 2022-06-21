@@ -1,4 +1,2 @@
-int a;
-(11==13)? println("hola"): a=16;
+string hola[]= ["HOLA","como","estan"];
 
-println(a);
