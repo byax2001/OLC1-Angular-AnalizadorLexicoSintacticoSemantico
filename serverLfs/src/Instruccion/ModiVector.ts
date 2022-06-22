@@ -3,6 +3,7 @@ import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 import { Retorno } from "../Abstract/Retorno";
 import { instruction } from "../Abstract/instruction";
+import { B_datos } from "../BaseDatos/B_datos";
 
 export class ModiVector extends instruction{
     constructor(
@@ -69,7 +70,74 @@ export class ModiVector extends instruction{
 
         return result
     }
-    public ast(){
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo = nivel + 1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
 
+        let nodo = {
+            id: id,
+            label: "Instruction:\nModificacion de Vector"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        //INDEX 1
+        nodo={
+            id:`${id}${0}N${nivelHijo}`,
+            label:"Index 1"
+        }
+        let edge={
+            from:id,
+            to:`${id}${0}N${nivelHijo}`
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        if(this.index!==null && this.index2!==null){
+             //INDEX 2
+            nodo={
+                id:`${id}${1}N${nivelHijo}`,
+                label:"Index2"
+            }
+            let edge={
+                from:id,
+                to:`${id}${1}N${nivelHijo}`
+            }
+            B_datos.getInstance().addNodosAst(nodo);
+            B_datos.getInstance().addEdgesAst(edge);
+            //INDEX 1
+            edge={
+                from:`${id}${0}N${nivelHijo}`,
+                to:`${id}${0}N${nivelHijo}`+0+"N"+(nivelHijo+1),
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.index.ast(`${id}${0}N${nivelHijo}`,0,nivelHijo);
+
+            //INDEX 2
+            edge={
+                from:`${id}${1}N${nivelHijo}`,
+                to:`${id}${1}N${nivelHijo}`+0+"N"+(nivelHijo+1),
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.index2.ast(`${id}${1}N${nivelHijo}`,0,nivelHijo);
+
+        }else if(this.index!==null){
+            let edge={
+                from:`${id}${0}N${nivelHijo}`,
+                to:`${id}${0}N${nivelHijo}`+0+"N"+(nivelHijo+1),
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.index.ast(`${id}${0}N${nivelHijo}`,0,nivelHijo);
+        }
+        //EXPRESION
+        let n=1
+        if(this.index2!==null){
+            n=2;
+        }
+        edge={
+            from:id,
+            to:`${id}${n}N${nivelHijo}`,
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+        this.expresion.ast(`${id}${n}N${nivelHijo}`,0,nivelHijo);
+        
     }
 }

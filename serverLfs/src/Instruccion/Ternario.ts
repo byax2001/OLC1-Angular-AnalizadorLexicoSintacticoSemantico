@@ -84,6 +84,11 @@ export class Ternario extends instruction{
         B_datos.getInstance().addEdgesAst(edge);
         this.bloque2.ast(`${id}${0}N${nivelHijo}`, 1, nivelHijo);
         //EXPRESION
+        edge = {
+            from: id,
+            to: `${id}${1}N${nivelHijo}`
+        }
+        B_datos.getInstance().addEdgesAst(edge);
         this.expresion.ast(id,1,nivel);
     }
 }

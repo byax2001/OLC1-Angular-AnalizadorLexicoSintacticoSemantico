@@ -4,6 +4,7 @@ import { Retorno } from "../Abstract/Retorno";
 import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 import {Vector} from "../Abstract/Vector";
+import { B_datos } from "../BaseDatos/B_datos";
 
 export class DeclaracionVector extends instruction{
     constructor(
@@ -136,8 +137,72 @@ export class DeclaracionVector extends instruction{
         }
 
     }
-    public ast(){
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let nivelHijo = nivel + 1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
 
+        let nodo = {
+            id: id,
+            label: "Instruction:\nDeclaracion Vector"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        //TIPO 
+        let tipo="any"
+        if(this.tipo===Type.INT){
+            tipo="int"
+        }else if(this.tipo===Type.DOUBLE){
+            tipo="double"
+        }else if(this.tipo===Type.CHAR){
+            tipo="char"
+        }else if(this.tipo===Type.BOOLEAN){
+            tipo="boolean"
+        }else if(this.tipo===Type.STRING){
+            tipo="string"
+        }
+
+        nodo = {
+            id: `${id}${0}N${nivelHijo}`,
+            label: tipo
+        }
+        let edge = {
+            from: id,
+            to: `${id}${0}N${nivelHijo}`
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        //ID
+        nodo = {
+            id: `${id}${1}N${nivelHijo}`,
+            label: this.id
+        }
+        edge = {
+            from: id,
+            to: `${id}${1}N${nivelHijo}`
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        
+        //TIPO DECLARACION
+        let tipoDec="Tipo Declaracion: "
+        if(this.tipoDecVec===1){
+            tipoDec=tipoDec+1
+        }else if(this.tipoDecVec===2){
+            tipoDec=tipoDec+2
+        }else if(this.tipoDecVec===3){
+            tipoDec=tipoDec+"toCharArray"
+        }
+
+        nodo = {
+            id: `${id}${2}N${nivelHijo}`,
+            label: tipoDec
+        }
+        edge = {
+            from: id,
+            to: `${id}${2}N${nivelHijo}`
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
     }
 
     public valorDefault(type:Type){
