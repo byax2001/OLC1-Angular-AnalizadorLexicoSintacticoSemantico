@@ -14,8 +14,20 @@ export class Print extends instruction{
     public execute(env:Environment){
         if(this.expresion!==null){
             let exp=this.expresion.execute(env);
-            console.log(">>"+exp.value);
-            B_datos.getInstance().printConsola(">>"+exp.value);
+            if(typeof exp.value==="object" && exp.value.value!==null){
+                //ENTONCES ES UN ARRAY
+                if(exp.value.filas===1){
+                    console.log(">>"+exp.value.value[0]);
+                    B_datos.getInstance().printConsola(">>"+exp.value.value[0]);
+                }else{
+                    console.log(">>"+exp.value.value);
+                    B_datos.getInstance().printConsola(">>"+exp.value.value);
+                }
+                
+            }else{
+                console.log(">>"+exp.value);
+                B_datos.getInstance().printConsola(">>"+exp.value);
+            }
         }else{
             console.log(">>");
             B_datos.getInstance().printConsola(">>");
