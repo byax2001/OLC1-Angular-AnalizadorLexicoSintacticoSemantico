@@ -46,11 +46,14 @@
     const {DeclaracionVector} = require('../Instruccion/DeclaracionVector.ts');
     const {AccesoVector} = require('../Expresion/AccesoVector.ts');
     const {ModiVector} = require('../Instruccion/ModiVector.ts');
+    const {Push} = require('../Instruccion/Push.ts');
+    const {Pop} = require('../Instruccion/Pop.ts');
 
     //NATIVAS
     const {Length}= require('../Instruccion/FuncionesNativas/Length.ts');
     const {ToCharArray}= require('../Instruccion/FuncionesNativas/ToCharArray.ts');
     const {IndexOf} =require('../Instruccion/FuncionesNativas/IndexOf.ts');
+    
 
 %}
 %lex
@@ -156,6 +159,9 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 "length"    {console.log("Reconocio: "+yytext); return 'length'}
 "toCharArray" {console.log("Reconocio: "+yytext); return 'toCharArray'}
 "indexof"   {console.log("Reconocio: "+yytext); return 'indexof'}
+"push"      {console.log("Reconocio: "+yytext); return 'push'}
+"pop"      {console.log("Reconocio: "+yytext); return 'pop'}
+
 {ID}        {console.log("Reconocio: "+yytext); return 'id'}
 {CADENA}    {console.log("Reconocio: "+yytext); return 'cadena'}
 {DECIMAL}   {console.log("Reconocio: "+yytext); return 'decimal'}
@@ -228,6 +234,8 @@ INSTRUCCION: ASIGNACION puntoycoma {$$= $1;}
             | VECTOR puntoycoma {$$=$1;}
             | MODIVECTOR puntoycoma {$$=$1;}
             | TERNARIO puntoycoma {$$=$1;}
+            | PUSH_V puntoycoma {$$=$1;}
+            | POP_V puntoycoma {$$=$1;}
             | error puntoycoma {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
@@ -395,6 +403,10 @@ MODIVECTOR: id corchetea EXPRESION corchetec igual EXPRESION {$$= new ModiVector
     ;
 TO_CHAR_ARRAY: toCharArray parentesisa EXPRESION parentesisc {$$= new ToCharArray($3,@1.first_line,@1.last_column)}
     ;
+PUSH_V: id punto push parentesisa EXPRESION parentesisc {$$=new Push($1,$5,@1.first_line,@1.last_column) }
+    ;
+POP_V: id punto pop parentesisa parentesisc {$$=new Pop($1,@1.first_line,@1.last_column) }
+    ;
 
 EXPRESION: 
          menos EXPRESION %prec UMINUS {$$=new OAritmeticas($2,null,TypeAritmeticas.NEGACION,@1.first_line,@1.last_column);}
@@ -436,4 +448,5 @@ EXPRESION:
         | id corchetea EXPRESION corchetec corchetea EXPRESION corchetec {$$=new AccesoVector($1,$3,$6,@1.first_line,@1.last_column)}
         | length parentesisa EXPRESION parentesisc {$$= new Length($3,@1.first_line,@1.last_column)}
         | id punto indexof parentesisa EXPRESION parentesisc {$$=new IndexOf($1,$5,@1.first_line,@1.last_column) }
+        | id punto push parentesisa EXPRESION parentesisc {$$=new Push($1,$5,@1.first_line,@1.last_column) }
         ;

@@ -13,3 +13,9 @@ char arraychar[] = toCharArray("Buenosdias");
 println(arraychar[0]);
 
 println(arraychar.indexof('B'));
+
+fer.push("manzana");
+println(length(fer));
+
+fer.pop();
+println(length(fer));

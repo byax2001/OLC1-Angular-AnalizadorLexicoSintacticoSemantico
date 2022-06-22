@@ -4,7 +4,7 @@ import { Retorno } from "../../Abstract/Retorno";
 import { Environment } from "../../Symbols/Environment";
 import { Type } from "../../Symbols/Type";
 
-7
+
 export class IndexOf extends instruction{
     constructor(
         public id: string,
