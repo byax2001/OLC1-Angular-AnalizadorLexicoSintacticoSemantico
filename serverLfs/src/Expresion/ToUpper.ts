@@ -23,7 +23,22 @@ export class ToUpper extends expresion{
         }
         return result
     }
-    public ast(){
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let id = `${idPadre}${NoHijo}N${nivel}`
 
+        let nodo = {
+            id: id,
+            label: "Expresion:\nToUpper"
+        }
+        if (this.expresion !== null) {
+            B_datos.getInstance().addNodosAst(nodo);
+            let edge = {
+                from: id,
+                to: `${id}0N${(nivel+1)}`
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.expresion.ast(id, 0,nivel);//NODO HIJO: EXPRESION
+        }
     }
 }

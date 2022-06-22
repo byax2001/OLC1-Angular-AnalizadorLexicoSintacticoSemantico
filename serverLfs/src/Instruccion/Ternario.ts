@@ -48,7 +48,42 @@ export class Ternario extends instruction{
     }
 
 
-    public ast(){
+    public ast(idPadre: string, NoHijo: number, NivelPadre: number) {
+        let nivel = NivelPadre + 1; //NIVEL NODO ACTUAL
+        let nivelHijo = nivel + 1;
+        let id = `${idPadre}${NoHijo}N${nivel}`
+        let nodo = {
+            id: id,
+            label: `Instrunction\n Ternario`
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        //NODO  ":"
+        nodo = {
+            id: `${id}${0}N${nivelHijo}`,
+            label: ":"
+        }
+        let edge = {
+            from: id,
+            to: `${id}${0}N${nivelHijo}`
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
 
+        //OPCION IZQUIERDA 
+        edge = {
+            from: `${id}${0}N${nivelHijo}`,
+            to: `${id}${0}N${nivelHijo}` + 0 + "N" + (nivelHijo + 1),
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+        this.bloque1.ast(`${id}${0}N${nivelHijo}`, 0, nivelHijo);
+        //OPCION DERECHA     
+        edge = {
+            from: `${id}${0}N${nivelHijo}`,
+            to: `${id}${0}N${nivelHijo}` + 1 + "N" + (nivelHijo + 1),
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+        this.bloque2.ast(`${id}${0}N${nivelHijo}`, 1, nivelHijo);
+        //EXPRESION
+        this.expresion.ast(id,1,nivel);
     }
 }

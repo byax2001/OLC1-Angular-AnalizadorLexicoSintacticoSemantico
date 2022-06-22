@@ -53,6 +53,6 @@ export class AccesoVector extends expresion{
         return result
     }
     public ast(){
-
+        
     }
 }
