@@ -19,3 +19,10 @@ println(length(fer));
 
 fer.pop();
 println(length(fer));
+
+println(hola);
+println(fer);
+
+fer.splice(0,"Luis");
+println(fer);
+

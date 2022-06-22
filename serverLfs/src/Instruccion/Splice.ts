@@ -2,9 +2,9 @@ import { expresion } from "../Abstract/expresion";
 import { instruction } from "../Abstract/instruction";
 import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
+import {Retorno} from "../Abstract/Retorno";
 
-
-export class Pop extends instruction {
+export class Splice extends instruction {
     constructor(
         public id: string,
         public index:expresion,
@@ -23,16 +23,15 @@ export class Pop extends instruction {
                 if (vec.value.filas === 1) { 
                     if(index.value<vec.value.columnas){
                         if(vec.type===dato.type){
-                            vec.value.value[0].splice(index.value,0,dato.value);
-                            vec.value.columnas=vec.value.value[0].length; //SE QUITO UN ELEMENTO, MODIFICAR NUMERO DE COLUMNAS
+                            let valor:Retorno={value:dato.value,type:dato.type}
+                            vec.value.value[0].splice(index.value,0,valor);
+                            vec.value.columnas=vec.value.value[0].length; //SE AGREGO UN ELEMENTO, MODIFICAR NUMERO DE COLUMNAS
                         }else{
                             //INTENTO DE HACER SPLICE DE UN DATO EN UN VECTOR DE TIPO DISTINTO
                         }
                     }else{
                         //INTENTO DE HACER UN SPLICE EN UN INDEX INEXISTENTE
                     }
-                    
-                    
                 }else{
                     //REPORTAR ERROR intento de hacer splice en un vector de dos dimensiones
                 }

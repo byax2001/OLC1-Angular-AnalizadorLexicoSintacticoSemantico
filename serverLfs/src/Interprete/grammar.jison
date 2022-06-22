@@ -48,6 +48,7 @@
     const {ModiVector} = require('../Instruccion/ModiVector.ts');
     const {Push} = require('../Instruccion/Push.ts');
     const {Pop} = require('../Instruccion/Pop.ts');
+    const {Splice} = require('../Instruccion/Splice.ts');
 
     //NATIVAS
     const {Length}= require('../Instruccion/FuncionesNativas/Length.ts');
@@ -160,7 +161,8 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 "toCharArray" {console.log("Reconocio: "+yytext); return 'toCharArray'}
 "indexof"   {console.log("Reconocio: "+yytext); return 'indexof'}
 "push"      {console.log("Reconocio: "+yytext); return 'push'}
-"pop"      {console.log("Reconocio: "+yytext); return 'pop'}
+"pop"       {console.log("Reconocio: "+yytext); return 'pop'}
+"splice"    {console.log("Reconocio: "+yytext); return 'splice'}
 
 {ID}        {console.log("Reconocio: "+yytext); return 'id'}
 {CADENA}    {console.log("Reconocio: "+yytext); return 'cadena'}
@@ -236,6 +238,7 @@ INSTRUCCION: ASIGNACION puntoycoma {$$= $1;}
             | TERNARIO puntoycoma {$$=$1;}
             | PUSH_V puntoycoma {$$=$1;}
             | POP_V puntoycoma {$$=$1;}
+            | SPLICE puntoycoma {$$=$1;}
             | error puntoycoma {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
@@ -406,6 +409,8 @@ TO_CHAR_ARRAY: toCharArray parentesisa EXPRESION parentesisc {$$= new ToCharArra
 PUSH_V: id punto push parentesisa EXPRESION parentesisc {$$=new Push($1,$5,@1.first_line,@1.last_column) }
     ;
 POP_V: id punto pop parentesisa parentesisc {$$=new Pop($1,@1.first_line,@1.last_column) }
+    ;
+SPLICE: id punto splice parentesisa EXPRESION coma EXPRESION parentesisc {$$=new Splice($1,$5,$7,@1.first_line,@1.last_column) }
     ;
 
 EXPRESION: 

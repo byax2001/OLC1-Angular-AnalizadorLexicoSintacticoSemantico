@@ -2,6 +2,7 @@ import { expresion } from "../../Abstract/expresion";
 import { instruction } from "../../Abstract/instruction";
 import { B_datos } from "../../BaseDatos/B_datos";
 import { Environment } from "../../Symbols/Environment";
+import { Type } from "../../Symbols/Type";
 
 export class Print extends instruction{
     constructor(
@@ -11,24 +12,19 @@ export class Print extends instruction{
     ){
         super(line,column);
     }
-    public execute(env:Environment){
-        if(this.expresion!==null){
-            let exp=this.expresion.execute(env);
-            if(typeof exp.value==="object" && exp.value.value!==null){
+    public execute(env: Environment) {
+        if (this.expresion !== null) {
+            let exp = this.expresion.execute(env);
+            if (typeof exp.value === "object" && exp.value.value !== null) {
                 //ENTONCES ES UN ARRAY
-                if(exp.value.filas===1){
-                    console.log(">>"+exp.value.value[0]);
-                    B_datos.getInstance().printConsola(">>"+exp.value.value[0]);
-                }else{
-                    console.log(">>"+exp.value.value);
-                    B_datos.getInstance().printConsola(">>"+exp.value.value);
-                }
-                
-            }else{
-                console.log(">>"+exp.value);
-                B_datos.getInstance().printConsola(">>"+exp.value);
+                let stringVector=this.printVector(exp.value.value);
+                console.log(">>" + stringVector);
+                B_datos.getInstance().printConsola(">>" + stringVector);
+            } else {
+                console.log(">>" + exp.value);
+                B_datos.getInstance().printConsola(">>" + exp.value);
             }
-        }else{
+        } else {
             console.log(">>");
             B_datos.getInstance().printConsola(">>");
         }
@@ -50,5 +46,42 @@ export class Print extends instruction{
             B_datos.getInstance().addEdgesAst(edge);
             this.expresion.ast(id, 0,nivel);//NODO HIJO: EXPRESION
         }
+    }
+
+    printVector(vector:any[]){
+        let stringVector="["
+        if(vector.length===1){
+            //VECTOR DE UNA DIMENSION
+            vector=vector[0];
+            for(let element of vector){
+                stringVector=stringVector+this.eValueType(element.value,element.type)+","
+            }
+            stringVector=stringVector.slice(0,stringVector.length-1);//ELIMINAR ULTIMA COMA
+            stringVector=stringVector+"]"
+        }else{
+            for(let fila of vector){
+                let stringFila="["
+                for(let element of fila){
+                    stringFila=stringFila+this.eValueType(element.value,element.type)+","
+                }
+                stringFila=stringFila.slice(0,stringFila.length-1); //ELIMINAR ULTIMA COMA
+                stringFila=stringFila+"]"
+
+                stringVector=stringVector+stringFila+","
+            }
+            stringVector=stringVector.slice(0,stringVector.length-1);//ELIMINAR ULTIMA COMA
+            stringVector=stringVector+"]"
+        }
+
+        return stringVector
+    }
+    //RETORNA UN STRING CON LOS CARACTERES QUE DEBERIAN DE ACOMPAÑAR CADA TIPO
+    eValueType(dato:any,type:Type){
+        if(type===Type.STRING){
+            dato=`\"${dato}\"`
+        }else if(type===Type.CHAR){
+            dato=`\'${dato}\'`
+        }
+        return dato
     }
 }
