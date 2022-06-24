@@ -1,6 +1,7 @@
 import { B_datos } from "./src/BaseDatos/B_datos";
 import { Call } from "./src/Instruccion/Call";
 import { Funcion } from "./src/Instruccion/Funcion";
+import { Graficarts } from "./src/Instruccion/graficarTs";
 import { Metodo } from "./src/Instruccion/Metodo";
 import { Environment } from "./src/Symbols/Environment";
 const express =require('express');
@@ -32,8 +33,13 @@ app.listen(puerto, function(){
 app.get('/', function (req:any,res:any){
     res.json({mensaje:"hola mundo"})
 })
+//OBTENER TODOS LOS ENVIROMENTS
 app.get('/ObtenerEnvs', function (req:any,res:any){
-    res.send({Envs:B_datos.getInstance().getListEnviroments()});
+    res.send({Envs:B_datos.getInstance().getListEnviroments(1)});
+})
+//OBTENER LOS ENVIROMENTS ESPECIFICADOS POR LA FUNCION GRAFICAR TS();
+app.get('/ObtenerEnvsEsp', function (req:any,res:any){
+    res.send({Envs:B_datos.getInstance().getListEnviroments(2)});
 })
 
 app.get('/ObtenerError', function (req:any,res:any){
@@ -95,8 +101,11 @@ app.post('/setTextoAst', function (req: any, res: any) {
         for (const instruction of ast) {
             if(!(instruction instanceof Metodo || instruction instanceof Funcion)){
                 try {
-                    instruction.execute(env);
-
+                    if(instruction instanceof Graficarts){
+                        B_datos.getInstance().addEnviromentsEsp("Principal",env)
+                    }else{
+                        instruction.execute(env);
+                    }
                 } catch (error) {
                     console.log(error);
                 }

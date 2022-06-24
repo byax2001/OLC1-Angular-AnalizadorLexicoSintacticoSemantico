@@ -58,12 +58,12 @@ export class AccesoVector extends expresion{
         let id = `${idPadre}${NoHijo}N${nivel}`
         let nodo = {
             id: id,
-            label: "Instruction:\nIndexOf"
+            label: "Instruction:\nAcceso de Vector"
         }
         B_datos.getInstance().addNodosAst(nodo);
         //ID
         nodo = {
-            id: id,
+            id: `${id}0N${(nivel+1)}`,
             label: `${this.id}`
         }
         let edge ={
@@ -81,7 +81,8 @@ export class AccesoVector extends expresion{
             B_datos.getInstance().addEdgesAst(edge);
             this.index.ast(id, 1,nivel);//NODO HIJO: EXPRESION
         //INDEX 2 
-        }else if (this.index2 !== null) {
+        }
+        if (this.index2 !== null) {
             let edge = {
                 from: id,
                 to:`${id}2N${(nivel+1)}`

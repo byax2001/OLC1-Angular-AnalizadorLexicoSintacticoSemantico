@@ -7,7 +7,7 @@ string abc="manzana";
 
 string fer[]= ["hola","que","tal"];
 println(length(fer));
-
+graficar_ts();
 char arraychar[] = toCharArray("Buenosdias");
 
 println(arraychar[0]);
@@ -26,3 +26,6 @@ println(fer);
 fer.splice(0,"Luis");
 println(fer);
 
+{
+    int Prueba=12;
+}

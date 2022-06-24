@@ -4,6 +4,7 @@ import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
 import { Symbol } from "../Symbols/Symbol";
 import { Type } from "../Symbols/Type";
+import { Graficarts } from "./graficarTs";
 import { Return } from "./Return";
 
 export class Call extends instruction{
@@ -39,8 +40,8 @@ export class Call extends instruction{
                 let newEnv2= new Environment(newEnv); //Nuevo Enviroment
                 for(let Instruccion of instrucciones){
                     if(Instruccion instanceof Return){ //SI TIENE UNA INSTRUCCION RETURN 
-                        let result= Instruccion.execute(newEnv2);
-                        if(result.expR.value!==undefined){
+                        let result= Instruccion.execute(newEnv2); 
+                        if(result.expR.value!==undefined){ //expR es una variable reservada en la clase Return que indica si se retorno algo o no
                             //ERROR ESTA INTENTANDO RETORNAR UN VALOR 
                             B_datos.getInstance().addError("Semantico","Intento de retornar un valor en un metodo",this.line,this.column); 
                             B_datos.getInstance().addEnviroments("Metodo",newEnv2);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
@@ -49,6 +50,12 @@ export class Call extends instruction{
                         return resultR ;
                     }
                     Instruccion.execute(newEnv2);
+                  
+                    if (Instruccion instanceof Graficarts) {
+                        //GRAFICAR_TS()
+                        B_datos.getInstance().addEnviromentsEsp("Metodo",newEnv2)
+                    }
+                        
                 }
                 B_datos.getInstance().addEnviroments("Metodo",newEnv2);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
             }else{
@@ -92,6 +99,10 @@ export class Call extends instruction{
                             }
                         }
                         Instruccion.execute(newEnv2);
+                        if (Instruccion instanceof Graficarts) {
+                            //GRAFICAR_TS()
+                            B_datos.getInstance().addEnviromentsEsp("Funcion",newEnv2)
+                        }
                     }
                     B_datos.getInstance().addEnviroments("Funcion",newEnv2);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
                 }else{

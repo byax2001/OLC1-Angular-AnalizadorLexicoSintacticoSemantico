@@ -49,6 +49,7 @@
     const {Push} = require('../Instruccion/Push.ts');
     const {Pop} = require('../Instruccion/Pop.ts');
     const {Splice} = require('../Instruccion/Splice.ts');
+    const {Graficarts} = require('../Instruccion/graficarTs.ts');
 
     //NATIVAS
     const {Length}= require('../Instruccion/FuncionesNativas/Length.ts');
@@ -163,6 +164,7 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 "push"      {console.log("Reconocio: "+yytext); return 'push'}
 "pop"       {console.log("Reconocio: "+yytext); return 'pop'}
 "splice"    {console.log("Reconocio: "+yytext); return 'splice'}
+"graficar_ts()" {console.log("Reconocio: "+yytext); return 'graficar_ts'}
 
 {ID}        {console.log("Reconocio: "+yytext); return 'id'}
 {CADENA}    {console.log("Reconocio: "+yytext); return 'cadena'}
@@ -239,6 +241,7 @@ INSTRUCCION: ASIGNACION puntoycoma {$$= $1;}
             | PUSH_V puntoycoma {$$=$1;}
             | POP_V puntoycoma {$$=$1;}
             | SPLICE puntoycoma {$$=$1;}
+            | graficar_ts puntoycoma {$$=new Graficarts(@1.first_line,@1.last_column);}
             | error puntoycoma {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);

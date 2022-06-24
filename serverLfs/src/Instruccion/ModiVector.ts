@@ -137,7 +137,7 @@ export class ModiVector extends instruction{
             to:`${id}${n}N${nivelHijo}`,
         }
         B_datos.getInstance().addEdgesAst(edge);
-        this.expresion.ast(`${id}${n}N${nivelHijo}`,0,nivelHijo);
+        this.expresion.ast(id,n,nivel);
         
     }
 }

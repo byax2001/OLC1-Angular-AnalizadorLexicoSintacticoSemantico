@@ -32,7 +32,12 @@ export class ClientService {
   getTError(){
     return this.http.get(`${this.Url}/ObtenerError`);
   }
+  //TABLA DE ENVIROMENTS GENERAL
   getTEnvs(){
     return this.http.get(`${this.Url}/ObtenerEnvs`);
+  }
+  //TABLA DE ENVIROMENT ESPECIFICADOS POR EL METODO GRAFICARTS()
+  getTEnvsEsp(){
+    return this.http.get(`${this.Url}/ObtenerEnvsEsp`);
   }
 }

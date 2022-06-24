@@ -5,6 +5,7 @@ import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 import { Break } from "./Break";
 import { Continue } from "./Continue";
+import { Graficarts } from "./graficarTs";
 import { If } from "./If";
 import { Return } from "./Return";
 
@@ -38,6 +39,11 @@ export class While extends instruction  {
                             }
                         }else{
                             this.bloqueInst[i].execute(newEnv); //CON EL NUEVO ENVIROMENT
+                        }
+
+                        if (this.bloqueInst[i] instanceof Graficarts) {
+                            //GRAFICAR_TS()
+                            B_datos.getInstance().addEnviromentsEsp("While",newEnv)
                         }
                     }
                 }

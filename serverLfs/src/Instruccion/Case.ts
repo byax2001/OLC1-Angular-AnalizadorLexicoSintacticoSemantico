@@ -5,6 +5,7 @@ import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
 import { Break } from "./Break";
 import { Continue } from "./Continue";
+import { Graficarts } from "./graficarTs";
 import { Return } from "./Return";
 
 export class Case extends instruction{
@@ -29,6 +30,10 @@ export class Case extends instruction{
                 break;
             }
             //SI NO ES ALGUN SALTO DE CODIGO EJECUTAR
+            if (Instruction instanceof Graficarts) {
+                //GRAFICAR_TS()
+                B_datos.getInstance().addEnviromentsEsp("Switch",env)
+            } 
             Instruction.execute(env);
         }
         return jumpStament

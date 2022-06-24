@@ -6,6 +6,7 @@ import { Type } from "../Symbols/Type";
 import { Break } from "./Break";
 import { Case } from "./Case";
 import { Continue } from "./Continue";
+import { Graficarts } from "./graficarTs";
 import { Return } from "./Return";
 
 export class Switch extends instruction{
@@ -69,6 +70,10 @@ export class Switch extends instruction{
                             return null;
                         } else {
                             instDefault.execute(newEnv);
+                        }
+                        if (instDefault instanceof Graficarts) { //GRAFICAR TS NO AFECTA EN NADA SI SE EJECUTA O NO, SOLO ES NECESARIO DETECTARLA
+                            //GRAFICAR_TS()
+                            B_datos.getInstance().addEnviromentsEsp("Switch",newEnv)
                         }
                     }
                 }

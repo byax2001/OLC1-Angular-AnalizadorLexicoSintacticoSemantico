@@ -1,6 +1,7 @@
 import { B_datos } from "./BaseDatos/B_datos";
 import { Call } from "./Instruccion/Call";
 import { Funcion } from "./Instruccion/Funcion";
+import { Graficarts } from "./Instruccion/graficarTs";
 import { Metodo } from "./Instruccion/Metodo";
 import { Environment } from "./Symbols/Environment";
 
@@ -44,7 +45,12 @@ try{
     for(const instruction of ast){
         if(!(instruction instanceof Metodo || instruction instanceof Funcion)){
             try{
-                instruction.execute(env);
+                if(instruction instanceof Graficarts){
+                    B_datos.getInstance().addEnviromentsEsp("Principal",env)
+                }else{
+                    instruction.execute(env);
+                }
+                
             }catch (error){
                 console.log(error);
             }
