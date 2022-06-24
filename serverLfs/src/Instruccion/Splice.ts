@@ -3,6 +3,7 @@ import { instruction } from "../Abstract/instruction";
 import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 import {Retorno} from "../Abstract/Retorno";
+import { B_datos } from "../BaseDatos/B_datos";
 
 export class Splice extends instruction {
     constructor(
@@ -43,7 +44,37 @@ export class Splice extends instruction {
             //REPORTAR ERROR 
         }
     }
-    public ast(){
-
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let id = `${idPadre}${NoHijo}N${nivel}`
+        let nodo = {
+            id: id,
+            label: "Instruction:\nSplice"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        nodo = {
+            id: `${id}0N${(nivel+1)}`,
+            label:`Vector: ${this.id}`
+        }
+        let edge = {
+            from: id,
+            to:`${id}0N${(nivel+1)}`
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        //INDEX 
+        edge = {
+            from: id,
+            to:`${id}1N${(nivel+1)}`
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+        this.index.ast(id,1,nivel);
+        //DATO A INGRESAR 
+        edge = {
+            from: id,
+            to:`${id}2N${(nivel+1)}`
+        }
+        B_datos.getInstance().addEdgesAst(edge);
+        this.dato.ast(id,2,nivel);
     }
 }

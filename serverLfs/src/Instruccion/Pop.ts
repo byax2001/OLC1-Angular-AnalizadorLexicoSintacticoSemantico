@@ -1,4 +1,5 @@
 import { instruction } from "../Abstract/instruction";
+import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 
@@ -23,7 +24,14 @@ export class Pop extends instruction{
             //REPORTAR ERROR 
         }
     }
-    public ast(){
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let id = `${idPadre}${NoHijo}N${nivel}`
+        let nodo = {
+            id: id,
+            label: "Instruction:\nPop"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
 
     }
 }

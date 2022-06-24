@@ -2,6 +2,7 @@ import { expresion } from "../Abstract/expresion";
 import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 import { Retorno } from "../Abstract/Retorno";
+import { B_datos } from "../BaseDatos/B_datos";
 export class AccesoVector extends expresion{
     constructor(
         public id: string,
@@ -52,7 +53,41 @@ export class AccesoVector extends expresion{
 
         return result
     }
-    public ast(){
-        
+    public ast(idPadre: string, NoHijo: number,NivelPadre:number) {
+        let nivel= NivelPadre+1; //NIVEL NODO ACTUAL
+        let id = `${idPadre}${NoHijo}N${nivel}`
+        let nodo = {
+            id: id,
+            label: "Instruction:\nIndexOf"
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        //ID
+        nodo = {
+            id: id,
+            label: `${this.id}`
+        }
+        let edge ={
+            from: id,
+            to:`${id}0N${(nivel+1)}`
+        }
+        B_datos.getInstance().addNodosAst(nodo);
+        B_datos.getInstance().addEdgesAst(edge);
+        //INDEX 1
+        if (this.index !== null) {
+            let edge = {
+                from: id,
+                to:`${id}1N${(nivel+1)}`
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.index.ast(id, 1,nivel);//NODO HIJO: EXPRESION
+        //INDEX 2 
+        }else if (this.index2 !== null) {
+            let edge = {
+                from: id,
+                to:`${id}2N${(nivel+1)}`
+            }
+            B_datos.getInstance().addEdgesAst(edge);
+            this.index2.ast(id, 2,nivel);//NODO HIJO: EXPRESION
+        }
     }
 }
