@@ -87,6 +87,8 @@ export class If extends instruction{
             label:"Instruction:\nIf"
         }
         B_datos.getInstance().addNodosAst(nodo);
+    //EXPRESION
+    
     //NODO "IF"
         nodo={
             id:`${id}${0}N${nivelHijo}`,

@@ -37,6 +37,25 @@
     //EXTRAS
     const {Nothing}= require('../Instruccion/Nothing.ts');
     const {BloqueInstSup}= require('../Instruccion/BloqueInstSup.ts');
+
+    //FASE 2
+    const {Ternario}= require('../Instruccion/Ternario.ts');
+    const {ToLower}= require('../Expresion/ToLower.ts');
+    const {ToUpper}= require('../Expresion/ToUpper.ts');
+    const {Round}= require('../Expresion/Round.ts');
+    const {DeclaracionVector} = require('../Instruccion/DeclaracionVector.ts');
+    const {AccesoVector} = require('../Expresion/AccesoVector.ts');
+    const {ModiVector} = require('../Instruccion/ModiVector.ts');
+    const {Push} = require('../Instruccion/Push.ts');
+    const {Pop} = require('../Instruccion/Pop.ts');
+    const {Splice} = require('../Instruccion/Splice.ts');
+
+    //NATIVAS
+    const {Length}= require('../Instruccion/FuncionesNativas/Length.ts');
+    const {ToCharArray}= require('../Instruccion/FuncionesNativas/ToCharArray.ts');
+    const {IndexOf} =require('../Instruccion/FuncionesNativas/IndexOf.ts');
+    
+
 %}
 %lex
 %options case-insensitive          
@@ -133,12 +152,25 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 "length"             {console.log("Reconocio: "+yytext); return 'length'}
 "call"             {console.log("Reconocio: "+yytext); return 'call'}
 
+//OTROS METODOS
+"toLower"   {console.log("Reconocio: "+yytext); return 'tolower'}
+"toUpper"   {console.log("Reconocio: "+yytext); return 'toupper'}
+"round"     {console.log("Reconocio: "+yytext); return 'round'}
+"new"       {console.log("Reconocio: "+yytext); return 'new'}
+"length"    {console.log("Reconocio: "+yytext); return 'length'}
+"toCharArray" {console.log("Reconocio: "+yytext); return 'toCharArray'}
+"indexof"   {console.log("Reconocio: "+yytext); return 'indexof'}
+"push"      {console.log("Reconocio: "+yytext); return 'push'}
+"pop"       {console.log("Reconocio: "+yytext); return 'pop'}
+"splice"    {console.log("Reconocio: "+yytext); return 'splice'}
+
 {ID}        {console.log("Reconocio: "+yytext); return 'id'}
 {CADENA}    {console.log("Reconocio: "+yytext); return 'cadena'}
 {DECIMAL}   {console.log("Reconocio: "+yytext); return 'decimal'}
 {ENTERO}    {console.log("Reconocio ENTERO: "+yytext); return 'entero'}
 {CARACTER}  {console.log("Reconocio: "+yytext); return 'caracter'}
 
+"."                  {console.log("Reconocio : " + yytext);  return 'punto' }
 
 //EOF INDICA EL FIN DEL DOCUMENTO LEIDO 
 <<EOF>> return 'EOF';
@@ -154,6 +186,7 @@ CARACTER \'({ACEPTACIONC}|{CESPECIALES})\'
 
 //PRECEDENCIA
 //LAS PRECEDENCIAS VAN DE ABAJO A ARRIBA
+%right 'interrogacion'
 %left 'coma','puntoycoma', 'igual'
 %left 'or'
 %left 'and'
@@ -200,6 +233,12 @@ INSTRUCCION: ASIGNACION puntoycoma {$$= $1;}
             | id dec puntoycoma {$$=new IncDecremento ($1,TypeAritmeticas.DECDER,@1.first_line,@1.last_column);}
             | inc id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.INCIZQ,@1.first_line,@1.last_column);}
             | dec id puntoycoma {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
+            | VECTOR puntoycoma {$$=$1;}
+            | MODIVECTOR puntoycoma {$$=$1;}
+            | TERNARIO puntoycoma {$$=$1;}
+            | PUSH_V puntoycoma {$$=$1;}
+            | POP_V puntoycoma {$$=$1;}
+            | SPLICE puntoycoma {$$=$1;}
             | error puntoycoma {console.log("Error Sintactico, simbolo no esperado:"  + yytext 
                            + " linea: " + this._$.first_line
                            +" columna: "+ this._$.first_column);
@@ -331,6 +370,48 @@ BLOQUE_INST: llavea INSTRUCCIONES llavec {$$=$2;}
     | llavea llavec {$$=[new Nothing(@1.first_line,@1.last_column)];}
     ;
 
+//TERNARIOS
+TERNARIO: parentesisa EXPRESION parentesisc interrogacion INST_1LINE dospuntos INST_1LINE {$$=new Ternario($2,$5,$7,@1.first_line,@1.last_column);}
+    ;
+    
+INST_1LINE: ASIGNACION {$$=$1} 
+    | DECLARACION {$$=$1}
+    | N_PRINT {$$=$1}
+    | N_PRINTLN {$$=$1}
+    | LLAMADA {$$=$1}
+    | id inc {$$=new IncDecremento ($1,TypeAritmeticas.INCDER,@1.first_line,@1.last_column);}
+    | id dec {$$=new IncDecremento ($1,TypeAritmeticas.DECDER,@1.first_line,@1.last_column);}
+    | inc id  {$$=new IncDecremento ($2,TypeAritmeticas.INCIZQ,@1.first_line,@1.last_column);}
+    | dec id {$$=new IncDecremento ($2,TypeAritmeticas.DECIZQ,@1.first_line,@1.last_column);}
+    ;    
+
+//VECTORES
+VECTOR: TIPOVAR id corchetea corchetec igual new TIPOVAR corchetea EXPRESION corchetec {$$= new DeclaracionVector($1,$2,1,$7,null,$9,null,null,@1.first_line,@1.last_column);}
+    | TIPOVAR id corchetea corchetec corchetea corchetec igual new TIPOVAR corchetea EXPRESION corchetec corchetea EXPRESION corchetec {$$= new DeclaracionVector($1,$2,1,$7,$9,$12,null,null,@1.first_line,@1.last_column);}
+    | TIPOVAR id corchetea corchetec igual CONJVECTOR {$$= new DeclaracionVector($1,$2,2,null,null,null,$6,1,@1.first_line,@1.last_column);}
+    | TIPOVAR id corchetea corchetec corchetea corchetec igual CONJVECTOR {$$= new DeclaracionVector($1,$2,2,null,null,null,$8,2,@1.first_line,@1.last_column);}
+    | TIPOVAR id corchetea corchetec igual TO_CHAR_ARRAY {$$= new DeclaracionVector($1,$2,3,null,null,null,[$6],1,@1.first_line,@1.last_column);}
+    ; 
+
+CONJVECTOR:  corchetea CONJVECTOR corchetec {$$=$2;}
+    | CONJVECTOR coma corchetea CONJEXP corchetec  {$1.push($4);  $$= $1;}  //EL TAMAÑO DEL ARRAY GENERADO ES DE N  (N FILAS) EN ESTE CASO
+    | corchetea CONJEXP corchetec  {$$= [$2];} //EL TAMAÑO DEL ARRAY GENERADO ES DE 1  (1 FILA) EN ESTE CASO
+    ;
+
+CONJEXP: CONJEXP coma EXPRESION {$1.push($3);  $$=$1;}
+    | EXPRESION {$$= [$1];}
+    ;
+MODIVECTOR: id corchetea EXPRESION corchetec igual EXPRESION {$$= new ModiVector($1,$3,null,$6,@1.first_line,@1.last_column);}
+    | id corchetea EXPRESION corchetec corchetea EXPRESION corchetec igual EXPRESION {$$= new ModiVector($1,$3,$6,$9,@1.first_line,@1.last_column);}
+    ;
+TO_CHAR_ARRAY: toCharArray parentesisa EXPRESION parentesisc {$$= new ToCharArray($3,@1.first_line,@1.last_column)}
+    ;
+PUSH_V: id punto push parentesisa EXPRESION parentesisc {$$=new Push($1,$5,@1.first_line,@1.last_column) }
+    ;
+POP_V: id punto pop parentesisa parentesisc {$$=new Pop($1,@1.first_line,@1.last_column) }
+    ;
+SPLICE: id punto splice parentesisa EXPRESION coma EXPRESION parentesisc {$$=new Splice($1,$5,$7,@1.first_line,@1.last_column) }
+    ;
 
 EXPRESION: 
          menos EXPRESION %prec UMINUS {$$=new OAritmeticas($2,null,TypeAritmeticas.NEGACION,@1.first_line,@1.last_column);}
@@ -364,4 +445,13 @@ EXPRESION:
 
         | id igual EXPRESION {$$=new Asignacion([$1],$3,@1.first_line,@1.last_column)}
         | LLAMADA {$$=$1;}
+        | parentesisa EXPRESION parentesisc interrogacion EXPRESION dospuntos EXPRESION {$$=new Ternario($2,$5,$7,@1.first_line,@1.last_column);}
+        | tolower parentesisa EXPRESION parentesisc   {$$=new ToLower($3,@1.first_line,@1.last_column)}
+        | toupper parentesisa EXPRESION parentesisc   {$$=new ToUpper($3,@1.first_line,@1.last_column)}
+        | round parentesisa EXPRESION parentesisc   {$$=new Round($3,@1.first_line,@1.last_column)}
+        | id corchetea EXPRESION corchetec {$$=new AccesoVector($1,$3,null,@1.first_line,@1.last_column)}
+        | id corchetea EXPRESION corchetec corchetea EXPRESION corchetec {$$=new AccesoVector($1,$3,$6,@1.first_line,@1.last_column)}
+        | length parentesisa EXPRESION parentesisc {$$= new Length($3,@1.first_line,@1.last_column)}
+        | id punto indexof parentesisa EXPRESION parentesisc {$$=new IndexOf($1,$5,@1.first_line,@1.last_column) }
+        | id punto push parentesisa EXPRESION parentesisc {$$=new Push($1,$5,@1.first_line,@1.last_column) }
         ;
