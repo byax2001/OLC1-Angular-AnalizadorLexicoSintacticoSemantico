@@ -26,9 +26,11 @@ export class AccesoVector extends expresion{
                         result= array[index.value][index2.value]
                     }else{
                         //INDEX FUERA DEL TAMAÑO ESTABLECIDO 
+                        B_datos.getInstance().addError("Semantico","Index fuera del tamaño del vector",this.line,this.column);
                     }  
                 }else{
                     //EL INDEX NO ES UN INT REPORTAR 
+                    B_datos.getInstance().addError("Semantico","Los index para acceder al contenido del vector deben de ser enteros",this.line,this.column);
                 }
                 
 
@@ -40,15 +42,17 @@ export class AccesoVector extends expresion{
                         result= array[0][index.value]
                     }else{
                         //INDEX FUERA DEL TAMAÑO ESTABLECIDO 
+                        B_datos.getInstance().addError("Semantico","Los index para acceder al contenido del vector deben de ser enteros",this.line,this.column);
                     }
                 }else{
                     //EL INDEX NO ES UN INT REPORTAR 
+                    B_datos.getInstance().addError("Semantico","El numero de filas y columnas deben de ser enteros",this.line,this.column);
                 }
 
             }
-           
         }else{
             //EL SIMBOLO NO EXISTE O EL VALOR NO ES UN ARRAY
+            B_datos.getInstance().addError("Semantico","La variable a la que se intenta acceer no es un vector o no existe",this.line,this.column);
         }
 
         return result

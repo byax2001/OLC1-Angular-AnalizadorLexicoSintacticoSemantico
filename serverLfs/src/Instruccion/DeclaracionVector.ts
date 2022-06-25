@@ -30,6 +30,7 @@ export class DeclaracionVector extends instruction{
             if(this.tipo===this.tipo2){
                 let existe= env.existeSimDeclaracion(this.id)
                 if(existe){
+                    B_datos.getInstance().addError("Semantico","La variable ya ha sido declarada antes",this.line,this.column);
                     //REPORTAR ERROR VARIABLE YA DECLARADA 
                 }else{
                     if(this.nFilas!==null && this.nColumnas!==null){
@@ -50,6 +51,7 @@ export class DeclaracionVector extends instruction{
                             env.guardarSimbolo(true,this.tipo,this.id,vec,this.line,this.column);
                         }else{
                             //REPORTAR ERROR DEBEN DE SER ENTEROS LOS DATOS DE ACA
+                            B_datos.getInstance().addError("Semantico","El numero de filas y columnas deben de ser enteros",this.line,this.column);
                         }
                     
 
@@ -68,14 +70,17 @@ export class DeclaracionVector extends instruction{
                             env.guardarSimbolo(true,this.tipo,this.id,vec,this.line,this.column);
                         } else {
                             //REPORTAR ERROR DEBEN DE SER ENTEROS LOS DATOS DE ACA
+                            B_datos.getInstance().addError("Semantico","El tamaño del array debe de ser entero",this.line,this.column);
                         }
 
                     } else {
                         //REPORTAR ERROR NO SE MANDARON NI FILAS NI COLUMNAS 
+                        B_datos.getInstance().addError("Semantico","No se especifico el tamaño del vector a declarar",this.line,this.column);
                     }
                 }
             }else{  
                 //REPORTAR ERROR NO SON DEL MISMO TIPO EL ARRAY
+                B_datos.getInstance().addError("Semantico","Intento de declarar vector con otro tipo de dato no correspondiente al suyo",this.line,this.column);
             }
         } else if (this.tipoDecVec === 2) {
                     //[]=[exp] o [][]=[[exp], [exp]]                [][]=[[exp], [exp],[exp],[exp]]
@@ -83,6 +88,8 @@ export class DeclaracionVector extends instruction{
                 let existe = env.existeSimDeclaracion(this.id)
                 if (existe) {
                     //REPORTAR ERROR VARIABLE YA DECLARADA 
+                    B_datos.getInstance().addError("Semantico","La variable ya ha sido declarada antes",this.line,this.column);
+                    
                 } else {
                     let matriz = [];
                     let fila = [];
@@ -92,6 +99,8 @@ export class DeclaracionVector extends instruction{
                     for (let line of this.vector) {
                         if (line.length !== ncolumnas) {
                             //REPORTAR ERROR HAY UNA FILA A LA QUE LE FALTAN DATOS 
+                            B_datos.getInstance().addError("Semantico","Tamaño incosistente en el vector declarado",this.line,this.column);
+                           
                             return null
                         }
                         fila = [];
@@ -107,6 +116,7 @@ export class DeclaracionVector extends instruction{
                         }
                         if (error !== 0) {
                             //REPORTAR ERROR HAY EXPRESIONES QUE NO SON IGUALES AL TIPO DE DATO DEL ARRAY
+                            B_datos.getInstance().addError("Semantico","Intento de ingresar datos de tipo distinto al del vector",this.line,this.column);
                             return null
                         }
                         matriz.push(fila); //INGRESO DE FILA A LA MATRIZ 
@@ -116,13 +126,14 @@ export class DeclaracionVector extends instruction{
                 }
             }else {
                 //REPORTAR ERROR TAMAÑOS DE FILAS Y [][] NO CUADRAN 
-                console.log("Tamaños no cuadran")
+                B_datos.getInstance().addError("Semantico","Inconsistencia en el tamaño del vector declarado",this.line,this.column);
             }
         } else if(this.tipoDecVec===3){
             let matriz=this.vector[0].execute(env);
             let existe = env.existeSimDeclaracion(this.id)
             if (existe) {
                     //REPORTAR ERROR VARIABLE YA DECLARADA 
+                    B_datos.getInstance().addError("Semantico","La variable ya ha sido declarada antes",this.line,this.column);
             } else {
                 if(this.tipo===Type.CHAR){
                     if(matriz.length!==0){
@@ -130,7 +141,8 @@ export class DeclaracionVector extends instruction{
                         env.guardarSimbolo(true, this.tipo, this.id, vec, this.line, this.column);
                     }
                 }else{
-                    //SE ESTA INTENTANDO ASIGNAR UN ARRAY DE CHARS A UN VECTOR DE OTRO TIPO
+                    //SE ESTA INTENTANDO ASIGNAR UN ARRAY DE CHARS A UN VECTOR DE OTRO TIPO4
+                    B_datos.getInstance().addError("Semantico","Intento de asignar un array de chars a un vetor de otro tipo",this.line,this.column);
                 }    
             }
             

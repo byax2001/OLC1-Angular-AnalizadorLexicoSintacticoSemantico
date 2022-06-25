@@ -22,9 +22,6 @@ export class ToLower extends expresion{
             //REPORTAR ERROR
             B_datos.getInstance().addError("Semantico","Intento de hacer toLowerCase a un no String",this.line,this.column);
         }
-
-
-
         return result
     }
     public ast(idPadre: string, NoHijo: number,NivelPadre:number) {

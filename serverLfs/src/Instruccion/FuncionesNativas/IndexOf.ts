@@ -33,12 +33,16 @@ export class IndexOf extends instruction{
                     result={value:index,type:Type.INT}
                 }else{
                     //REPORTAR ERROR, INTENTO DE HACER INDEX OF A ARRAY DE DOS DIMENSIONES
+                    B_datos.getInstance().addError("Semantico","Intento de hacer indexOf a un vector de dos dimensiones",this.line,this.column);
                 }
             }else{
                 //NO ES UN VECTOR A LO QUE SE LE QUIERE HACER INDEX OF 
+                B_datos.getInstance().addError("Semantico","IndexOf solo funciona en vectores de una dimension",this.line,this.column);     
             }
         }else{
             //REPORTAR ERROR OCURRIO UN ERROR EN LA EXPRESION
+            B_datos.getInstance().addError("Semantico","Expresion con la que se hara IndexOf da error",this.line,this.column);
+                        
         }
         return result
     }

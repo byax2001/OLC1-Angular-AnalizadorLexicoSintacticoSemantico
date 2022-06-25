@@ -24,15 +24,18 @@ export class Length extends instruction{
                     result={value:exp.value.value[0].length,type:Type.INT} //retorna un numero entero 
                 }else{
                     //error intento de usar lenght en un array de dos de meciones 
+                    B_datos.getInstance().addError("Semantico","Intento de usar lenght en un vector de 2 dimensiones",this.line,this.column);
                 }
             }else if(exp.type===Type.STRING){
                 result={value:exp.value.length,type:Type.INT} //retorna un numero entero 
             }else{
                 //REPORTAR ERROR, funcion length en un tipo de dato no string o array
+                B_datos.getInstance().addError("Semantico","Intento de hacer Length en un dato no string o vector",this.line,this.column);
             }
 
         }else{
             //reportar error
+            B_datos.getInstance().addError("Semantico","Expresion da error",this.line,this.column);
         }
         return result
     }

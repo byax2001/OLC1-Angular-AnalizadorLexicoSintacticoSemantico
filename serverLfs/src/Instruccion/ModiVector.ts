@@ -21,7 +21,6 @@ export class ModiVector extends instruction{
         let vec=env.getSimbolo(this.id);
         let exp=this.expresion.execute(env);//VALOR A ASIGNAR A LA DIRECCION DE VECTOR INDICADA  
         //VERIFICAR QUE EXPRESION NO HAYA DADO NINGUN ERROR 
-
         if(exp.type!==Type.error){
             if(vec.type!==Type.error &&   typeof vec.value==="object"){
                 if(this.index2!==null && this.index!==null){
@@ -34,12 +33,16 @@ export class ModiVector extends instruction{
                                 array[index.value][index2.value]=exp
                              }else{ 
                                  //REPORTAR ERROR DISTINTO TIPOD E VALOR A ASIGNAR
+                                 B_datos.getInstance().addError("Semantico","Variable de asignar de tipo distinto al vector",this.line,this.column);
                              }
                         }else{
                             //INDEX FUERA DEL TAMAÑO ESTABLECIDO 
+                            B_datos.getInstance().addError("Semantico","Index fuera del tamaño del vector",this.line,this.column);
+                           
                         }  
                     }else{
                         //EL INDEX NO ES UN INT REPORTAR 
+                        B_datos.getInstance().addError("Semantico","El index debe de ser un entero",this.line,this.column);
                     }
     
                 }else if(this.index!==null){
@@ -51,21 +54,25 @@ export class ModiVector extends instruction{
                                 array[0][index.value]=exp
                              }else{ 
                                  //REPORTAR ERROR DISTINTO TIPOD E VALOR A ASIGNAR
+                                 B_datos.getInstance().addError("Semantico","Variable de asignar de tipo distinto al vector",this.line,this.column);
                              }
                         }else{
-                            //INDEX FUERA DEL TAMAÑO ESTABLECIDO 
+                            //INDEX FUERA DEL TAMAÑO ESTABLECIDO
+                            B_datos.getInstance().addError("Semantico","Index fuera del tamaño del vector",this.line,this.column); 
                         }
                     }else{
                         //EL INDEX NO ES UN INT REPORTAR 
+                        B_datos.getInstance().addError("Semantico","El index debe de ser un entero",this.line,this.column);
+                        
                     }
-    
-                }
-               
+                }             
             }else{
                 //EL SIMBOLO NO EXISTE O EL VALOR NO ES UN ARRAY
+                B_datos.getInstance().addError("Semantico","La variable a acceder no es un array o no existe",this.line,this.column);
             }
         }else{
             //DIO ERROR LA EXPRESION A INGRESAR 
+            B_datos.getInstance().addError("Semantico","Expresion a asignar con errores",this.line,this.column);
         }
 
         return result
