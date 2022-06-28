@@ -29,19 +29,24 @@ export class Splice extends instruction {
                             vec.value.columnas=vec.value.value[0].length; //SE AGREGO UN ELEMENTO, MODIFICAR NUMERO DE COLUMNAS
                         }else{
                             //INTENTO DE HACER SPLICE DE UN DATO EN UN VECTOR DE TIPO DISTINTO
+                            B_datos.getInstance().addError("Semantico","Intento de ingresar un dato de tipo distinto al del vector",this.line,this.column);
                         }
                     }else{
                         //INTENTO DE HACER UN SPLICE EN UN INDEX INEXISTENTE
+                        B_datos.getInstance().addError("Semantico","Index fuera del tamaño del vector",this.line,this.column);
                     }
                 }else{
                     //REPORTAR ERROR intento de hacer splice en un vector de dos dimensiones
+                    B_datos.getInstance().addError("Semantico","Intento de hacer splice a un vector de dos dimensiones",this.line,this.column);
                 }
             }else{
                 //EL INDEX NO ES UN INT 
+                B_datos.getInstance().addError("Semantico","Index no es un int",this.line,this.column);
             }
             
         }else{
             //REPORTAR ERROR 
+            B_datos.getInstance().addError("Semantico","La expresion o vector a ingresar da error, o la variable a manipular no es un vector",this.line,this.column);
         }
     }
     public ast(idPadre: string, NoHijo: number,NivelPadre:number) {

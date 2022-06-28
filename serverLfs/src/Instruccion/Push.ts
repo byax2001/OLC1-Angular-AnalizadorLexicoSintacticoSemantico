@@ -28,16 +28,20 @@ export class Push extends instruction{
                         result = { value: true, type: Type.BOOLEAN }
                     }else{
                         //REPORTAR ERROR 
+                        B_datos.getInstance().addError("Semantico","Intento de ingresar un dato de tipo distinto al del vector",this.line,this.column);
                     }
                     
                 }else{  
                     //INTENTO DE HACER PUSH A UN ARRAY DE DOS DIMENSIONES
+                    B_datos.getInstance().addError("Semantico","Intento de hacer push a un vector de dos dimensiones",this.line,this.column);
                 }
             }else{
                 //NO HAY SIMBOLO CON ESA ID O NO ES UN ARRAY
+                B_datos.getInstance().addError("Semantico","Variable a la que se desea acceder no es un vector o da error",this.line,this.column);
             }
         }else{
             //REPORTAR ERROR 
+            B_datos.getInstance().addError("Semantico","Expresio que se desea ingresar da error",this.line,this.column);
         }
         return result;
     }

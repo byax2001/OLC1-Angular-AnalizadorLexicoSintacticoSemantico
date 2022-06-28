@@ -4,12 +4,14 @@ export class B_datos{
     private static instance:B_datos;
     Errores:any[];
     Enviroments:any[];
+    EnviromentsEsp:any[]; //Enviroments especificos a mostrar por la funcion graficarts()
     Consola:string[];
     NodosAst:any[];
     EdgesAst:any[];
     private constructor(){
         this.Errores=[]
         this.Enviroments=[]
+        this.EnviromentsEsp=[]
         this.Consola=[]
         this.NodosAst=[]
         this.EdgesAst=[]
@@ -37,14 +39,26 @@ export class B_datos{
     //ADD ENVIROMENTS
 
     addEnviroments(nombreEnv:string,env:Environment){
+                                //nombre del enviroment y el objeto enviroment
         this.Enviroments.push([nombreEnv,env]);
+    }
+    //ADD ENVIROMENTS ESPECIFICADOS POR EL COMANDO GRAFICAR TS()
+    addEnviromentsEsp(nombreEnv: string, env: Environment) {
+        //nombre del enviroment y el objeto enviroment
+        this.EnviromentsEsp.push([nombreEnv, env]);
     }
 
     //OBTENER LISTA DE ENVIROMENTS
-    getListEnviroments(){
+    getListEnviroments(tipoEnv:number){
         let envs:any[]=[];
-        for(let env of this.Enviroments){
-            let envValue:Environment=env[1];
+        let Enviroments=this.Enviroments
+        //SI EL TIPO ENV ES 1 ETONCES SE ESTA PIDIENDO TODOS LOS ENVIROMENTS
+        //SI ES 2 SE ESTA PIDIENDO LOS ENVIROMENTS ESPECIFICADOS POR LA FUNCION GRAFICAR TS()
+        if(tipoEnv===2){
+            Enviroments=this.EnviromentsEsp;
+        }
+        for(let env of Enviroments){
+            let envValue:Environment=env[1];  //ENVIROMENT MANIPULADO ACTUALMENTE, env[0]:nombre del enviroment
             let variables=envValue.getVariables(); //[[variable1],[variable2],[variable3]]
             envs.push([env[0],variables]); //[id_enviroment, [variables del enviroment y sus propiedades]]
         }
@@ -52,6 +66,7 @@ export class B_datos{
     }
     clearEnviroments(){
         this.Enviroments=[];
+        this.EnviromentsEsp=[];
     }
     //PRINT CONSOLA
     printConsola(print:string){

@@ -1,28 +1,210 @@
-string hola[][]= [["HOLA","como","estan"],["HOLA","como","estan"]];
-println(hola[0][0]);
-hola[0][0]="PEDRO";
-println(hola[0][0]);
+/***********************************
+    ARCHIVO PARA FASE2 OLC1- LFSCRIPT
+*****************************************/
 
-string abc="manzana";
+/*
+Reglas: puedes modificar este archivo en caso necesario
+*/
 
-string fer[]= ["hola","que","tal"];
-println(length(fer));
+@@@ //errores lexicos
 
-char arraychar[] = toCharArray("Buenosdias");
+double calificacion=0.0;
+char global1= 'a';
+int iterador= 1;
+{
+    string curso="olc1";
+    int a1=10*iterador;
+    int a2=a1+1;
+    int a3=a1+2;
+    graficar_ts();
+    {
+        int a1=100*iterador;
+        int a2=a1+1;
+        int a3=a1+2;
+        graficar_ts();
+        {
+            int a1=(5>10*5+2-30+1-(10*2))? 30 : 0;
 
-println(arraychar[0]);
+            int a2=(a1==30)?a1+1 : 0;
+            int a3=(a1==30)?a1+2 : 0;
+            (curso=="ipc")? println("OPEADOR TERMARIO COMO INSTRUCCION ... NO!"): println ("OPEADOR TERMARIO COMO INSTRUCCION ... SI!");
+            (curso+"_june"=="olc1_june")? println("OPEADOR TERMARIO COMO INSTRUCCION ... SI!"): println ("OPEADOR TERMARIO COMO INSTRUCCION ... NO!");
+            global1 = (a1==((10+5)*(1+1)))?  'm' :'f';
 
-println(arraychar.indexof('B'));
+            if(global1=='m'){
+                println("OPEADOR TERMARIO COMO EXPRESION... SI! ");
+            }else{
+                println("OPEADOR TERMARIO COMO EXPRESION... NO! ");
+            }
 
-fer.push("manzana");
-println(length(fer));
+            if(a1+2==30+2 && a2==31 && a3==32){
+                println("OPEADOR TERMARIO COMO EXPRESION... SI! ");
+            }else{
+                println("OPEADOR TERMARIO COMO EXPRESION... NO! ");
+            }
+            graficar_ts();
+        }
+    }
+}
 
-fer.pop();
-println(length(fer));
+void minusculas(boolean flag, string parametro1){
+    if(flag){
+        println("original:"+parametro1);
+        println("minusculas: "+toLower(parametro1));
+    }
+}
 
-println(hola);
-println(fer);
 
-fer.splice(0,"Luis");
-println(fer);
+void mayusculas(boolean flag, string parametro1){
+    if(flag){
+        println("original:"+parametro1);
+        println("mayusculas: "+toUpper(parametro1));
+    }
+}
 
+call minusculas(true, "ORgANIZaCIOn De LEnGUaJEs y CompiladoreS"+1);
+call mayusculas(true, "ORgANIZaCIOn De LEnGUaJEs y CompiladoreS"+1);
+call minusculas(true, "LFScript");
+call mayusculas(true, "LFScript");
+call minusculas(true, "");//mensajes random
+call mayusculas(true, "");//mensajes random
+
+int nota_estudiante1=round(2.5);
+int nota_estudiante2=round(5.0);
+int nota_estudiante3=round(6.3);
+int nota_estudiante4=round(8.9);
+int nota_estudiante5=round(9.4);
+int nota_estudiante6=round(1.4);
+int nota_estudiante7=round(2.6);
+int nota_estudiante8=round(9.4);
+int nota_estudiante9=round(9.5);
+
+call validar_round();
+
+
+void validar_round(){
+    if(
+        nota_estudiante1==3 &&
+        nota_estudiante2==5 &&
+        nota_estudiante3==6 &&
+        nota_estudiante4==9 &&
+        nota_estudiante5==9 &&
+        nota_estudiante6==1 &&
+        nota_estudiante7==3 &&
+        nota_estudiante8==9 &&
+        nota_estudiante9==10 
+        ){
+            println("SENTENCIA ROUND... CORRECTA!");
+        }
+}
+//seccion vectores
+int vector_principal []= new int[10];
+int vector_extras1 []= new int[5];
+int vector_extras2 []= new int[5];
+int vector_extras3 []= new int[5];
+string vector_nombres []= new string[3];
+
+print("vector_extras1:");
+println(vector_extras1);
+print("vector_extras2:");
+println(vector_extras2);
+print("vector_extras3:");
+println(vector_extras3);
+int x=2;
+
+char   vector_curso[] = ['o','l','c','1'];
+double vector_notas[] = [10.0 , 2.5 ,6.9, 9.8, 5.0,  4.2,8.1,5.0,4.9,4.4];
+
+vector_extras3[1-1]=-2;
+vector_extras3[x-1]=-1;
+vector_extras3[x+1]=1;
+vector_extras3[x+2]=x;
+println(vector_extras3);
+println(vector_curso);
+println(vector_notas);
+
+double a1= vector_notas[0]+1.0;
+double a2= vector_notas[1]+1.0;
+double a3= vector_notas[2]+1.0;
+double a4= vector_notas[3]+1.0;
+double a5= vector_notas[4]+1.0;
+
+println("|"+vector_notas[0]+"|"+vector_notas[1]+"|"+vector_notas[2]+"|"+vector_notas[3]+"|"+vector_notas[4]+"|");
+println("|"+a1+"|"+a2+"|"+a3+"|"+a4+"|"+a5+"|");
+
+vector_notas[0]=vector_notas[0]+10.0;
+vector_notas[1]=vector_notas[1]+10.0;
+vector_notas[2]=vector_notas[2]+10.0;
+vector_notas[3]=vector_notas[3]+10.0;
+vector_notas[4]=vector_notas[4]+10.0;
+
+println("|"+vector_notas[0]+"|"+vector_notas[1]+"|"+vector_notas[2]+"|"+vector_notas[3]+"|"+vector_notas[4]+"|");
+
+
+int tam_vector_notas= length(vector_notas);
+println(tam_vector_notas);
+println("tam vector1: "+length(vector_extras1));
+println("tam vector2: "+length(vector_extras2));
+println("tam vector3: "+length(vector_extras3));
+println(length(vector_principal));
+
+
+string myname="<ingrese aqui su nombre>";
+string mylastname="<ingrese aqui su apellido>";
+
+char minombre[]=tocharArray("_"+myname+"_");
+char miapellido[]=tocharArray(mylastname);
+println(minombre);
+println(miapellido);
+minombre[0]='|';
+minombre[length(minombre)-1]='|';
+println(minombre);
+
+println("tam :"+length(minombre));
+println("tam :"+length(miapellido));
+
+call buscarvocales(myname);
+call buscarvocales(mylastname);
+
+void buscarvocales(string nombre){
+    int contador=0;
+    for(int x=0; x<length(nombre);x++){
+        if(
+            minombre.indexof('a')!= -1||
+            minombre.indexof('e')!= -1||
+            minombre.indexof('i')!= -1||
+            minombre.indexof('o')!= -1||
+            minombre.indexof('u')!= -1
+        ){
+            contador++;
+        }else{
+            //nothing
+        }
+
+    }
+    print("En la cadena enviada encontre "+contador+ " vocales (:");
+}
+call metodo_nativos();
+
+void metodo_nativos(){
+    minombre.push('m');
+    minombre.push('e');
+    minombre.push('l');
+    minombre.push('m');
+    minombre.push('v');
+    minombre.push('@');
+    minombre.push('$');
+    minombre.push('$');
+    minombre.pop();
+    minombre.pop();
+    minombre.splice(0,'v');
+    minombre.splice(0,'m');
+    minombre.splice(0,'l');
+    minombre.splice(0,'e');
+    minombre.splice(0,'m');
+    minombre.splice(0,'@');
+    println(length(minombre));
+    println(round(length(minombre)/2.0));
+    minombre.splice(round(length(minombre)/2.0),'_');
+    println(minombre);
+}

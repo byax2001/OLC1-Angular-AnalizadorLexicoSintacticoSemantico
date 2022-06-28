@@ -19,8 +19,10 @@ export class Pop extends instruction{
                 vec.value.columnas=vec.value.value[0].length; //SE QUITO UN ELEMENTO, MODIFICAR NUMERO DE COLUMNAS
             }else{
                 //REPORTAR ERROR 
+                B_datos.getInstance().addError("Semantico","Intento de hacer pop a un vector de dos dimensiones",this.line,this.column);
             }
         }else{
+            B_datos.getInstance().addError("Semantico","Variable a la que se desea acceder no es un vector o da error",this.line,this.column);      
             //REPORTAR ERROR 
         }
     }

@@ -26,7 +26,7 @@ export class ToCharArray extends instruction{
             matriz.push(fila)
         }else{
             //reportar error
-
+            B_datos.getInstance().addError("Semantico","Intento de realizar ToCharArray con un no String",this.line,this.column);
         }
         //SI MATRIZ ES TAMAÑO 0 ENTONCES UN ERROR AL PASAR EL STRING A ARRAY, TOMAR ESTO EN CUENTA A LA HORA DE DECLARAR UN VECTOR 
         return matriz

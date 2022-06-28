@@ -43,5 +43,31 @@ export class EnviromentComponent implements OnInit {
       }
     )
   }
+  graficarTablaTs() {
+    this.enviroments=[];//SE RESETEA LA TABLA DE SIMBOLOS 
+    this.ClientS.getTEnvsEsp().subscribe(
+      (res) => {
+        let respuesta: any = []
+        Object.entries(res).forEach(item => {
+          respuesta.push(item[0], item[1]);
+        });
+        let n=0//dontador para el numero de variables
+        //enviroment,constante,tipo,id,value,line,column,parametros);
+        let resp=respuesta[1];
+        for(let i of resp){ //CADA ENVIROMENT
+          for(let x of i[1]){ //CADA VARIABLE DE ENVIROMENT
+            let aux=[n,i[0]]; //NUMERO DE VARIABLE Y NOMBRE DEL ENVIROMENT
+            this.enviroments.push(aux.concat(x));
+            n++;
+          }
+          
+        }
+        
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
 
 }

@@ -5,6 +5,7 @@ import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 import { Break } from "./Break";
 import { Continue } from "./Continue";
+import { Graficarts } from "./graficarTs";
 import { Return } from "./Return";
 
 export class If extends instruction{
@@ -37,13 +38,17 @@ export class If extends instruction{
                         retInf=this.instruction[i]; 
                     }else if(this.instruction[i] instanceof If){
                         let estadoIf= this.instruction[i].execute(newEnviromet);
-                        if(estadoIf instanceof Break){
-                            retInf=estadoIf; 
+                        if(estadoIf instanceof Break){ //PARA SABER SI EN ALGUN IF VENIA LA INSTRUCCION BREAK 
+                            retInf=estadoIf;  
                             return retInf;
                         }
                     }else{
                         this.instruction[i].execute(newEnviromet);
                     }  
+                    if (this.instruction[i] instanceof Graficarts) {
+                        //GRAFICAR_TS()
+                        B_datos.getInstance().addEnviromentsEsp("If",newEnviromet)
+                    }
                     
                 }
                 B_datos.getInstance().addEnviroments("If",newEnviromet);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS
@@ -60,13 +65,16 @@ export class If extends instruction{
                     }else if(this.instruction2[i] instanceof If){
                         let estadoIf= this.instruction2[i].execute(newEnviromet);
                         if(estadoIf instanceof Break){
-                            retInf=estadoIf;
+                            retInf=estadoIf; //SI EL RESULTADO DE ESE IF ES UN BREAK RETORNAR UN BREAK 
                             return retInf;
                         }
                     }else{
                         const res = this.instruction2[i].execute(newEnviromet);
                     }
-                        
+                    if (this.instruction2[i] instanceof Graficarts) {
+                        //GRAFICAR_TS()
+                        B_datos.getInstance().addEnviromentsEsp("If",newEnviromet)
+                    }
                      
                 }
                 B_datos.getInstance().addEnviroments("If",newEnviromet);//SE ADIRIO EL NUEVO ENVIROMENT A LA LISTA DE ENVIROMENTS

@@ -1,6 +1,7 @@
 import { instruction } from "../Abstract/instruction";
 import { B_datos } from "../BaseDatos/B_datos";
 import { Environment } from "../Symbols/Environment";
+import { Graficarts } from "./graficarTs";
 
 export class BloqueInstSup extends instruction{
     constructor(
@@ -15,10 +16,14 @@ export class BloqueInstSup extends instruction{
         let newEnviromet= new Environment(env);
         for(let Instruccion of this.instrucciones){
             
-            try{
+            try {
+                if (Instruccion instanceof Graficarts) {
+                    B_datos.getInstance().addEnviromentsEsp("Bloque Instrucciones",newEnviromet)
+                } 
                 Instruccion.execute(newEnviromet);
+
             }
-            catch(e){
+            catch (e) {
                 console.log(e)
                 B_datos.getInstance().addError("Semantico","Instruccion fallida en bloque de instrucciones",this.line,this.column)
             }

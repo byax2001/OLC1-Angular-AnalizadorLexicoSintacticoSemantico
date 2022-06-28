@@ -5,6 +5,7 @@ import { Environment } from "../Symbols/Environment";
 import { Type } from "../Symbols/Type";
 import { Break } from "./Break";
 import { Continue } from "./Continue";
+import { Graficarts } from "./graficarTs";
 import { If } from "./If";
 import { Return } from "./Return";
 
@@ -48,6 +49,10 @@ export class For extends instruction{
                             }
                         }else{
                             Instruction.execute(newEnv2);
+                        }
+                        if (Instruction instanceof Graficarts) {
+                            //GRAFICAR_TS()
+                            B_datos.getInstance().addEnviromentsEsp("For",newEnv2)
                         }
                     }
                 }

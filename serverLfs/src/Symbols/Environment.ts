@@ -43,6 +43,9 @@ export class Environment{
             
             if(Array.isArray(value.value)){
                 valor="Instrucciones"
+            }else if(typeof value.value === "object" && value.value.value !== null){
+                //ES UN VECTOR
+                valor="[ Array Content ]"
             }
                             //CONSTANTE,TIPO,ID,VALOR,LINEA,COLUMNA,PARAMETROS 
             variables.push([constante,tipo,value.id,valor,value.line,value.column,parametros]);//GUARDA ESTOS DATOS EN UN ARRAY DE ARRAYS

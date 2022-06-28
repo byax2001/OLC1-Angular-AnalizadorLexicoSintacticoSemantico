@@ -15,6 +15,11 @@ header{
   position: relative;
   top:35px;
 }
+#btnMGts{
+  position: relative;
+  top:35px;
+  left: 10px;
+}
 
 
 /*EFECTOS DE BOTONES*/
